@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "description": "A Phoenix LiveView Button Group component.",
+  "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.ButtonGroup\n\nReplace `MyAppWeb` with your application's module prefix.",
+  "files": [
+    {
+      "content": "defmodule MyAppWeb.Components.UI.ButtonGroup do\n  use Phoenix.Component\n\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def button_group(assigns) do\n    ~H\"\"\"\n    <div\n      class={[\n        \"inline-flex items-center rounded-md shadow-sm [&>*:not(:first-child)]:-ml-px [&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none [&>button]:shadow-none\",\n        @class\n      ]}\n      {@rest}\n    >\n      {render_slot(@inner_block)}\n    </div>\n    \"\"\"\n  end\nend\n",
+      "path": "registry/button_group.ex",
+      "target": "lib/my_app_web/components/ui/button_group.ex",
+      "type": "registry:file"
+    }
+  ],
+  "name": "button-group",
+  "registryDependencies": [
+    "button"
+  ],
+  "title": "Button Group",
+  "type": "registry:item"
+}

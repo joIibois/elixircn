@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "description": "A Phoenix LiveView Skeleton component.",
+  "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Skeleton\n\nReplace `MyAppWeb` with your application's module prefix.",
+  "files": [
+    {
+      "content": "defmodule MyAppWeb.Components.UI.Skeleton do\n  use Phoenix.Component\n\n  attr :class, :string, default: nil\n  attr :rest, :global\n\n  def skeleton(assigns) do\n    ~H\"\"\"\n    <div\n      class={[\"animate-pulse rounded-md bg-primary/10\", @class]}\n      {@rest}\n    />\n    \"\"\"\n  end\nend\n",
+      "path": "registry/skeleton.ex",
+      "target": "lib/my_app_web/components/ui/skeleton.ex",
+      "type": "registry:file"
+    }
+  ],
+  "name": "skeleton",
+  "registryDependencies": [],
+  "title": "Skeleton",
+  "type": "registry:item"
+}

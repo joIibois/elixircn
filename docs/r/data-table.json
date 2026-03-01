@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "description": "A Phoenix LiveView Data Table component.",
+  "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.DataTable\n\nReplace `MyAppWeb` with your application's module prefix.",
+  "files": [
+    {
+      "content": "defmodule MyAppWeb.Components.UI.DataTable do\n  use Phoenix.Component\n  import MyAppWeb.Components.UI.Table\n\n  attr :id, :string, default: nil\n  attr :rows, :list, required: true\n  attr :row_id, :any, default: nil\n  attr :row_click, :any, default: nil\n  attr :empty_message, :string, default: \"No results.\"\n  attr :class, :string, default: nil\n\n  slot :col, required: true do\n    attr :label, :string, required: true\n    attr :class, :string\n  end\n\n  slot :action do\n    attr :label, :string\n  end\n\n  def data_table(assigns) do\n    ~H\"\"\"\n    <div id={@id} class={@class}>\n      <.table>\n        <.table_header>\n          <.table_row>\n            <.table_head :for={col <- @col} class={col[:class]}>\n              {col.label}\n            </.table_head>\n            <.table_head :if={@action != []} class=\"text-right\">\n              Actions\n            </.table_head>\n          </.table_row>\n        </.table_header>\n        <.table_body>\n          <.table_row\n            :for={row <- @rows}\n            id={@row_id && @row_id.(row)}\n            phx-click={@row_click && @row_click.(row)}\n            class={@row_click && \"cursor-pointer\"}\n          >\n            <.table_cell :for={col <- @col} class={col[:class]}>\n              {render_slot(col, row)}\n            </.table_cell>\n            <.table_cell :if={@action != []} class=\"text-right\">\n              {render_slot(@action, row)}\n            </.table_cell>\n          </.table_row>\n          <.table_row :if={@rows == []}>\n            <.table_cell\n              class=\"text-center text-muted-foreground h-24\"\n              colspan={length(@col) + if(@action != [], do: 1, else: 0)}\n            >\n              {@empty_message}\n            </.table_cell>\n          </.table_row>\n        </.table_body>\n      </.table>\n    </div>\n    \"\"\"\n  end\nend\n",
+      "path": "registry/data_table.ex",
+      "target": "lib/my_app_web/components/ui/data_table.ex",
+      "type": "registry:file"
+    }
+  ],
+  "name": "data-table",
+  "registryDependencies": [
+    "table",
+    "button"
+  ],
+  "title": "Data Table",
+  "type": "registry:item"
+}

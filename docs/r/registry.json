@@ -1,0 +1,878 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "homepage": "https://joIibois.github.io/elixircn",
+  "items": [
+    {
+      "description": "A Phoenix LiveView Accordion component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Accordion\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/accordion.ex",
+          "target": "lib/my_app_web/components/ui/accordion.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "accordion",
+      "registryDependencies": [],
+      "title": "Accordion",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Alert component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Alert\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/alert.ex",
+          "target": "lib/my_app_web/components/ui/alert.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "alert",
+      "registryDependencies": [],
+      "title": "Alert",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Alert Dialog component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.AlertDialog\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/alert_dialog.ex",
+          "target": "lib/my_app_web/components/ui/alert_dialog.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "alert-dialog",
+      "registryDependencies": [
+        "button"
+      ],
+      "title": "Alert Dialog",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Aspect Ratio component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.AspectRatio\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/aspect_ratio.ex",
+          "target": "lib/my_app_web/components/ui/aspect_ratio.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "aspect-ratio",
+      "registryDependencies": [],
+      "title": "Aspect Ratio",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Avatar component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Avatar\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/avatar.ex",
+          "target": "lib/my_app_web/components/ui/avatar.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "avatar",
+      "registryDependencies": [],
+      "title": "Avatar",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Badge component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Badge\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/badge.ex",
+          "target": "lib/my_app_web/components/ui/badge.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "badge",
+      "registryDependencies": [],
+      "title": "Badge",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Breadcrumb component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Breadcrumb\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/breadcrumb.ex",
+          "target": "lib/my_app_web/components/ui/breadcrumb.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "breadcrumb",
+      "registryDependencies": [],
+      "title": "Breadcrumb",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Button component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Button\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/button.ex",
+          "target": "lib/my_app_web/components/ui/button.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "button",
+      "registryDependencies": [],
+      "title": "Button",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Button Group component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.ButtonGroup\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/button_group.ex",
+          "target": "lib/my_app_web/components/ui/button_group.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "button-group",
+      "registryDependencies": [
+        "button"
+      ],
+      "title": "Button Group",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Calendar component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Calendar\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/calendar.ex",
+          "target": "lib/my_app_web/components/ui/calendar.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "calendar",
+      "registryDependencies": [],
+      "title": "Calendar",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Card component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Card\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/card.ex",
+          "target": "lib/my_app_web/components/ui/card.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "card",
+      "registryDependencies": [],
+      "title": "Card",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Carousel component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Carousel\n\nReplace `MyAppWeb` with your application's module prefix.\n\nThis component requires the `Carousel` JS hook. Copy it from the `Hooks.Carousel` block in:\nhttps://github.com/joIibois/elixircn/blob/master/assets/js/app.js",
+      "files": [
+        {
+          "path": "registry/carousel.ex",
+          "target": "lib/my_app_web/components/ui/carousel.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "carousel",
+      "registryDependencies": [],
+      "title": "Carousel",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Checkbox component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Checkbox\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/checkbox.ex",
+          "target": "lib/my_app_web/components/ui/checkbox.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "checkbox",
+      "registryDependencies": [],
+      "title": "Checkbox",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Collapsible component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Collapsible\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/collapsible.ex",
+          "target": "lib/my_app_web/components/ui/collapsible.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "collapsible",
+      "registryDependencies": [],
+      "title": "Collapsible",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Combobox component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Combobox\n\nReplace `MyAppWeb` with your application's module prefix.\n\nThis component requires the `ComboboxFilter` JS hook. Copy it from the `Hooks.ComboboxFilter` block in:\nhttps://github.com/joIibois/elixircn/blob/master/assets/js/app.js",
+      "files": [
+        {
+          "path": "registry/combobox.ex",
+          "target": "lib/my_app_web/components/ui/combobox.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "combobox",
+      "registryDependencies": [],
+      "title": "Combobox",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Command component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Command\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/command.ex",
+          "target": "lib/my_app_web/components/ui/command.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "command",
+      "registryDependencies": [],
+      "title": "Command",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Context Menu component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.ContextMenu\n\nReplace `MyAppWeb` with your application's module prefix.\n\nThis component requires the `ContextMenu` JS hook. Copy it from the `Hooks.ContextMenu` block in:\nhttps://github.com/joIibois/elixircn/blob/master/assets/js/app.js",
+      "files": [
+        {
+          "path": "registry/context_menu.ex",
+          "target": "lib/my_app_web/components/ui/context_menu.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "context-menu",
+      "registryDependencies": [],
+      "title": "Context Menu",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Data Table component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.DataTable\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/data_table.ex",
+          "target": "lib/my_app_web/components/ui/data_table.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "data-table",
+      "registryDependencies": [
+        "table",
+        "button"
+      ],
+      "title": "Data Table",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Date Picker component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.DatePicker\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/date_picker.ex",
+          "target": "lib/my_app_web/components/ui/date_picker.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "date-picker",
+      "registryDependencies": [
+        "calendar"
+      ],
+      "title": "Date Picker",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Dialog component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Dialog\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/dialog.ex",
+          "target": "lib/my_app_web/components/ui/dialog.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "dialog",
+      "registryDependencies": [],
+      "title": "Dialog",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Direction component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Direction\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/direction.ex",
+          "target": "lib/my_app_web/components/ui/direction.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "direction",
+      "registryDependencies": [],
+      "title": "Direction",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Drawer component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Drawer\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/drawer.ex",
+          "target": "lib/my_app_web/components/ui/drawer.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "drawer",
+      "registryDependencies": [],
+      "title": "Drawer",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Dropdown Menu component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.DropdownMenu\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/dropdown_menu.ex",
+          "target": "lib/my_app_web/components/ui/dropdown_menu.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "dropdown-menu",
+      "registryDependencies": [],
+      "title": "Dropdown Menu",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Empty component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Empty\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/empty.ex",
+          "target": "lib/my_app_web/components/ui/empty.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "empty",
+      "registryDependencies": [],
+      "title": "Empty",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Field component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Field\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/field.ex",
+          "target": "lib/my_app_web/components/ui/field.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "field",
+      "registryDependencies": [
+        "label",
+        "input"
+      ],
+      "title": "Field",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Hover Card component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.HoverCard\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/hover_card.ex",
+          "target": "lib/my_app_web/components/ui/hover_card.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "hover-card",
+      "registryDependencies": [],
+      "title": "Hover Card",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Input component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Input\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/input.ex",
+          "target": "lib/my_app_web/components/ui/input.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "input",
+      "registryDependencies": [],
+      "title": "Input",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Input Group component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.InputGroup\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/input_group.ex",
+          "target": "lib/my_app_web/components/ui/input_group.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "input-group",
+      "registryDependencies": [
+        "input"
+      ],
+      "title": "Input Group",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Input OTP component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.InputOTP\n\nReplace `MyAppWeb` with your application's module prefix.\n\nThis component requires the `InputOtp` JS hook. Copy it from the `Hooks.InputOtp` block in:\nhttps://github.com/joIibois/elixircn/blob/master/assets/js/app.js",
+      "files": [
+        {
+          "path": "registry/input_otp.ex",
+          "target": "lib/my_app_web/components/ui/input_otp.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "input-otp",
+      "registryDependencies": [],
+      "title": "Input OTP",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Item component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Item\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/item.ex",
+          "target": "lib/my_app_web/components/ui/item.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "item",
+      "registryDependencies": [],
+      "title": "Item",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView KBD component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.KBD\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/kbd.ex",
+          "target": "lib/my_app_web/components/ui/kbd.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "kbd",
+      "registryDependencies": [],
+      "title": "KBD",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Label component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Label\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/label.ex",
+          "target": "lib/my_app_web/components/ui/label.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "label",
+      "registryDependencies": [],
+      "title": "Label",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Menubar component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Menubar\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/menubar.ex",
+          "target": "lib/my_app_web/components/ui/menubar.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "menubar",
+      "registryDependencies": [],
+      "title": "Menubar",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Native Select component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.NativeSelect\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/native_select.ex",
+          "target": "lib/my_app_web/components/ui/native_select.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "native-select",
+      "registryDependencies": [],
+      "title": "Native Select",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Navigation Menu component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.NavigationMenu\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/navigation_menu.ex",
+          "target": "lib/my_app_web/components/ui/navigation_menu.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "navigation-menu",
+      "registryDependencies": [],
+      "title": "Navigation Menu",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Pagination component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Pagination\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/pagination.ex",
+          "target": "lib/my_app_web/components/ui/pagination.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "pagination",
+      "registryDependencies": [],
+      "title": "Pagination",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Popover component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Popover\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/popover.ex",
+          "target": "lib/my_app_web/components/ui/popover.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "popover",
+      "registryDependencies": [],
+      "title": "Popover",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Progress component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Progress\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/progress.ex",
+          "target": "lib/my_app_web/components/ui/progress.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "progress",
+      "registryDependencies": [],
+      "title": "Progress",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Radio Group component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.RadioGroup\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/radio_group.ex",
+          "target": "lib/my_app_web/components/ui/radio_group.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "radio-group",
+      "registryDependencies": [],
+      "title": "Radio Group",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Resizable component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Resizable\n\nReplace `MyAppWeb` with your application's module prefix.\n\nThis component requires the `Resizable` JS hook. Copy it from the `Hooks.Resizable` block in:\nhttps://github.com/joIibois/elixircn/blob/master/assets/js/app.js",
+      "files": [
+        {
+          "path": "registry/resizable.ex",
+          "target": "lib/my_app_web/components/ui/resizable.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "resizable",
+      "registryDependencies": [],
+      "title": "Resizable",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Scroll Area component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.ScrollArea\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/scroll_area.ex",
+          "target": "lib/my_app_web/components/ui/scroll_area.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "scroll-area",
+      "registryDependencies": [],
+      "title": "Scroll Area",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Select component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Select\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/select.ex",
+          "target": "lib/my_app_web/components/ui/select.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "select",
+      "registryDependencies": [],
+      "title": "Select",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Separator component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Separator\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/separator.ex",
+          "target": "lib/my_app_web/components/ui/separator.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "separator",
+      "registryDependencies": [],
+      "title": "Separator",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Sheet component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Sheet\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/sheet.ex",
+          "target": "lib/my_app_web/components/ui/sheet.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "sheet",
+      "registryDependencies": [],
+      "title": "Sheet",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Sidebar component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Sidebar\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/sidebar.ex",
+          "target": "lib/my_app_web/components/ui/sidebar.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "sidebar",
+      "registryDependencies": [],
+      "title": "Sidebar",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Skeleton component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Skeleton\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/skeleton.ex",
+          "target": "lib/my_app_web/components/ui/skeleton.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "skeleton",
+      "registryDependencies": [],
+      "title": "Skeleton",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Slider component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Slider\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/slider.ex",
+          "target": "lib/my_app_web/components/ui/slider.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "slider",
+      "registryDependencies": [],
+      "title": "Slider",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Spinner component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Spinner\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/spinner.ex",
+          "target": "lib/my_app_web/components/ui/spinner.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "spinner",
+      "registryDependencies": [],
+      "title": "Spinner",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Switch component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Switch\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/switch.ex",
+          "target": "lib/my_app_web/components/ui/switch.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "switch",
+      "registryDependencies": [],
+      "title": "Switch",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Table component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Table\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/table.ex",
+          "target": "lib/my_app_web/components/ui/table.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "table",
+      "registryDependencies": [],
+      "title": "Table",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Tabs component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Tabs\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/tabs.ex",
+          "target": "lib/my_app_web/components/ui/tabs.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "tabs",
+      "registryDependencies": [],
+      "title": "Tabs",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Textarea component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Textarea\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/textarea.ex",
+          "target": "lib/my_app_web/components/ui/textarea.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "textarea",
+      "registryDependencies": [],
+      "title": "Textarea",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Toast component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Toast\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/toast.ex",
+          "target": "lib/my_app_web/components/ui/toast.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "toast",
+      "registryDependencies": [],
+      "title": "Toast",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Toggle component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Toggle\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/toggle.ex",
+          "target": "lib/my_app_web/components/ui/toggle.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "toggle",
+      "registryDependencies": [],
+      "title": "Toggle",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Toggle Group component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.ToggleGroup\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/toggle_group.ex",
+          "target": "lib/my_app_web/components/ui/toggle_group.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "toggle-group",
+      "registryDependencies": [
+        "toggle"
+      ],
+      "title": "Toggle Group",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Tooltip component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Tooltip\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/tooltip.ex",
+          "target": "lib/my_app_web/components/ui/tooltip.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "tooltip",
+      "registryDependencies": [],
+      "title": "Tooltip",
+      "type": "registry:item"
+    },
+    {
+      "description": "A Phoenix LiveView Typography component.",
+      "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Typography\n\nReplace `MyAppWeb` with your application's module prefix.",
+      "files": [
+        {
+          "path": "registry/typography.ex",
+          "target": "lib/my_app_web/components/ui/typography.ex",
+          "type": "registry:file"
+        }
+      ],
+      "name": "typography",
+      "registryDependencies": [],
+      "title": "Typography",
+      "type": "registry:item"
+    }
+  ],
+  "name": "elixircn"
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "description": "A Phoenix LiveView Alert component.",
+  "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Alert\n\nReplace `MyAppWeb` with your application's module prefix.",
+  "files": [
+    {
+      "content": "defmodule MyAppWeb.Components.UI.Alert do\n  use Phoenix.Component\n\n  attr :variant, :string, default: \"default\", values: ~w(default destructive)\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def alert(assigns) do\n    ~H\"\"\"\n    <div\n      role=\"alert\"\n      class={[\n        \"relative w-full rounded-lg border px-4 py-3 text-sm [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg~*]:pl-7\",\n        @variant == \"default\" && \"bg-background text-foreground [&>svg]:text-foreground\",\n        @variant == \"destructive\" && \"border-destructive/50 text-destructive [&>svg]:text-destructive dark:border-destructive\",\n        @class\n      ]}\n      {@rest}\n    >\n      {render_slot(@inner_block)}\n    </div>\n    \"\"\"\n  end\n\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def alert_title(assigns) do\n    ~H\"\"\"\n    <h5 class={[\"mb-1 font-medium leading-none tracking-tight\", @class]} {@rest}>\n      {render_slot(@inner_block)}\n    </h5>\n    \"\"\"\n  end\n\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def alert_description(assigns) do\n    ~H\"\"\"\n    <div class={[\"text-sm [&_p]:leading-relaxed\", @class]} {@rest}>\n      {render_slot(@inner_block)}\n    </div>\n    \"\"\"\n  end\nend\n",
+      "path": "registry/alert.ex",
+      "target": "lib/my_app_web/components/ui/alert.ex",
+      "type": "registry:file"
+    }
+  ],
+  "name": "alert",
+  "registryDependencies": [],
+  "title": "Alert",
+  "type": "registry:item"
+}

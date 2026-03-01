@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "description": "A Phoenix LiveView Badge component.",
+  "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Badge\n\nReplace `MyAppWeb` with your application's module prefix.",
+  "files": [
+    {
+      "content": "defmodule MyAppWeb.Components.UI.Badge do\n  use Phoenix.Component\n\n  attr :variant, :string, default: \"default\",\n    values: ~w(default secondary destructive outline)\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def badge(assigns) do\n    ~H\"\"\"\n    <span\n      class={[badge_variant(@variant), @class]}\n      {@rest}\n    >\n      {render_slot(@inner_block)}\n    </span>\n    \"\"\"\n  end\n\n  defp badge_variant(\"default\"),\n    do: \"inline-flex items-center rounded-md border border-transparent bg-primary px-2.5 py-0.5 text-xs font-semibold text-primary-foreground shadow transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2\"\n  defp badge_variant(\"secondary\"),\n    do: \"inline-flex items-center rounded-md border border-transparent bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2\"\n  defp badge_variant(\"destructive\"),\n    do: \"inline-flex items-center rounded-md border border-transparent bg-destructive px-2.5 py-0.5 text-xs font-semibold text-destructive-foreground shadow transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2\"\n  defp badge_variant(\"outline\"),\n    do: \"inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground\"\nend\n",
+      "path": "registry/badge.ex",
+      "target": "lib/my_app_web/components/ui/badge.ex",
+      "type": "registry:file"
+    }
+  ],
+  "name": "badge",
+  "registryDependencies": [],
+  "title": "Badge",
+  "type": "registry:item"
+}

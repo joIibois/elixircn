@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "description": "A Phoenix LiveView Radio Group component.",
+  "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.RadioGroup\n\nReplace `MyAppWeb` with your application's module prefix.",
+  "files": [
+    {
+      "content": "defmodule MyAppWeb.Components.UI.RadioGroup do\n  use Phoenix.Component\n\n  attr :id, :string, default: nil\n  attr :name, :string, default: nil\n  attr :value, :string, default: nil\n  attr :class, :string, default: nil\n  attr :rest, :global, include: ~w(phx-change)\n  slot :inner_block, required: true\n\n  def radio_group(assigns) do\n    ~H\"\"\"\n    <div id={@id} class={[\"grid gap-2\", @class]} {@rest}>\n      {render_slot(@inner_block)}\n    </div>\n    \"\"\"\n  end\n\n  attr :id, :string, default: nil\n  attr :name, :string, default: nil\n  attr :value, :string, required: true\n  attr :checked, :boolean, default: false\n  attr :disabled, :boolean, default: false\n  attr :class, :string, default: nil\n  attr :rest, :global, include: ~w(phx-change)\n  slot :inner_block\n\n  def radio_group_item(assigns) do\n    ~H\"\"\"\n    <div class={[\"flex items-center gap-2\", @class]}>\n      <input\n        id={@id}\n        name={@name}\n        type=\"radio\"\n        value={@value}\n        checked={@checked}\n        disabled={@disabled}\n        class={[\n          \"peer h-4 w-4 shrink-0 rounded-full border border-primary text-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50\",\n          @class\n        ]}\n        {@rest}\n      />\n      <label :if={@inner_block != []} for={@id} class=\"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70\">\n        {render_slot(@inner_block)}\n      </label>\n    </div>\n    \"\"\"\n  end\nend\n",
+      "path": "registry/radio_group.ex",
+      "target": "lib/my_app_web/components/ui/radio_group.ex",
+      "type": "registry:file"
+    }
+  ],
+  "name": "radio-group",
+  "registryDependencies": [],
+  "title": "Radio Group",
+  "type": "registry:item"
+}

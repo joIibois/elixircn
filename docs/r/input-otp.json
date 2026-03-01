@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "description": "A Phoenix LiveView Input OTP component.",
+  "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.InputOTP\n\nReplace `MyAppWeb` with your application's module prefix.\n\nThis component requires the `InputOtp` JS hook. Copy it from the `Hooks.InputOtp` block in:\nhttps://github.com/joIibois/elixircn/blob/master/assets/js/app.js",
+  "files": [
+    {
+      "content": "defmodule MyAppWeb.Components.UI.InputOtp do\n  use Phoenix.Component\n\n  attr :id, :string, required: true\n  attr :name, :string, default: nil\n  attr :length, :integer, default: 6\n  attr :value, :string, default: \"\"\n  attr :disabled, :boolean, default: false\n  attr :class, :string, default: nil\n  attr :rest, :global, include: ~w(phx-change)\n\n  def input_otp(assigns) do\n    digits = assigns.value |> String.graphemes() |> then(fn g ->\n      g ++ List.duplicate(\"\", max(0, assigns.length - length(g)))\n    end) |> Enum.take(assigns.length)\n    assigns = assign(assigns, :digits, digits)\n\n    ~H\"\"\"\n    <div\n      id={@id}\n      class={[\"flex items-center gap-2\", @class]}\n      phx-hook=\"InputOtp\"\n      {@rest}\n    >\n      <input\n        :for={{digit, idx} <- Enum.with_index(@digits)}\n        data-otp-input\n        type=\"text\"\n        inputmode=\"numeric\"\n        pattern=\"[0-9]*\"\n        maxlength=\"1\"\n        value={digit}\n        name={\"#{@name || @id}[#{idx}]\"}\n        disabled={@disabled}\n        class=\"h-9 w-9 rounded-md border border-input bg-transparent text-center text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50\"\n      />\n    </div>\n    \"\"\"\n  end\nend\n",
+      "path": "registry/input_otp.ex",
+      "target": "lib/my_app_web/components/ui/input_otp.ex",
+      "type": "registry:file"
+    }
+  ],
+  "name": "input-otp",
+  "registryDependencies": [],
+  "title": "Input OTP",
+  "type": "registry:item"
+}

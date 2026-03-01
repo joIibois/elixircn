@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "description": "A Phoenix LiveView Label component.",
+  "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Label\n\nReplace `MyAppWeb` with your application's module prefix.",
+  "files": [
+    {
+      "content": "defmodule MyAppWeb.Components.UI.Label do\n  use Phoenix.Component\n\n  attr :for, :string, default: nil\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def label(assigns) do\n    ~H\"\"\"\n    <label\n      for={@for}\n      class={[\n        \"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70\",\n        @class\n      ]}\n      {@rest}\n    >\n      {render_slot(@inner_block)}\n    </label>\n    \"\"\"\n  end\nend\n",
+      "path": "registry/label.ex",
+      "target": "lib/my_app_web/components/ui/label.ex",
+      "type": "registry:file"
+    }
+  ],
+  "name": "label",
+  "registryDependencies": [],
+  "title": "Label",
+  "type": "registry:item"
+}

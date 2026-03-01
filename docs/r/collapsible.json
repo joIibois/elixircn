@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "description": "A Phoenix LiveView Collapsible component.",
+  "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Collapsible\n\nReplace `MyAppWeb` with your application's module prefix.",
+  "files": [
+    {
+      "content": "defmodule MyAppWeb.Components.UI.Collapsible do\n  use Phoenix.Component\n  alias Phoenix.LiveView.JS\n\n  def show_collapsible(js \\\\ %JS{}, id) do\n    js\n    |> JS.show(\n      to: \"##{id}-content\",\n      transition: {\"ease-out duration-200\", \"opacity-0 -translate-y-1\", \"opacity-100 translate-y-0\"},\n      time: 200\n    )\n    |> JS.set_attribute({\"data-state\", \"open\"}, to: \"##{id}\")\n  end\n\n  def hide_collapsible(js \\\\ %JS{}, id) do\n    js\n    |> JS.hide(\n      to: \"##{id}-content\",\n      transition: {\"ease-in duration-150\", \"opacity-100 translate-y-0\", \"opacity-0 -translate-y-1\"},\n      time: 150\n    )\n    |> JS.set_attribute({\"data-state\", \"closed\"}, to: \"##{id}\")\n  end\n\n  attr :id, :string, required: true\n  attr :open, :boolean, default: false\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def collapsible(assigns) do\n    ~H\"\"\"\n    <div\n      id={@id}\n      data-state={if @open, do: \"open\", else: \"closed\"}\n      class={@class}\n      {@rest}\n    >\n      {render_slot(@inner_block)}\n    </div>\n    \"\"\"\n  end\n\n  attr :collapsible_id, :string, required: true\n  attr :open, :boolean, default: false\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def collapsible_trigger(assigns) do\n    ~H\"\"\"\n    <div\n      phx-click={\n        if @open,\n          do: hide_collapsible(@collapsible_id),\n          else: show_collapsible(@collapsible_id)\n      }\n      class={[\"cursor-pointer\", @class]}\n      {@rest}\n    >\n      {render_slot(@inner_block)}\n    </div>\n    \"\"\"\n  end\n\n  attr :collapsible_id, :string, required: true\n  attr :open, :boolean, default: false\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def collapsible_content(assigns) do\n    ~H\"\"\"\n    <div\n      id={\"#{@collapsible_id}-content\"}\n      class={[!@open && \"hidden\", @class]}\n      {@rest}\n    >\n      {render_slot(@inner_block)}\n    </div>\n    \"\"\"\n  end\nend\n",
+      "path": "registry/collapsible.ex",
+      "target": "lib/my_app_web/components/ui/collapsible.ex",
+      "type": "registry:file"
+    }
+  ],
+  "name": "collapsible",
+  "registryDependencies": [],
+  "title": "Collapsible",
+  "type": "registry:item"
+}

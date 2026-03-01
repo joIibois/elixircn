@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "description": "A Phoenix LiveView Avatar component.",
+  "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Avatar\n\nReplace `MyAppWeb` with your application's module prefix.",
+  "files": [
+    {
+      "content": "defmodule MyAppWeb.Components.UI.Avatar do\n  use Phoenix.Component\n\n  attr :src, :string, default: nil\n  attr :alt, :string, default: \"\"\n  attr :fallback, :string, default: nil\n  attr :size, :string, default: \"default\", values: ~w(sm default lg)\n  attr :class, :string, default: nil\n  attr :rest, :global\n\n  def avatar(assigns) do\n    ~H\"\"\"\n    <span\n      class={[avatar_size(@size), \"relative flex shrink-0 overflow-hidden rounded-full\", @class]}\n      {@rest}\n    >\n      <img\n        :if={@src}\n        src={@src}\n        alt={@alt}\n        class=\"aspect-square h-full w-full object-cover\"\n        onerror=\"this.style.display='none';this.nextElementSibling.style.display='flex'\"\n      />\n      <span\n        class={[\n          \"flex h-full w-full items-center justify-center rounded-full bg-muted text-muted-foreground font-medium text-sm\",\n          @src && \"hidden\"\n        ]}\n      >\n        {if @fallback, do: @fallback, else: String.at(@alt, 0) || \"?\"}\n      </span>\n    </span>\n    \"\"\"\n  end\n\n  defp avatar_size(\"sm\"),      do: \"h-8 w-8\"\n  defp avatar_size(\"default\"), do: \"h-10 w-10\"\n  defp avatar_size(\"lg\"),      do: \"h-14 w-14\"\nend\n",
+      "path": "registry/avatar.ex",
+      "target": "lib/my_app_web/components/ui/avatar.ex",
+      "type": "registry:file"
+    }
+  ],
+  "name": "avatar",
+  "registryDependencies": [],
+  "title": "Avatar",
+  "type": "registry:item"
+}

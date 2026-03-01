@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "description": "A Phoenix LiveView Card component.",
+  "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Card\n\nReplace `MyAppWeb` with your application's module prefix.",
+  "files": [
+    {
+      "content": "defmodule MyAppWeb.Components.UI.Card do\n  use Phoenix.Component\n\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def card(assigns) do\n    ~H\"\"\"\n    <div\n      class={[\"rounded-xl border bg-card text-card-foreground shadow\", @class]}\n      {@rest}\n    >\n      {render_slot(@inner_block)}\n    </div>\n    \"\"\"\n  end\n\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def card_header(assigns) do\n    ~H\"\"\"\n    <div class={[\"flex flex-col space-y-1.5 p-6\", @class]} {@rest}>\n      {render_slot(@inner_block)}\n    </div>\n    \"\"\"\n  end\n\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def card_title(assigns) do\n    ~H\"\"\"\n    <div class={[\"font-semibold leading-none tracking-tight\", @class]} {@rest}>\n      {render_slot(@inner_block)}\n    </div>\n    \"\"\"\n  end\n\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def card_description(assigns) do\n    ~H\"\"\"\n    <p class={[\"text-sm text-muted-foreground\", @class]} {@rest}>\n      {render_slot(@inner_block)}\n    </p>\n    \"\"\"\n  end\n\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def card_content(assigns) do\n    ~H\"\"\"\n    <div class={[\"p-6 pt-0\", @class]} {@rest}>\n      {render_slot(@inner_block)}\n    </div>\n    \"\"\"\n  end\n\n  attr :class, :string, default: nil\n  attr :rest, :global\n  slot :inner_block, required: true\n\n  def card_footer(assigns) do\n    ~H\"\"\"\n    <div class={[\"flex items-center p-6 pt-0\", @class]} {@rest}>\n      {render_slot(@inner_block)}\n    </div>\n    \"\"\"\n  end\nend\n",
+      "path": "registry/card.ex",
+      "target": "lib/my_app_web/components/ui/card.ex",
+      "type": "registry:file"
+    }
+  ],
+  "name": "card",
+  "registryDependencies": [],
+  "title": "Card",
+  "type": "registry:item"
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "description": "A Phoenix LiveView Item component.",
+  "docs": "Add to the `html_helpers` function in your `my_app_web.ex`:\n\n    import MyAppWeb.Components.UI.Item\n\nReplace `MyAppWeb` with your application's module prefix.",
+  "files": [
+    {
+      "content": "defmodule MyAppWeb.Components.UI.Item do\n  use Phoenix.Component\n\n  attr :class, :string, default: nil\n  attr :rest, :global\n\n  slot :media\n  slot :content, required: true\n  slot :action\n\n  def item(assigns) do\n    ~H\"\"\"\n    <div\n      class={[\"flex items-center gap-4\", @class]}\n      {@rest}\n    >\n      <div :if={@media != []} class=\"flex-none\">\n        {render_slot(@media)}\n      </div>\n      <div class=\"flex-1 min-w-0\">\n        {render_slot(@content)}\n      </div>\n      <div :if={@action != []} class=\"flex-none\">\n        {render_slot(@action)}\n      </div>\n    </div>\n    \"\"\"\n  end\nend\n",
+      "path": "registry/item.ex",
+      "target": "lib/my_app_web/components/ui/item.ex",
+      "type": "registry:file"
+    }
+  ],
+  "name": "item",
+  "registryDependencies": [],
+  "title": "Item",
+  "type": "registry:item"
+}
