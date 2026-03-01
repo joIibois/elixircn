@@ -2,84 +2,76 @@ defmodule ElixircnWeb.ShowcaseLive do
   use ElixircnWeb, :live_view
 
   @components [
-    # Display
-    %{id: "badge", label: "Badge", group: "Display"},
-    %{id: "separator", label: "Separator", group: "Display"},
-    %{id: "skeleton", label: "Skeleton", group: "Display"},
-    %{id: "spinner", label: "Spinner", group: "Display"},
-    %{id: "kbd", label: "Kbd", group: "Display"},
-    %{id: "typography", label: "Typography", group: "Display"},
-    %{id: "aspect-ratio", label: "Aspect Ratio", group: "Display"},
-    %{id: "avatar", label: "Avatar", group: "Display"},
-    %{id: "progress", label: "Progress", group: "Display"},
-    # Layout
-    %{id: "card", label: "Card", group: "Layout"},
-    %{id: "alert", label: "Alert", group: "Layout"},
-    %{id: "scroll-area", label: "Scroll Area", group: "Layout"},
-    %{id: "resizable", label: "Resizable", group: "Layout"},
-    %{id: "aspect-ratio", label: "Aspect Ratio", group: "Layout"},
-    # Forms
-    %{id: "button", label: "Button", group: "Forms"},
-    %{id: "button-group", label: "Button Group", group: "Forms"},
-    %{id: "label", label: "Label", group: "Forms"},
-    %{id: "input", label: "Input", group: "Forms"},
-    %{id: "textarea", label: "Textarea", group: "Forms"},
-    %{id: "checkbox", label: "Checkbox", group: "Forms"},
-    %{id: "radio-group", label: "Radio Group", group: "Forms"},
-    %{id: "switch", label: "Switch", group: "Forms"},
-    %{id: "slider", label: "Slider", group: "Forms"},
-    %{id: "select", label: "Select", group: "Forms"},
-    %{id: "native-select", label: "Native Select", group: "Forms"},
-    %{id: "toggle", label: "Toggle", group: "Forms"},
-    %{id: "toggle-group", label: "Toggle Group", group: "Forms"},
-    %{id: "field", label: "Field", group: "Forms"},
-    %{id: "input-group", label: "Input Group", group: "Forms"},
-    %{id: "input-otp", label: "Input OTP", group: "Forms"},
-    %{id: "combobox", label: "Combobox", group: "Forms"},
-    %{id: "date-picker", label: "Date Picker", group: "Forms"},
-    # Data
-    %{id: "table", label: "Table", group: "Data"},
-    %{id: "data-table", label: "Data Table", group: "Data"},
-    %{id: "calendar", label: "Calendar", group: "Data"},
-    # Navigation
-    %{id: "breadcrumb", label: "Breadcrumb", group: "Navigation"},
-    %{id: "pagination", label: "Pagination", group: "Navigation"},
-    %{id: "tabs", label: "Tabs", group: "Navigation"},
-    %{id: "navigation-menu", label: "Navigation Menu", group: "Navigation"},
-    %{id: "menubar", label: "Menubar", group: "Navigation"},
-    %{id: "sidebar", label: "Sidebar", group: "Navigation"},
-    # Overlays
-    %{id: "dialog", label: "Dialog", group: "Overlays"},
-    %{id: "alert-dialog", label: "Alert Dialog", group: "Overlays"},
-    %{id: "sheet", label: "Sheet", group: "Overlays"},
-    %{id: "drawer", label: "Drawer", group: "Overlays"},
-    %{id: "popover", label: "Popover", group: "Overlays"},
-    %{id: "hover-card", label: "Hover Card", group: "Overlays"},
-    %{id: "dropdown-menu", label: "Dropdown Menu", group: "Overlays"},
-    %{id: "context-menu", label: "Context Menu", group: "Overlays"},
-    %{id: "tooltip", label: "Tooltip", group: "Overlays"},
-    %{id: "toast", label: "Toast", group: "Overlays"},
-    # Complex
-    %{id: "accordion", label: "Accordion", group: "Complex"},
-    %{id: "collapsible", label: "Collapsible", group: "Complex"},
-    %{id: "carousel", label: "Carousel", group: "Complex"},
-    %{id: "command", label: "Command", group: "Complex"},
-    # Utilities
-    %{id: "empty", label: "Empty State", group: "Utilities"},
-    %{id: "item", label: "Item", group: "Utilities"},
-    %{id: "direction", label: "Direction", group: "Utilities"}
+    %{id: "accordion", label: "Accordion"},
+    %{id: "alert", label: "Alert"},
+    %{id: "alert-dialog", label: "Alert Dialog"},
+    %{id: "aspect-ratio", label: "Aspect Ratio"},
+    %{id: "avatar", label: "Avatar"},
+    %{id: "badge", label: "Badge"},
+    %{id: "breadcrumb", label: "Breadcrumb"},
+    %{id: "button", label: "Button"},
+    %{id: "button-group", label: "Button Group"},
+    %{id: "calendar", label: "Calendar"},
+    %{id: "card", label: "Card"},
+    %{id: "carousel", label: "Carousel"},
+    %{id: "checkbox", label: "Checkbox"},
+    %{id: "collapsible", label: "Collapsible"},
+    %{id: "combobox", label: "Combobox"},
+    %{id: "command", label: "Command"},
+    %{id: "context-menu", label: "Context Menu"},
+    %{id: "data-table", label: "Data Table"},
+    %{id: "date-picker", label: "Date Picker"},
+    %{id: "dialog", label: "Dialog"},
+    %{id: "direction", label: "Direction"},
+    %{id: "drawer", label: "Drawer"},
+    %{id: "dropdown-menu", label: "Dropdown Menu"},
+    %{id: "empty", label: "Empty State"},
+    %{id: "field", label: "Field"},
+    %{id: "hover-card", label: "Hover Card"},
+    %{id: "input", label: "Input"},
+    %{id: "input-group", label: "Input Group"},
+    %{id: "input-otp", label: "Input OTP"},
+    %{id: "item", label: "Item"},
+    %{id: "kbd", label: "Kbd"},
+    %{id: "label", label: "Label"},
+    %{id: "menubar", label: "Menubar"},
+    %{id: "native-select", label: "Native Select"},
+    %{id: "navigation-menu", label: "Navigation Menu"},
+    %{id: "pagination", label: "Pagination"},
+    %{id: "popover", label: "Popover"},
+    %{id: "progress", label: "Progress"},
+    %{id: "radio-group", label: "Radio Group"},
+    %{id: "resizable", label: "Resizable"},
+    %{id: "scroll-area", label: "Scroll Area"},
+    %{id: "select", label: "Select"},
+    %{id: "separator", label: "Separator"},
+    %{id: "sheet", label: "Sheet"},
+    %{id: "sidebar", label: "Sidebar"},
+    %{id: "skeleton", label: "Skeleton"},
+    %{id: "slider", label: "Slider"},
+    %{id: "spinner", label: "Spinner"},
+    %{id: "switch", label: "Switch"},
+    %{id: "table", label: "Table"},
+    %{id: "tabs", label: "Tabs"},
+    %{id: "textarea", label: "Textarea"},
+    %{id: "toast", label: "Toast"},
+    %{id: "toggle", label: "Toggle"},
+    %{id: "toggle-group", label: "Toggle Group"},
+    %{id: "tooltip", label: "Tooltip"},
+    %{id: "typography", label: "Typography"}
   ]
 
   alias ElixircnWeb.ShowcaseCode
 
   def mount(params, _session, socket) do
-    active = Map.get(params, "component", "badge")
+    active = Map.get(params, "component", "introduction")
+
     {:ok,
      socket
      |> assign(:page_title, "Elixircn — Phoenix shadcn/ui")
      |> assign(:active_component, active)
      |> assign(:code_snippet, ShowcaseCode.snippet(active))
-     |> assign(:components, @components |> Enum.uniq_by(& &1.id) |> Enum.sort_by(& &1.label))
+     |> assign(:components, @components)
      |> assign(:toasts, [])
      |> assign(:calendar_month, Date.utc_today().month)
      |> assign(:calendar_year, Date.utc_today().year)
@@ -102,8 +94,8 @@ defmodule ElixircnWeb.ShowcaseLive do
   def handle_params(_params, _uri, socket) do
     {:noreply,
      socket
-     |> assign(:active_component, "badge")
-     |> assign(:code_snippet, ShowcaseCode.snippet("badge"))}
+     |> assign(:active_component, "introduction")
+     |> assign(:code_snippet, ShowcaseCode.snippet("introduction"))}
   end
 
   def handle_event("calendar_prev", _params, socket) do

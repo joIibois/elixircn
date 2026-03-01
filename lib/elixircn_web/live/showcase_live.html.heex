@@ -9,11 +9,6 @@
       <img src={~p"/images/logo-white.svg"} alt="elixircn logo" class="h-6 w-6 hidden dark:block" />
       <span class="font-bold text-lg">elixircn</span>
     </div>
-    <div class="flex items-center gap-1 rounded-md border border-border bg-muted px-2 py-1">
-      <span class="text-xs text-muted-foreground">Phoenix</span>
-      <span class="text-xs text-muted-foreground">·</span>
-      <span class="text-xs text-muted-foreground">shadcn/ui</span>
-    </div>
     <div class="flex-1" />
     <%!-- Dark mode toggle --%>
     <button
@@ -39,26 +34,158 @@
 <div class="flex min-h-[calc(100vh-3.5rem)]">
   <%!-- Sidebar Navigation --%>
   <aside class="sticky top-14 h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto border-r border-border bg-background py-6 pl-4 pr-2">
-    <nav>
-      <ul class="space-y-0.5">
-        <li :for={comp <- @components}>
-          <.link
-            patch={"/#{comp.id}"}
-            class={[
-              "block rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
-              @active_component == comp.id && "bg-accent text-accent-foreground font-medium"
-            ]}
-          >
-            {comp.label}
-          </.link>
-        </li>
-      </ul>
+    <nav class="space-y-6">
+      <%!-- Getting Started section --%>
+      <div>
+        <p class="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Getting Started</p>
+        <ul class="space-y-0.5">
+          <li>
+            <.link patch="/" class="group block">
+              <div class={[
+                "inline-block rounded-md px-2 py-1 text-[13px] transition-colors group-hover:bg-accent group-hover:text-accent-foreground",
+                @active_component == "introduction" && "bg-accent text-accent-foreground font-medium"
+              ]}>
+                Introduction
+              </div>
+            </.link>
+          </li>
+        </ul>
+      </div>
+
+      <%!-- Components section --%>
+      <div>
+        <p class="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Components</p>
+        <ul class="mt-1 space-y-0.5">
+          <li :for={comp <- @components}>
+            <.link patch={"/#{comp.id}"} class="group block">
+              <div class={[
+                "inline-block rounded-md px-2 py-1 text-[13px] transition-colors group-hover:bg-accent group-hover:text-accent-foreground",
+                @active_component == comp.id && "bg-accent text-accent-foreground font-medium"
+              ]}>
+                {comp.label}
+              </div>
+            </.link>
+          </li>
+        </ul>
+      </div>
     </nav>
   </aside>
 
   <%!-- Main Content --%>
   <main class="flex-1 overflow-auto">
     <div class="mx-auto max-w-4xl px-8 py-10 space-y-10">
+
+      <%!-- INTRODUCTION --%>
+      <div :if={@active_component == "introduction"} class="space-y-10">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Introduction</h1>
+          <p class="mt-3 text-muted-foreground leading-relaxed">
+            A port of <a href="https://ui.shadcn.com" target="_blank" class="font-medium underline underline-offset-4">shadcn/ui</a> to <a href="https://github.com/phoenixframework/phoenix_live_view" target="_blank" class="font-medium underline underline-offset-4">Phoenix LiveView</a>. 59 components built as Phoenix function components, styled with Tailwind v4.
+          </p>
+        </div>
+
+        <.separator />
+
+        <div class="space-y-8">
+          <div>
+            <h2 class="text-xl font-semibold tracking-tight">Using the registry</h2>
+            <p class="mt-2 text-sm text-muted-foreground">Components are distributed via a shadcn-compatible registry. You copy exactly what you need into your project — no package to install.</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-base font-medium">Prerequisites</h3>
+            <ul class="text-sm text-muted-foreground space-y-2 ml-4 list-disc">
+              <li>Phoenix LiveView app</li>
+              <li>Tailwind v4 configured (CSS-first, no <.inline_code>tailwind.config.js</.inline_code>)</li>
+              <li><.inline_code>shadcn</.inline_code> CLI: <.inline_code>npm install -g shadcn@latest</.inline_code> (or use <.inline_code>npx</.inline_code>)</li>
+            </ul>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-base font-medium">Add a component</h3>
+            <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
+              <pre>npx shadcn@latest add https://joIibois.github.io/elixircn/r/button.json</pre>
+            </div>
+            <p class="text-sm text-muted-foreground">This copies the component file to <.inline_code>lib/my_app_web/components/ui/button.ex</.inline_code>, with your app's module namespace already substituted. Components with dependencies will automatically install them too.</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-base font-medium">Register it globally</h3>
+            <p class="text-sm text-muted-foreground">After installing, import the component in the <.inline_code>html_helpers</.inline_code> function in your <.inline_code>my_app_web.ex</.inline_code>:</p>
+            <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
+              <pre>defp html_helpers do
+  quote do
+    # ... existing imports ...
+    import MyAppWeb.Components.UI.Button
+  end
+end</pre>
+            </div>
+            <p class="text-sm text-muted-foreground">Now <.inline_code>&lt;.button&gt;</.inline_code> is available in all your templates and LiveViews without any per-file imports.</p>
+          </div>
+        </div>
+
+        <.separator />
+
+        <div class="space-y-6">
+          <div>
+            <h2 class="text-xl font-semibold tracking-tight">JS Hooks</h2>
+            <p class="mt-2 text-sm text-muted-foreground">Some components require a LiveView JavaScript hook. After installing one of these, copy the corresponding hook from <.inline_code>assets/js/app.js</.inline_code> into your own <.inline_code>app.js</.inline_code>:</p>
+          </div>
+
+          <.table>
+            <.table_header>
+              <.table_row>
+                <.table_head>Component</.table_head>
+                <.table_head>Hook</.table_head>
+              </.table_row>
+            </.table_header>
+            <.table_body>
+              <.table_row>
+                <.table_cell><.inline_code>carousel</.inline_code></.table_cell>
+                <.table_cell><.inline_code>Carousel</.inline_code></.table_cell>
+              </.table_row>
+              <.table_row>
+                <.table_cell><.inline_code>combobox</.inline_code></.table_cell>
+                <.table_cell><.inline_code>ComboboxFilter</.inline_code></.table_cell>
+              </.table_row>
+              <.table_row>
+                <.table_cell><.inline_code>context-menu</.inline_code></.table_cell>
+                <.table_cell><.inline_code>ContextMenu</.inline_code></.table_cell>
+              </.table_row>
+              <.table_row>
+                <.table_cell><.inline_code>input-otp</.inline_code></.table_cell>
+                <.table_cell><.inline_code>InputOtp</.inline_code></.table_cell>
+              </.table_row>
+              <.table_row>
+                <.table_cell><.inline_code>resizable</.inline_code></.table_cell>
+                <.table_cell><.inline_code>Resizable</.inline_code></.table_cell>
+              </.table_row>
+            </.table_body>
+          </.table>
+
+          <div class="space-y-3">
+            <p class="text-sm text-muted-foreground">Register the hooks in your <.inline_code>liveSocket</.inline_code> setup:</p>
+            <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
+              <pre>let liveSocket = new LiveSocket("/live", Socket, &#123;
+  hooks: &#123; Carousel, ComboboxFilter, ContextMenu, InputOtp, Resizable &#125;,
+  // ...
+&#125;)</pre>
+            </div>
+          </div>
+        </div>
+
+        <.separator />
+
+        <div class="space-y-4">
+          <h2 class="text-xl font-semibold tracking-tight">Dark mode</h2>
+          <p class="text-sm text-muted-foreground">Components support dark mode via a <.inline_code>data-theme="dark"</.inline_code> attribute on the <.inline_code>&lt;html&gt;</.inline_code> element. Toggle it with:</p>
+          <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
+            <pre>&lt;button phx-click={JS.toggle_attribute({"data-theme", "dark"}, to: "html")}&gt;
+  Toggle dark mode
+&lt;/button&gt;</pre>
+          </div>
+        </div>
+      </div>
 
       <%!-- BADGE --%>
       <div :if={@active_component == "badge"} class="space-y-8">
@@ -1419,7 +1546,7 @@
       </div>
 
       <%!-- Code snippet block — updates automatically when active_component changes --%>
-      <div class="rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-950">
+      <div :if={@active_component != "introduction"} class="rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-950">
         <div class="flex items-center justify-between border-b border-zinc-800 px-4 py-2.5">
           <span class="font-mono text-xs text-zinc-500">heex</span>
           <button

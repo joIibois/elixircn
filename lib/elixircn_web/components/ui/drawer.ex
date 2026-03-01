@@ -47,8 +47,10 @@ defmodule ElixircnWeb.Components.UI.Drawer do
         role="dialog"
         aria-modal="true"
       >
-        <div class="mx-auto mt-4 h-1 w-[100px] rounded-full bg-muted-foreground/30" />
-        {render_slot(@inner_block)}
+        <div class="mx-auto w-full max-w-sm">
+          <div class="mx-auto mt-4 h-1 w-[100px] rounded-full bg-muted-foreground/30" />
+          {render_slot(@inner_block)}
+        </div>
       </div>
     </div>
     """
