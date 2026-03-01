@@ -1,5 +1,6 @@
 defmodule ElixircnWeb.Components.UI.Command do
   use Phoenix.Component
+  import ElixircnWeb.Components.UI.Icon
 
   attr :id, :string, default: nil
   attr :class, :string, default: nil
@@ -27,7 +28,7 @@ defmodule ElixircnWeb.Components.UI.Command do
   def command_input(assigns) do
     ~H"""
     <div class="flex items-center border-b px-3" cmdk-input-wrapper>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2 h-4 w-4 shrink-0 opacity-50"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <.icon name="search" class="mr-2 h-4 w-4 shrink-0 opacity-50" />
       <input
         type="text"
         class={[

@@ -1,5 +1,6 @@
 defmodule ElixircnWeb.Components.UI.Breadcrumb do
   use Phoenix.Component
+  import ElixircnWeb.Components.UI.Icon
   alias Phoenix.LiveView.JS
 
   attr :class, :string, default: nil
@@ -76,7 +77,7 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
       class={["[&>svg]:size-3.5", @class]}
       {@rest}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-3.5 w-3.5"><path d="m9 18 6-6-6-6"/></svg>
+      <.icon name="chevron-right" class="h-3.5 w-3.5" />
     </li>
     """
   end
@@ -105,7 +106,7 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
         class="flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
         aria-label="Show more"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        <.icon name="ellipsis" class="h-4 w-4" />
         <span class="sr-only">More</span>
       </button>
       <span
@@ -114,7 +115,7 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
         aria-hidden="true"
         class="flex h-9 w-9 items-center justify-center"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        <.icon name="ellipsis" class="h-4 w-4" />
         <span class="sr-only">More</span>
       </span>
       <div :if={@inner_block != [] && @id}>

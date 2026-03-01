@@ -66,9 +66,10 @@ defmodule ElixircnWeb do
       use Gettext, backend: ElixircnWeb.Gettext
 
       import Phoenix.HTML
-      import ElixircnWeb.CoreComponents, except: [input: 1, button: 1, table: 1]
+      import ElixircnWeb.CoreComponents, except: [input: 1, button: 1, table: 1, icon: 1]
 
       # Import all shadcn/ui components
+      import ElixircnWeb.Components.UI.Icon
       import ElixircnWeb.Components.UI.Accordion
       import ElixircnWeb.Components.UI.Alert
       import ElixircnWeb.Components.UI.AlertDialog

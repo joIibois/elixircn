@@ -1,5 +1,6 @@
 defmodule ElixircnWeb.Components.UI.Select do
   use Phoenix.Component
+  import ElixircnWeb.Components.UI.Icon
   alias Phoenix.LiveView.JS
 
   attr :id, :string, required: true
@@ -36,7 +37,7 @@ defmodule ElixircnWeb.Components.UI.Select do
         aria-haspopup="listbox"
       >
         <span>{@selected_label || @placeholder}</span>
-        <svg class="h-4 w-4 opacity-50 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        <.icon name="chevron-down" class="h-4 w-4 opacity-50 shrink-0" />
       </button>
       <div
         id={"#{@id}-options"}
@@ -54,7 +55,7 @@ defmodule ElixircnWeb.Components.UI.Select do
             ]}
           >
             <span :if={item.value == @value} class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+              <.icon name="check" class="h-4 w-4" />
             </span>
             {item.label}
           </div>

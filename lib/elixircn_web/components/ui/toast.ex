@@ -1,5 +1,6 @@
 defmodule ElixircnWeb.Components.UI.Toast do
   use Phoenix.Component
+  import ElixircnWeb.Components.UI.Icon
   alias Phoenix.LiveView.JS
 
   attr :toasts, :list, default: []
@@ -64,7 +65,7 @@ defmodule ElixircnWeb.Components.UI.Toast do
         class="absolute right-1 top-1 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none group-hover:opacity-100"
         aria-label="Dismiss"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        <.icon name="x" class="h-4 w-4" />
       </button>
     </div>
     """

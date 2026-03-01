@@ -1,5 +1,6 @@
 defmodule ElixircnWeb.Components.UI.Carousel do
   use Phoenix.Component
+  import ElixircnWeb.Components.UI.Icon
   alias Phoenix.LiveView.JS
 
   attr :id, :string, required: true
@@ -72,7 +73,7 @@ defmodule ElixircnWeb.Components.UI.Carousel do
       ]}
       {@rest}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="m15 18-6-6 6-6"/></svg>
+      <.icon name="chevron-left" class="h-4 w-4" />
     </button>
     """
   end
@@ -93,7 +94,7 @@ defmodule ElixircnWeb.Components.UI.Carousel do
       ]}
       {@rest}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="m9 18 6-6-6-6"/></svg>
+      <.icon name="chevron-right" class="h-4 w-4" />
     </button>
     """
   end

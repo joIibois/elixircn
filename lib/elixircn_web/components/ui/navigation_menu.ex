@@ -1,5 +1,6 @@
 defmodule ElixircnWeb.Components.UI.NavigationMenu do
   use Phoenix.Component
+  import ElixircnWeb.Components.UI.Icon
   alias Phoenix.LiveView.JS
 
   attr :class, :string, default: nil
@@ -70,7 +71,7 @@ defmodule ElixircnWeb.Components.UI.NavigationMenu do
       {@rest}
     >
       {render_slot(@inner_block)}
-      <svg class="relative top-[1px] ml-1 h-3 w-3 transition duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      <.icon name="chevron-down" class="relative top-[1px] ml-1 h-3 w-3 transition duration-300" />
     </button>
     """
   end

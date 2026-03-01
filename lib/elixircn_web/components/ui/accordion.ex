@@ -1,5 +1,6 @@
 defmodule ElixircnWeb.Components.UI.Accordion do
   use Phoenix.Component
+  import ElixircnWeb.Components.UI.Icon
   alias Phoenix.LiveView.JS
 
   attr :id, :string, required: true
@@ -61,17 +62,11 @@ defmodule ElixircnWeb.Components.UI.Accordion do
       {@rest}
     >
       {render_slot(@inner_block)}
-      <svg
+      <.icon
         id={"#{@accordion_id}-icon-#{@value}"}
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
+        name="chevron-down"
         class={["h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200", @open && "rotate-180"]}
-      >
-        <path d="m6 9 6 6 6-6"/>
-      </svg>
+      />
     </button>
     """
   end

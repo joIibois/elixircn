@@ -6,8 +6,6 @@
 @source "../js";
 @source "../../lib/elixircn_web";
 
-/* Heroicons plugin */
-@plugin "../vendor/heroicons";
 
 /* Add variants based on LiveView classes */
 @custom-variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);

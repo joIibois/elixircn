@@ -1,5 +1,6 @@
 defmodule ElixircnWeb.Components.UI.Combobox do
   use Phoenix.Component
+  import ElixircnWeb.Components.UI.Icon
   alias Phoenix.LiveView.JS
 
   attr :id, :string, required: true
@@ -37,7 +38,7 @@ defmodule ElixircnWeb.Components.UI.Combobox do
         ]}
       >
         <span>{@selected_label || @placeholder}</span>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4 opacity-50 shrink-0"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
+        <.icon name="chevrons-up-down" class="h-4 w-4 opacity-50 shrink-0" />
       </button>
       <div
         id={"#{@id}-dropdown"}
@@ -45,7 +46,7 @@ defmodule ElixircnWeb.Components.UI.Combobox do
         data-combobox-dropdown
       >
         <div class="flex items-center border-b px-3">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2 h-4 w-4 shrink-0 opacity-50"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <.icon name="search" class="mr-2 h-4 w-4 shrink-0 opacity-50" />
           <input
             type="text"
             placeholder={@search_placeholder}
@@ -64,7 +65,7 @@ defmodule ElixircnWeb.Components.UI.Combobox do
               @value == opt[:value] && "bg-accent"
             ]}
           >
-            <svg :if={@value == opt[:value]} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2 h-4 w-4"><path d="M20 6 9 17l-5-5"/></svg>
+            <.icon :if={@value == opt[:value]} name="check" class="mr-2 h-4 w-4" />
             <span :if={@value != opt[:value]} class="mr-6" />
             {opt[:label]}
           </div>

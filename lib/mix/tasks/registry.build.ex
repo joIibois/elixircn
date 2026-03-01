@@ -10,13 +10,24 @@ defmodule Mix.Tasks.Registry.Build do
 
   # Components that depend on other registry items
   @dependencies %{
-    "alert-dialog"    => ["button"],
-    "button-group"    => ["button"],
-    "data-table"      => ["table", "button"],
-    "date-picker"     => ["calendar"],
-    "field"           => ["label", "input"],
-    "input-group"     => ["input"],
-    "toggle-group"    => ["toggle"]
+    "accordion"        => ["icon"],
+    "alert-dialog"     => ["button"],
+    "breadcrumb"       => ["icon"],
+    "button-group"     => ["button"],
+    "calendar"         => ["icon"],
+    "carousel"         => ["icon"],
+    "combobox"         => ["icon"],
+    "command"          => ["icon"],
+    "data-table"       => ["table", "button"],
+    "date-picker"      => ["calendar", "icon"],
+    "field"            => ["label", "input"],
+    "input-group"      => ["input"],
+    "navigation-menu"  => ["icon"],
+    "pagination"       => ["icon"],
+    "resizable"        => ["icon"],
+    "select"           => ["icon"],
+    "toast"            => ["icon"],
+    "toggle-group"     => ["toggle"]
   }
 
   # Components that require a JS hook in app.js

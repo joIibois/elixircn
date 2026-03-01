@@ -1,5 +1,6 @@
 defmodule ElixircnWeb.Components.UI.Calendar do
   use Phoenix.Component
+  import ElixircnWeb.Components.UI.Icon
 
   attr :id, :string, required: true
   attr :month, :integer, required: true
@@ -39,7 +40,7 @@ defmodule ElixircnWeb.Components.UI.Calendar do
             class="absolute left-1 inline-flex h-7 w-7 items-center justify-center rounded-md border border-input bg-transparent p-0 opacity-50 hover:opacity-100"
             aria-label="Previous month"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="m15 18-6-6 6-6"/></svg>
+            <.icon name="chevron-left" class="h-4 w-4" />
           </button>
           <div class="text-sm font-medium">{@month_name} {@year}</div>
           <button
@@ -48,7 +49,7 @@ defmodule ElixircnWeb.Components.UI.Calendar do
             class="absolute right-1 inline-flex h-7 w-7 items-center justify-center rounded-md border border-input bg-transparent p-0 opacity-50 hover:opacity-100"
             aria-label="Next month"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="m9 18 6-6-6-6"/></svg>
+            <.icon name="chevron-right" class="h-4 w-4" />
           </button>
         </div>
         <table class="w-full border-collapse space-y-1">
