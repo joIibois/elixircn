@@ -34,6 +34,7 @@ defmodule ElixircnWeb.Components.UI.Popover do
         id={"#{@id}-backdrop"}
         class="hidden fixed inset-0 z-40"
         phx-click={hide_popover(@id)}
+        data-escape-close
       />
       <div phx-click={JS.toggle(to: "##{@id}-content",
         in:  {"ease-out duration-150", "opacity-0 scale-95", "opacity-100 scale-100"},

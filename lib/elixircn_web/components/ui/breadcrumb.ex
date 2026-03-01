@@ -127,6 +127,7 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
             |> JS.hide(to: "##{@id}-dropdown")
             |> JS.set_attribute({"data-state", "closed"}, to: "##{@id}-trigger")
           }
+          data-escape-close
         />
         <div
           id={"#{@id}-dropdown"}

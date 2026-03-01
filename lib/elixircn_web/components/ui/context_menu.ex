@@ -20,6 +20,7 @@ defmodule ElixircnWeb.Components.UI.ContextMenu do
         class="hidden fixed z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
         role="menu"
         style="display: none;"
+        data-context-menu-content
       >
         {render_slot(@inner_block)}
       </div>

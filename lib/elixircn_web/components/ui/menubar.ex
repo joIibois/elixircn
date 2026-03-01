@@ -19,6 +19,7 @@ defmodule ElixircnWeb.Components.UI.Menubar do
         id={"#{@id}-backdrop"}
         class="hidden fixed inset-0 z-40"
         phx-click={JS.hide(to: "##{@id} [role=menu]") |> JS.hide(to: "##{@id}-backdrop")}
+        data-escape-close
       />
       {render_slot(@inner_block)}
     </div>

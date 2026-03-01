@@ -42,6 +42,7 @@ defmodule ElixircnWeb.Components.UI.NavigationMenu do
           JS.hide(to: "##{@id}-content")
           |> JS.hide(to: "##{@id}-backdrop")
         }
+        data-escape-close
       />
       {render_slot(@inner_block)}
     </li>
@@ -85,7 +86,7 @@ defmodule ElixircnWeb.Components.UI.NavigationMenu do
     ~H"""
     <div
       id={"#{@item_id}-content"}
-      class={["hidden absolute left-0 top-full w-auto rounded-md border bg-popover text-popover-foreground shadow-lg p-2", @class]}
+      class={["hidden absolute left-0 top-full z-50 w-auto rounded-md border bg-popover text-popover-foreground shadow-lg p-2", @class]}
       {@rest}
     >
       {render_slot(@inner_block)}

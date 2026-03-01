@@ -38,6 +38,8 @@ defmodule ElixircnWeb.Components.UI.AlertDialog do
       <div
         id={"#{@id}-backdrop"}
         class="hidden fixed inset-0 z-50 bg-black/80"
+        phx-click={hide_alert_dialog(@id)}
+        data-escape-close
       />
       <div
         id={"#{@id}-content"}

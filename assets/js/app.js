@@ -173,6 +173,23 @@ Hooks.InputOtp = {
   }
 }
 
+// Global Escape key handler — closes any visible overlay
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return
+  // Overlays with a backdrop phx-click handler (dialog, drawer, sheet, alert_dialog, popover, dropdown, combobox, menubar)
+  document.querySelectorAll("[data-escape-close]").forEach(el => {
+    if (getComputedStyle(el).display !== "none") el.click()
+  })
+  // Dropdowns with no backdrop (select)
+  document.querySelectorAll("[data-escape-hide]").forEach(el => {
+    if (getComputedStyle(el).display !== "none") el.style.display = "none"
+  })
+  // Context menus (position managed directly via style.display)
+  document.querySelectorAll("[data-context-menu-content]").forEach(el => {
+    el.style.display = "none"
+  })
+})
+
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,

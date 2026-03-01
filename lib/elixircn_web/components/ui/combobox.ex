@@ -21,6 +21,7 @@ defmodule ElixircnWeb.Components.UI.Combobox do
         id={"#{@id}-backdrop"}
         class="hidden fixed inset-0 z-40"
         phx-click={JS.hide(to: "##{@id}-backdrop") |> JS.hide(to: "##{@id}-dropdown")}
+        data-escape-close
       />
       <button
         type="button"

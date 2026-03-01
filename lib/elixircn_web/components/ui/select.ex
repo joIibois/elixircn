@@ -42,6 +42,7 @@ defmodule ElixircnWeb.Components.UI.Select do
       <div
         id={"#{@id}-options"}
         class="hidden absolute z-50 left-0 top-full mt-1 min-w-[8rem] w-full overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md"
+        data-escape-hide
       >
         <div class="p-1" role="listbox">
           <div

@@ -32,7 +32,7 @@ defmodule ElixircnWeb.Components.UI.Carousel do
     <div class={["overflow-hidden", @class]} {@rest}>
       <div
         data-carousel-track
-        class="flex transition-transform duration-300 ease-in-out"
+        class="-ml-4 flex transition-transform duration-300 ease-in-out"
       >
         {render_slot(@inner_block)}
       </div>
