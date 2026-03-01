@@ -1,0 +1,1445 @@
+<%!-- Toast viewport --%>
+<.toast_viewport toasts={@toasts} position="bottom-right" />
+
+<%!-- Top Navigation Bar --%>
+<header class="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+  <div class="flex h-14 items-center gap-4 px-6">
+    <div class="flex items-center gap-2">
+      <img src={~p"/images/logo-black.svg"} alt="elixircn logo" class="h-6 w-6 dark:hidden" />
+      <img src={~p"/images/logo-white.svg"} alt="elixircn logo" class="h-6 w-6 hidden dark:block" />
+      <span class="font-bold text-lg">elixircn</span>
+    </div>
+    <div class="flex items-center gap-1 rounded-md border border-border bg-muted px-2 py-1">
+      <span class="text-xs text-muted-foreground">Phoenix</span>
+      <span class="text-xs text-muted-foreground">·</span>
+      <span class="text-xs text-muted-foreground">shadcn/ui</span>
+    </div>
+    <div class="flex-1" />
+    <%!-- Dark mode toggle --%>
+    <button
+      type="button"
+      phx-click={JS.toggle_attribute({"data-theme", "dark", "light"}, to: "html")}
+      class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background text-sm hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+      title="Toggle dark mode"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4 dark:hidden"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4 hidden dark:block"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
+    <a href="https://ui.shadcn.com" target="_blank" class="inline-flex h-9 items-center gap-1.5 rounded-md border border-input bg-background px-3 text-xs hover:bg-accent hover:text-accent-foreground">
+      shadcn/ui
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-3 w-3"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+    </a>
+  </div>
+</header>
+
+<div class="flex min-h-[calc(100vh-3.5rem)]">
+  <%!-- Sidebar Navigation --%>
+  <aside class="sticky top-14 h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto border-r border-border bg-background py-6 pl-4 pr-2">
+    <nav>
+      <ul class="space-y-0.5">
+        <li :for={comp <- @components}>
+          <.link
+            patch={"/#{comp.id}"}
+            class={[
+              "block rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
+              @active_component == comp.id && "bg-accent text-accent-foreground font-medium"
+            ]}
+          >
+            {comp.label}
+          </.link>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <%!-- Main Content --%>
+  <main class="flex-1 overflow-auto">
+    <div class="mx-auto max-w-4xl px-8 py-10 space-y-10">
+
+      <%!-- BADGE --%>
+      <div :if={@active_component == "badge"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Badge</h1>
+          <p class="mt-2 text-muted-foreground">Displays a badge or a component that looks like a badge.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <div class="flex flex-wrap gap-3">
+            <.badge>Default</.badge>
+            <.badge variant="secondary">Secondary</.badge>
+            <.badge variant="destructive">Destructive</.badge>
+            <.badge variant="outline">Outline</.badge>
+          </div>
+        </div>
+        <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
+          <pre>&lt;.badge&gt;Default&lt;/.badge&gt;
+&lt;.badge variant="secondary"&gt;Secondary&lt;/.badge&gt;
+&lt;.badge variant="destructive"&gt;Destructive&lt;/.badge&gt;
+&lt;.badge variant="outline"&gt;Outline&lt;/.badge&gt;</pre>
+        </div>
+      </div>
+
+      <%!-- SEPARATOR --%>
+      <div :if={@active_component == "separator"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Separator</h1>
+          <p class="mt-2 text-muted-foreground">Visually or semantically separates content.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-6">
+          <div>
+            <div class="space-y-1">
+              <h4 class="text-sm font-medium leading-none">Elixircn Components</h4>
+              <p class="text-sm text-muted-foreground">An Elixir port of shadcn/ui.</p>
+            </div>
+            <.separator class="my-4" />
+            <div class="flex h-5 items-center space-x-4 text-sm">
+              <div>Blog</div>
+              <.separator orientation="vertical" />
+              <div>Docs</div>
+              <.separator orientation="vertical" />
+              <div>Source</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%!-- SKELETON --%>
+      <div :if={@active_component == "skeleton"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Skeleton</h1>
+          <p class="mt-2 text-muted-foreground">Use to show a placeholder while content is loading.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <div class="flex items-center space-x-4">
+            <.skeleton class="h-12 w-12 rounded-full" />
+            <div class="space-y-2">
+              <.skeleton class="h-4 w-[250px]" />
+              <.skeleton class="h-4 w-[200px]" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%!-- SPINNER --%>
+      <div :if={@active_component == "spinner"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Spinner</h1>
+          <p class="mt-2 text-muted-foreground">A loading indicator component.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <div class="flex items-center gap-6">
+            <.spinner size="sm" />
+            <.spinner size="default" />
+            <.spinner size="lg" />
+          </div>
+        </div>
+      </div>
+
+      <%!-- KBD --%>
+      <div :if={@active_component == "kbd"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Kbd</h1>
+          <p class="mt-2 text-muted-foreground">Display textual user input from a keyboard.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <p class="text-sm text-muted-foreground">
+            Press <.kbd>⌘</.kbd> <.kbd>K</.kbd> to open the command palette.
+          </p>
+        </div>
+      </div>
+
+      <%!-- TYPOGRAPHY --%>
+      <div :if={@active_component == "typography"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Typography</h1>
+          <p class="mt-2 text-muted-foreground">Styles for headings, paragraphs, lists and more.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <.h1>The quick brown fox</.h1>
+          <.h2>The quick brown fox</.h2>
+          <.h3>The quick brown fox</.h3>
+          <.h4>The quick brown fox</.h4>
+          <.prose_p>Re-usable components built using Radix UI and Tailwind CSS.</.prose_p>
+          <.blockquote>After all, the best part of a holiday is perhaps not so much to be resting yourself, as to see all the other fellows busy working.</.blockquote>
+          <.inline_code>@elixircn/components</.inline_code>
+          <.lead>A modal dialog that interrupts the user with important content and expects a response.</.lead>
+          <.muted_text>Enter your email address.</.muted_text>
+        </div>
+      </div>
+
+      <%!-- AVATAR --%>
+      <div :if={@active_component == "avatar"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Avatar</h1>
+          <p class="mt-2 text-muted-foreground">An image element with a fallback for representing the user.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-6">
+          <div>
+            <p class="text-xs text-muted-foreground mb-3">Image</p>
+            <div class="flex items-end gap-4">
+              <.avatar src="https://github.com/shadcn.png" alt="shadcn" size="sm" />
+              <.avatar src="https://github.com/shadcn.png" alt="shadcn" />
+              <.avatar src="https://github.com/shadcn.png" alt="shadcn" size="lg" />
+            </div>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground mb-3">Initials</p>
+            <div class="flex items-end gap-4">
+              <.avatar fallback="JD" alt="John Doe" size="sm" />
+              <.avatar fallback="JD" alt="John Doe" />
+              <.avatar fallback="JD" alt="John Doe" size="lg" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%!-- PROGRESS --%>
+      <div :if={@active_component == "progress"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Progress</h1>
+          <p class="mt-2 text-muted-foreground">Displays an indicator showing the completion progress of a task.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <.progress value={@progress_value} />
+          <.progress value={25} />
+          <.progress value={75} />
+          <.progress value={100} />
+        </div>
+      </div>
+
+      <%!-- CARD --%>
+      <div :if={@active_component == "card"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Card</h1>
+          <p class="mt-2 text-muted-foreground">Displays a card with header, content, and footer.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.card class="w-[350px]">
+            <.card_header>
+              <.card_title>Create project</.card_title>
+              <.card_description>Deploy your new project in one-click.</.card_description>
+            </.card_header>
+            <.card_content>
+              <div class="space-y-2">
+                <.label for="project-name">Project Name</.label>
+                <.input id="project-name" placeholder="My new project" />
+              </div>
+            </.card_content>
+            <.card_footer class="gap-2">
+              <.button variant="outline">Cancel</.button>
+              <.button>Deploy</.button>
+            </.card_footer>
+          </.card>
+        </div>
+      </div>
+
+      <%!-- ALERT --%>
+      <div :if={@active_component == "alert"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Alert</h1>
+          <p class="mt-2 text-muted-foreground">Displays a callout for user attention.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <.alert>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-4 w-4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <.alert_title>Heads up!</.alert_title>
+            <.alert_description>You can add components to your app using the cli.</.alert_description>
+          </.alert>
+          <.alert variant="destructive">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+            <.alert_title>Error</.alert_title>
+            <.alert_description>Your session has expired. Please log in again.</.alert_description>
+          </.alert>
+        </div>
+      </div>
+
+      <%!-- BUTTON --%>
+      <div :if={@active_component == "button"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Button</h1>
+          <p class="mt-2 text-muted-foreground">Displays a button or a component that looks like a button.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <div class="flex flex-wrap gap-3">
+            <.button>Default</.button>
+            <.button variant="secondary">Secondary</.button>
+            <.button variant="destructive">Destructive</.button>
+            <.button variant="outline">Outline</.button>
+            <.button variant="ghost">Ghost</.button>
+            <.button variant="link">Link</.button>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <.button size="sm">Small</.button>
+            <.button>Default</.button>
+            <.button size="lg">Large</.button>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <.button disabled>Disabled</.button>
+            <.button variant="outline">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              Download
+            </.button>
+          </div>
+        </div>
+      </div>
+
+      <%!-- BUTTON GROUP --%>
+      <div :if={@active_component == "button-group"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Button Group</h1>
+          <p class="mt-2 text-muted-foreground">Groups related buttons together.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.button_group>
+            <.button variant="outline">Bold</.button>
+            <.button variant="outline">Italic</.button>
+            <.button variant="outline">Underline</.button>
+          </.button_group>
+        </div>
+      </div>
+
+      <%!-- INPUT --%>
+      <div :if={@active_component == "input"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Input</h1>
+          <p class="mt-2 text-muted-foreground">Displays a form input field or a component that looks like an input field.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <.input placeholder="Email" />
+          <.input type="password" placeholder="Password" />
+          <.input disabled placeholder="Disabled" />
+          <.input errors={["This field is required"]} placeholder="Invalid" />
+          <.input type="file" />
+        </div>
+      </div>
+
+      <%!-- TEXTAREA --%>
+      <div :if={@active_component == "textarea"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Textarea</h1>
+          <p class="mt-2 text-muted-foreground">Displays a form textarea or a component that looks like a textarea.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <.textarea placeholder="Type your message here." />
+          <.textarea disabled placeholder="Disabled textarea" />
+        </div>
+      </div>
+
+      <%!-- CHECKBOX --%>
+      <div :if={@active_component == "checkbox"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Checkbox</h1>
+          <p class="mt-2 text-muted-foreground">A control that allows the user to toggle between checked and not checked.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <div class="flex items-center space-x-2">
+            <.checkbox id="terms" />
+            <.label for="terms">Accept terms and conditions</.label>
+          </div>
+          <div class="flex items-center space-x-2">
+            <.checkbox id="disabled-check" checked disabled />
+            <.label for="disabled-check" class="opacity-50">Checked & Disabled</.label>
+          </div>
+        </div>
+      </div>
+
+      <%!-- RADIO GROUP --%>
+      <div :if={@active_component == "radio-group"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Radio Group</h1>
+          <p class="mt-2 text-muted-foreground">A set of checkable buttons — known as radio buttons — where no more than one of the buttons can be checked at a time.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.radio_group>
+            <.radio_group_item name="spacing" value="default" id="r1" checked>Default</.radio_group_item>
+            <.radio_group_item name="spacing" value="comfortable" id="r2">Comfortable</.radio_group_item>
+            <.radio_group_item name="spacing" value="compact" id="r3">Compact</.radio_group_item>
+          </.radio_group>
+        </div>
+      </div>
+
+      <%!-- SWITCH --%>
+      <div :if={@active_component == "switch"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Switch</h1>
+          <p class="mt-2 text-muted-foreground">A control that allows the user to toggle between checked and not checked.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <div class="flex items-center space-x-2">
+            <.switch id="airplane-mode" checked={@switch_checked} phx-change="toggle_switch" />
+            <.label for="airplane-mode">Airplane Mode</.label>
+          </div>
+          <div class="flex items-center space-x-2">
+            <.switch id="wifi" checked disabled />
+            <.label for="wifi" class="opacity-50">Wi-Fi (Disabled)</.label>
+          </div>
+        </div>
+      </div>
+
+      <%!-- SLIDER --%>
+      <div :if={@active_component == "slider"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Slider</h1>
+          <p class="mt-2 text-muted-foreground">An input where the user selects a value from within a given range.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <form phx-change="slider_change">
+            <.slider name="value" value={@slider_value} />
+          </form>
+          <p class="text-sm text-muted-foreground">Value: {@slider_value}</p>
+        </div>
+      </div>
+
+      <%!-- SELECT --%>
+      <div :if={@active_component == "select"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Select</h1>
+          <p class="mt-2 text-muted-foreground">Displays a list of options for the user to pick from—triggered by a button.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.select id="fruit-select" value={@select_value} on_change="select_changed" placeholder="Select a fruit...">
+            <:select_item value="apple" label="Apple" />
+            <:select_item value="banana" label="Banana" />
+            <:select_item value="blueberry" label="Blueberry" />
+            <:select_item value="grapes" label="Grapes" />
+            <:select_item value="pineapple" label="Pineapple" />
+          </.select>
+        </div>
+      </div>
+
+      <%!-- NATIVE SELECT --%>
+      <div :if={@active_component == "native-select"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Native Select</h1>
+          <p class="mt-2 text-muted-foreground">A styled native HTML select element.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.native_select>
+            <option value="">Select an option</option>
+            <option value="apple">Apple</option>
+            <option value="banana">Banana</option>
+            <option value="cherry">Cherry</option>
+          </.native_select>
+        </div>
+      </div>
+
+      <%!-- TOGGLE --%>
+      <div :if={@active_component == "toggle"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Toggle</h1>
+          <p class="mt-2 text-muted-foreground">A two-state button that can be either on or off.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <div class="flex gap-3">
+            <.toggle>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
+            </.toggle>
+            <.toggle pressed>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4 mr-1"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Bold
+            </.toggle>
+            <.toggle variant="outline" disabled>Disabled</.toggle>
+          </div>
+        </div>
+      </div>
+
+      <%!-- TOGGLE GROUP --%>
+      <div :if={@active_component == "toggle-group"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Toggle Group</h1>
+          <p class="mt-2 text-muted-foreground">A set of two-state buttons that can be toggled on or off.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.toggle_group>
+            <.toggle>B</.toggle>
+            <.toggle pressed>I</.toggle>
+            <.toggle>U</.toggle>
+          </.toggle_group>
+        </div>
+      </div>
+
+      <%!-- FIELD --%>
+      <div :if={@active_component == "field"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Field</h1>
+          <p class="mt-2 text-muted-foreground">Combines a label, input, description, and error messages.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <.field id="email" label="Email" description="Enter your email address.">
+            <.input id="email" type="email" placeholder="m@example.com" />
+          </.field>
+          <.field id="username" label="Username" errors={["Username is required"]}>
+            <.input id="username" errors={["Username is required"]} />
+          </.field>
+        </div>
+      </div>
+
+      <%!-- INPUT GROUP --%>
+      <div :if={@active_component == "input-group"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Input Group</h1>
+          <p class="mt-2 text-muted-foreground">Add addons and buttons to inputs.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <.input_group>
+            <:addon_start>https://</:addon_start>
+            <.input placeholder="example.com" />
+          </.input_group>
+          <.input_group>
+            <.input placeholder="Search..." />
+            <:addon_end>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </:addon_end>
+          </.input_group>
+        </div>
+      </div>
+
+      <%!-- INPUT OTP --%>
+      <div :if={@active_component == "input-otp"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Input OTP</h1>
+          <p class="mt-2 text-muted-foreground">Accessible one-time password component with copy paste functionality.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 flex justify-center">
+          <.input_otp id="otp-demo" length={6} />
+        </div>
+      </div>
+
+      <%!-- LABEL --%>
+      <div :if={@active_component == "label"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Label</h1>
+          <p class="mt-2 text-muted-foreground">Renders an accessible label associated with a form control.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 flex items-center gap-2">
+          <.label for="label-demo">Accept terms and conditions</.label>
+          <.checkbox id="label-demo" />
+        </div>
+      </div>
+
+      <%!-- COMBOBOX --%>
+      <div :if={@active_component == "combobox"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Combobox</h1>
+          <p class="mt-2 text-muted-foreground">Autocomplete input and command palette with a list of suggestions.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.combobox
+            id="framework-combobox"
+            value={@combobox_value}
+            placeholder="Select framework..."
+            search_placeholder="Search framework..."
+            options={[
+              %{value: "next", label: "Next.js"},
+              %{value: "sveltekit", label: "SvelteKit"},
+              %{value: "nuxt", label: "Nuxt.js"},
+              %{value: "remix", label: "Remix"},
+              %{value: "astro", label: "Astro"},
+              %{value: "phoenix", label: "Phoenix"}
+            ]}
+          />
+        </div>
+      </div>
+
+      <%!-- DATE PICKER --%>
+      <div :if={@active_component == "date-picker"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Date Picker</h1>
+          <p class="mt-2 text-muted-foreground">A date picker component with range and presets.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.date_picker
+            id="date-picker-demo"
+            selected={@calendar_selected}
+            month={@calendar_month}
+            year={@calendar_year}
+          />
+        </div>
+      </div>
+
+      <%!-- TABLE --%>
+      <div :if={@active_component == "table"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Table</h1>
+          <p class="mt-2 text-muted-foreground">A responsive table component.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.table>
+            <.table_caption>A list of your recent invoices.</.table_caption>
+            <.table_header>
+              <.table_row>
+                <.table_head class="w-[100px]">Invoice</.table_head>
+                <.table_head>Status</.table_head>
+                <.table_head>Method</.table_head>
+                <.table_head class="text-right">Amount</.table_head>
+              </.table_row>
+            </.table_header>
+            <.table_body>
+              <.table_row>
+                <.table_cell class="font-medium">INV001</.table_cell>
+                <.table_cell>Paid</.table_cell>
+                <.table_cell>Credit Card</.table_cell>
+                <.table_cell class="text-right">$250.00</.table_cell>
+              </.table_row>
+              <.table_row>
+                <.table_cell class="font-medium">INV002</.table_cell>
+                <.table_cell>Pending</.table_cell>
+                <.table_cell>PayPal</.table_cell>
+                <.table_cell class="text-right">$150.00</.table_cell>
+              </.table_row>
+              <.table_row>
+                <.table_cell class="font-medium">INV003</.table_cell>
+                <.table_cell>Unpaid</.table_cell>
+                <.table_cell>Bank Transfer</.table_cell>
+                <.table_cell class="text-right">$350.00</.table_cell>
+              </.table_row>
+            </.table_body>
+          </.table>
+        </div>
+      </div>
+
+      <%!-- DATA TABLE --%>
+      <div :if={@active_component == "data-table"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Data Table</h1>
+          <p class="mt-2 text-muted-foreground">Powerful table with sorting and pagination.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-4">
+          <.data_table
+            rows={[
+              %{name: "Alice Johnson", email: "alice@example.com", role: "Admin", status: "Active"},
+              %{name: "Bob Smith", email: "bob@example.com", role: "User", status: "Active"},
+              %{name: "Charlie Brown", email: "charlie@example.com", role: "User", status: "Inactive"},
+              %{name: "Diana Prince", email: "diana@example.com", role: "Editor", status: "Active"}
+            ]}
+          >
+            <:col label="Name" :let={row}>{row.name}</:col>
+            <:col label="Email" :let={row}>{row.email}</:col>
+            <:col label="Role" :let={row}>
+              <.badge variant={if row.role == "Admin", do: "default", else: "secondary"}>{row.role}</.badge>
+            </:col>
+            <:col label="Status" :let={row}>
+              <span class={[if(row.status == "Active", do: "text-green-600", else: "text-muted-foreground"), "text-sm"]}>{row.status}</span>
+            </:col>
+          </.data_table>
+        </div>
+      </div>
+
+      <%!-- CHART --%>
+      <%!-- CALENDAR --%>
+      <div :if={@active_component == "calendar"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Calendar</h1>
+          <p class="mt-2 text-muted-foreground">A date field component that allows users to select a date.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 flex justify-center">
+          <div class="rounded-md border shadow">
+            <.calendar
+              id="demo-calendar"
+              month={@calendar_month}
+              year={@calendar_year}
+              selected={@calendar_selected}
+              today={Date.utc_today()}
+            />
+          </div>
+        </div>
+        <p :if={@calendar_selected} class="text-sm text-muted-foreground text-center">
+          Selected: {Calendar.strftime(@calendar_selected, "%B %-d, %Y")}
+        </p>
+      </div>
+
+      <%!-- BREADCRUMB --%>
+      <div :if={@active_component == "breadcrumb"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Breadcrumb</h1>
+          <p class="mt-2 text-muted-foreground">Displays the path to the current resource using a hierarchy of links.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.breadcrumb>
+            <.breadcrumb_item>
+              <.breadcrumb_link href="#">Home</.breadcrumb_link>
+            </.breadcrumb_item>
+            <.breadcrumb_separator />
+            <.breadcrumb_item>
+              <.breadcrumb_ellipsis id="bc-ellipsis">
+                <.breadcrumb_ellipsis_item href="#">Documentation</.breadcrumb_ellipsis_item>
+                <.breadcrumb_ellipsis_item href="#">Themes</.breadcrumb_ellipsis_item>
+                <.breadcrumb_ellipsis_item href="#">GitHub</.breadcrumb_ellipsis_item>
+              </.breadcrumb_ellipsis>
+            </.breadcrumb_item>
+            <.breadcrumb_separator />
+            <.breadcrumb_item>
+              <.breadcrumb_link href="#">Components</.breadcrumb_link>
+            </.breadcrumb_item>
+            <.breadcrumb_separator />
+            <.breadcrumb_item>
+              <.breadcrumb_page>Breadcrumb</.breadcrumb_page>
+            </.breadcrumb_item>
+          </.breadcrumb>
+        </div>
+      </div>
+
+      <%!-- PAGINATION --%>
+      <div :if={@active_component == "pagination"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Pagination</h1>
+          <p class="mt-2 text-muted-foreground">Pagination with page navigation, next and previous links.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.pagination>
+            <.pagination_content>
+              <.pagination_previous href="#" />
+            </.pagination_content>
+            <.pagination_content>
+              <.pagination_link href="#">1</.pagination_link>
+            </.pagination_content>
+            <.pagination_content>
+              <.pagination_link href="#" active>2</.pagination_link>
+            </.pagination_content>
+            <.pagination_content>
+              <.pagination_link href="#">3</.pagination_link>
+            </.pagination_content>
+            <.pagination_content>
+              <.pagination_ellipsis />
+            </.pagination_content>
+            <.pagination_content>
+              <.pagination_next href="#" />
+            </.pagination_content>
+          </.pagination>
+        </div>
+      </div>
+
+      <%!-- TABS --%>
+      <div :if={@active_component == "tabs"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Tabs</h1>
+          <p class="mt-2 text-muted-foreground">A set of layered sections of content — known as tab panels.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.tabs id="demo-tabs" default_value="account">
+            <.tabs_list tabs_id="demo-tabs">
+              <.tabs_trigger tabs_id="demo-tabs" value="account" active>Account</.tabs_trigger>
+              <.tabs_trigger tabs_id="demo-tabs" value="password">Password</.tabs_trigger>
+            </.tabs_list>
+            <.tabs_content tabs_id="demo-tabs" value="account" active>
+              <.card>
+                <.card_header>
+                  <.card_title>Account</.card_title>
+                  <.card_description>Make changes to your account here.</.card_description>
+                </.card_header>
+                <.card_content class="space-y-2">
+                  <.field id="name" label="Name">
+                    <.input id="name" value="Pedro Duarte" />
+                  </.field>
+                </.card_content>
+                <.card_footer>
+                  <.button>Save changes</.button>
+                </.card_footer>
+              </.card>
+            </.tabs_content>
+            <.tabs_content tabs_id="demo-tabs" value="password">
+              <.card>
+                <.card_header>
+                  <.card_title>Password</.card_title>
+                  <.card_description>Change your password here.</.card_description>
+                </.card_header>
+                <.card_content class="space-y-2">
+                  <.field id="current" label="Current Password">
+                    <.input id="current" type="password" />
+                  </.field>
+                  <.field id="new" label="New Password">
+                    <.input id="new" type="password" />
+                  </.field>
+                </.card_content>
+                <.card_footer>
+                  <.button>Save password</.button>
+                </.card_footer>
+              </.card>
+            </.tabs_content>
+          </.tabs>
+        </div>
+      </div>
+
+      <%!-- NAVIGATION MENU --%>
+      <div :if={@active_component == "navigation-menu"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Navigation Menu</h1>
+          <p class="mt-2 text-muted-foreground">A collection of links for navigating websites.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.navigation_menu>
+            <.navigation_menu_list>
+              <.navigation_menu_item id="nm-1">
+                <.navigation_menu_trigger item_id="nm-1">Getting started</.navigation_menu_trigger>
+                <.navigation_menu_content item_id="nm-1">
+                  <.navigation_menu_link href="#" title="Introduction">Re-usable components built using Radix UI and Tailwind CSS.</.navigation_menu_link>
+                  <.navigation_menu_link href="#" title="Installation">How to install dependencies and structure your app.</.navigation_menu_link>
+                </.navigation_menu_content>
+              </.navigation_menu_item>
+              <.navigation_menu_item id="nm-2">
+                <.navigation_menu_link href="#" title="Documentation" />
+              </.navigation_menu_item>
+            </.navigation_menu_list>
+          </.navigation_menu>
+        </div>
+      </div>
+
+      <%!-- MENUBAR --%>
+      <div :if={@active_component == "menubar"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Menubar</h1>
+          <p class="mt-2 text-muted-foreground">A visually persistent menu common in desktop applications.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.menubar id="demo-menubar">
+            <.menubar_menu menubar_id="demo-menubar" value="file">
+              <:trigger>File</:trigger>
+              <.menubar_item>New Tab</.menubar_item>
+              <.menubar_item>New Window</.menubar_item>
+              <.menubar_separator />
+              <.menubar_item>Print</.menubar_item>
+            </.menubar_menu>
+            <.menubar_menu menubar_id="demo-menubar" value="edit">
+              <:trigger>Edit</:trigger>
+              <.menubar_item>Undo</.menubar_item>
+              <.menubar_item>Redo</.menubar_item>
+              <.menubar_separator />
+              <.menubar_item>Cut</.menubar_item>
+              <.menubar_item>Copy</.menubar_item>
+              <.menubar_item>Paste</.menubar_item>
+            </.menubar_menu>
+          </.menubar>
+        </div>
+      </div>
+
+      <%!-- SIDEBAR --%>
+      <div :if={@active_component == "sidebar"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Sidebar</h1>
+          <p class="mt-2 text-muted-foreground">A composable, themeable and customizable sidebar component.</p>
+        </div>
+        <div class="rounded-lg border bg-card overflow-hidden" style="height: 300px;">
+          <div class="flex h-full">
+            <.sidebar id="demo-sidebar">
+              <.sidebar_header>
+                <div class="flex items-center gap-2 px-2 py-1">
+                  <div class="h-6 w-6 rounded-sm bg-primary" />
+                  <span class="font-semibold text-sm">Acme Inc</span>
+                </div>
+              </.sidebar_header>
+              <.sidebar_content>
+                <.sidebar_group>
+                  <.sidebar_group_label>Application</.sidebar_group_label>
+                  <.sidebar_group_content>
+                    <.sidebar_menu>
+                      <.sidebar_menu_item>
+                        <.sidebar_menu_button href="#" active>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                          Dashboard
+                        </.sidebar_menu_button>
+                      </.sidebar_menu_item>
+                      <.sidebar_menu_item>
+                        <.sidebar_menu_button href="#">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                          Team
+                        </.sidebar_menu_button>
+                      </.sidebar_menu_item>
+                    </.sidebar_menu>
+                  </.sidebar_group_content>
+                </.sidebar_group>
+              </.sidebar_content>
+            </.sidebar>
+            <div class="flex-1 p-4">
+              <p class="text-sm text-muted-foreground">Main content area</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%!-- DIALOG --%>
+      <div :if={@active_component == "dialog"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Dialog</h1>
+          <p class="mt-2 text-muted-foreground">A window overlaid on either the primary window or another dialog window.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.button phx-click={ElixircnWeb.Components.UI.Dialog.show_dialog("demo-dialog")}>
+            Open Dialog
+          </.button>
+          <.dialog id="demo-dialog">
+            <.dialog_content>
+              <.dialog_header>
+                <.dialog_title>Are you absolutely sure?</.dialog_title>
+                <.dialog_description>
+                  This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+                </.dialog_description>
+              </.dialog_header>
+              <.dialog_footer>
+                <.button variant="outline" phx-click={ElixircnWeb.Components.UI.Dialog.hide_dialog("demo-dialog")}>
+                  Cancel
+                </.button>
+                <.button phx-click={ElixircnWeb.Components.UI.Dialog.hide_dialog("demo-dialog")}>
+                  Continue
+                </.button>
+              </.dialog_footer>
+            </.dialog_content>
+          </.dialog>
+        </div>
+      </div>
+
+      <%!-- ALERT DIALOG --%>
+      <div :if={@active_component == "alert-dialog"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Alert Dialog</h1>
+          <p class="mt-2 text-muted-foreground">A modal dialog that interrupts the user with important content and expects a response.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.button variant="destructive" phx-click={ElixircnWeb.Components.UI.AlertDialog.show_alert_dialog("demo-alert-dialog")}>
+            Delete Account
+          </.button>
+          <.alert_dialog id="demo-alert-dialog">
+            <.alert_dialog_content>
+              <.alert_dialog_header>
+                <.alert_dialog_title>Are you absolutely sure?</.alert_dialog_title>
+                <.alert_dialog_description>
+                  This action cannot be undone. This will permanently delete your account.
+                </.alert_dialog_description>
+              </.alert_dialog_header>
+              <.alert_dialog_footer>
+                <.button variant="outline" phx-click={ElixircnWeb.Components.UI.AlertDialog.hide_alert_dialog("demo-alert-dialog")}>
+                  Cancel
+                </.button>
+                <.button variant="destructive" phx-click={ElixircnWeb.Components.UI.AlertDialog.hide_alert_dialog("demo-alert-dialog")}>
+                  Delete
+                </.button>
+              </.alert_dialog_footer>
+            </.alert_dialog_content>
+          </.alert_dialog>
+        </div>
+      </div>
+
+      <%!-- SHEET --%>
+      <div :if={@active_component == "sheet"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Sheet</h1>
+          <p class="mt-2 text-muted-foreground">Extends the Dialog component to display content that complements the main content of the screen.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 flex gap-3">
+          <.button variant="outline" phx-click={ElixircnWeb.Components.UI.Sheet.show_sheet("demo-sheet-l", "left")}>
+            Left
+          </.button>
+          <.button variant="outline" phx-click={ElixircnWeb.Components.UI.Sheet.show_sheet("demo-sheet-r", "right")}>
+            Right
+          </.button>
+          <.sheet id="demo-sheet-r" side="right">
+            <.sheet_content>
+              <.sheet_header>
+                <.sheet_title>Edit profile</.sheet_title>
+                <.sheet_description>Make changes to your profile here. Click save when you're done.</.sheet_description>
+              </.sheet_header>
+              <div class="py-4 space-y-4">
+                <.field id="sheet-name" label="Name">
+                  <.input id="sheet-name" value="Pedro Duarte" />
+                </.field>
+                <.field id="sheet-username" label="Username">
+                  <.input id="sheet-username" value="@peduarte" />
+                </.field>
+              </div>
+              <.sheet_footer>
+                <.button phx-click={ElixircnWeb.Components.UI.Sheet.hide_sheet("demo-sheet-r", "right")}>Save changes</.button>
+              </.sheet_footer>
+            </.sheet_content>
+          </.sheet>
+          <.sheet id="demo-sheet-l" side="left">
+            <.sheet_content>
+              <.sheet_header>
+                <.sheet_title>Navigation</.sheet_title>
+              </.sheet_header>
+              <div class="py-4">
+                <p class="text-sm text-muted-foreground">Sidebar navigation content here.</p>
+              </div>
+            </.sheet_content>
+          </.sheet>
+        </div>
+      </div>
+
+      <%!-- DRAWER --%>
+      <div :if={@active_component == "drawer"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Drawer</h1>
+          <p class="mt-2 text-muted-foreground">A drawer component for React.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.button variant="outline" phx-click={ElixircnWeb.Components.UI.Drawer.show_drawer("demo-drawer")}>
+            Open Drawer
+          </.button>
+          <.drawer id="demo-drawer">
+            <.drawer_header>
+              <.drawer_title>Move Goal</.drawer_title>
+              <.drawer_description>Set your daily activity goal.</.drawer_description>
+            </.drawer_header>
+            <div class="p-4 space-y-4">
+              <.progress value={65} />
+              <p class="text-center text-sm text-muted-foreground">65 / 100 steps</p>
+            </div>
+            <.drawer_footer>
+              <.button phx-click={ElixircnWeb.Components.UI.Drawer.hide_drawer("demo-drawer")}>Submit</.button>
+              <.button variant="outline" phx-click={ElixircnWeb.Components.UI.Drawer.hide_drawer("demo-drawer")}>Cancel</.button>
+            </.drawer_footer>
+          </.drawer>
+        </div>
+      </div>
+
+      <%!-- POPOVER --%>
+      <div :if={@active_component == "popover"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Popover</h1>
+          <p class="mt-2 text-muted-foreground">Displays rich content in a portal, triggered by a button.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.popover id="demo-popover">
+            <:trigger>
+              <.button variant="outline">Open popover</.button>
+            </:trigger>
+            <div class="space-y-2">
+              <h4 class="font-medium leading-none">Dimensions</h4>
+              <p class="text-sm text-muted-foreground">Set the dimensions for the layer.</p>
+              <div class="grid gap-2">
+                <.field id="pop-width" label="Width">
+                  <.input id="pop-width" value="100%" />
+                </.field>
+                <.field id="pop-height" label="Height">
+                  <.input id="pop-height" placeholder="25px" />
+                </.field>
+              </div>
+            </div>
+          </.popover>
+        </div>
+      </div>
+
+      <%!-- HOVER CARD --%>
+      <div :if={@active_component == "hover-card"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Hover Card</h1>
+          <p class="mt-2 text-muted-foreground">For sighted users to preview content available behind a link.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.hover_card id="demo-hover-card">
+            <:trigger>
+              <a href="#" class="text-sm font-medium underline underline-offset-4">@nextjs</a>
+            </:trigger>
+            <div class="flex justify-between space-x-4">
+              <div class="h-10 w-10 rounded-full bg-muted flex items-center justify-center font-bold">N</div>
+              <div class="space-y-1">
+                <h4 class="text-sm font-semibold">@nextjs</h4>
+                <p class="text-sm">The React Framework — created and maintained by @vercel.</p>
+                <div class="flex items-center pt-2">
+                  <span class="text-xs text-muted-foreground">Joined December 2021</span>
+                </div>
+              </div>
+            </div>
+          </.hover_card>
+        </div>
+      </div>
+
+      <%!-- DROPDOWN MENU --%>
+      <div :if={@active_component == "dropdown-menu"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Dropdown Menu</h1>
+          <p class="mt-2 text-muted-foreground">Displays a menu to the user—such as a set of actions or functions—triggered by a button.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.dropdown_menu id="demo-dropdown">
+            <:trigger>
+              <.button variant="outline">Open</.button>
+            </:trigger>
+            <.dropdown_menu_label>My Account</.dropdown_menu_label>
+            <.dropdown_menu_separator />
+            <.dropdown_menu_group>
+              <.dropdown_menu_item>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Profile
+              </.dropdown_menu_item>
+              <.dropdown_menu_item>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                Settings
+              </.dropdown_menu_item>
+            </.dropdown_menu_group>
+            <.dropdown_menu_separator />
+            <.dropdown_menu_item>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+              Log out
+            </.dropdown_menu_item>
+          </.dropdown_menu>
+        </div>
+      </div>
+
+      <%!-- CONTEXT MENU --%>
+      <div :if={@active_component == "context-menu"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Context Menu</h1>
+          <p class="mt-2 text-muted-foreground">Displays a menu to the user — such as a set of actions or functions — triggered by right click.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.context_menu id="demo-context">
+            <:trigger>
+              <div class="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed border-muted-foreground text-sm text-muted-foreground select-none">
+                Right click here
+              </div>
+            </:trigger>
+            <.context_menu_label>My Workspace</.context_menu_label>
+            <.context_menu_separator />
+            <.context_menu_item>Back</.context_menu_item>
+            <.context_menu_item>Forward</.context_menu_item>
+            <.context_menu_item>Reload</.context_menu_item>
+            <.context_menu_separator />
+            <.context_menu_item>Inspect Element</.context_menu_item>
+          </.context_menu>
+        </div>
+      </div>
+
+      <%!-- TOOLTIP --%>
+      <div :if={@active_component == "tooltip"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Tooltip</h1>
+          <p class="mt-2 text-muted-foreground">A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <div class="flex gap-4">
+            <.tooltip id="tt-top" content="Add to library" side="top">
+              <.button variant="outline">Top</.button>
+            </.tooltip>
+            <.tooltip id="tt-right" content="Add to library" side="right">
+              <.button variant="outline">Right</.button>
+            </.tooltip>
+            <.tooltip id="tt-bottom" content="Add to library" side="bottom">
+              <.button variant="outline">Bottom</.button>
+            </.tooltip>
+            <.tooltip id="tt-left" content="Add to library" side="left">
+              <.button variant="outline">Left</.button>
+            </.tooltip>
+          </div>
+        </div>
+      </div>
+
+      <%!-- TOAST --%>
+      <div :if={@active_component == "toast"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Toast</h1>
+          <p class="mt-2 text-muted-foreground">A succinct message that is displayed temporarily.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <div class="flex flex-wrap gap-3">
+            <.button
+              variant="outline"
+              phx-click="show_toast"
+              phx-value-title="Scheduled: Catch up"
+              phx-value-description="Friday, February 10, 2023 at 5:57 PM"
+            >
+              Show Toast
+            </.button>
+            <.button
+              variant="outline"
+              phx-click="show_toast"
+              phx-value-title="Uh oh! Something went wrong."
+              phx-value-description="There was a problem with your request."
+              phx-value-variant="destructive"
+            >
+              Destructive
+            </.button>
+          </div>
+        </div>
+      </div>
+
+      <%!-- SONNER --%>
+
+      <%!-- ACCORDION --%>
+      <div :if={@active_component == "accordion"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Accordion</h1>
+          <p class="mt-2 text-muted-foreground">A vertically stacked set of interactive headings that each reveal a section of content.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.accordion id="demo-accordion">
+            <.accordion_item value="item-1" accordion_id="demo-accordion">
+              <.accordion_trigger value="item-1" accordion_id="demo-accordion" open>Is it accessible?</.accordion_trigger>
+              <.accordion_content value="item-1" accordion_id="demo-accordion" open>
+                Yes. It adheres to the WAI-ARIA design pattern.
+              </.accordion_content>
+            </.accordion_item>
+            <.accordion_item value="item-2" accordion_id="demo-accordion">
+              <.accordion_trigger value="item-2" accordion_id="demo-accordion">Is it styled?</.accordion_trigger>
+              <.accordion_content value="item-2" accordion_id="demo-accordion">
+                Yes. It comes with default styles that match the other components' aesthetic.
+              </.accordion_content>
+            </.accordion_item>
+            <.accordion_item value="item-3" accordion_id="demo-accordion">
+              <.accordion_trigger value="item-3" accordion_id="demo-accordion">Is it animated?</.accordion_trigger>
+              <.accordion_content value="item-3" accordion_id="demo-accordion">
+                Yes. It uses Phoenix LiveView.JS for smooth open/close transitions.
+              </.accordion_content>
+            </.accordion_item>
+          </.accordion>
+        </div>
+      </div>
+
+      <%!-- COLLAPSIBLE --%>
+      <div :if={@active_component == "collapsible"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Collapsible</h1>
+          <p class="mt-2 text-muted-foreground">An interactive component which expands/collapses a panel.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.collapsible id="demo-collapsible" open={@collapsible_open}>
+            <div class="flex items-center justify-between space-x-4 px-4">
+              <h4 class="text-sm font-semibold">@peduarte starred 3 repositories</h4>
+              <.collapsible_trigger collapsible_id="demo-collapsible" open={@collapsible_open}>
+                <.button phx-click="toggle_collapsible" size="icon" variant="ghost">
+                  <svg :if={!@collapsible_open} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
+                  <svg :if={@collapsible_open} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="m7 4 5 5 5-5"/><path d="m7 20 5-5 5 5"/></svg>
+                </.button>
+              </.collapsible_trigger>
+            </div>
+            <div class="rounded-md border px-4 py-3 font-mono text-sm mt-2">@radix-ui/primitives</div>
+            <.collapsible_content collapsible_id="demo-collapsible" open={@collapsible_open}>
+              <div class="rounded-md border px-4 py-3 font-mono text-sm mt-2">@radix-ui/colors</div>
+              <div class="rounded-md border px-4 py-3 font-mono text-sm mt-2">@stitches/react</div>
+            </.collapsible_content>
+          </.collapsible>
+        </div>
+      </div>
+
+      <%!-- CAROUSEL --%>
+      <div :if={@active_component == "carousel"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Carousel</h1>
+          <p class="mt-2 text-muted-foreground">A carousel with motion and swipe built using a JS hook.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 flex justify-center">
+          <div class="relative w-full max-w-sm px-10">
+            <.carousel id="demo-carousel">
+              <.carousel_content>
+                <.carousel_item>
+                  <.card>
+                    <.card_content class="flex aspect-square items-center justify-center p-6">
+                      <span class="text-4xl font-semibold">1</span>
+                    </.card_content>
+                  </.card>
+                </.carousel_item>
+                <.carousel_item>
+                  <.card>
+                    <.card_content class="flex aspect-square items-center justify-center p-6">
+                      <span class="text-4xl font-semibold">2</span>
+                    </.card_content>
+                  </.card>
+                </.carousel_item>
+                <.carousel_item>
+                  <.card>
+                    <.card_content class="flex aspect-square items-center justify-center p-6">
+                      <span class="text-4xl font-semibold">3</span>
+                    </.card_content>
+                  </.card>
+                </.carousel_item>
+              </.carousel_content>
+              <.carousel_previous carousel_id="demo-carousel" />
+              <.carousel_next carousel_id="demo-carousel" />
+            </.carousel>
+          </div>
+        </div>
+      </div>
+
+      <%!-- COMMAND --%>
+      <div :if={@active_component == "command"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Command</h1>
+          <p class="mt-2 text-muted-foreground">Fast, composable, unstyled command menu for Elixir.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 flex justify-center">
+          <div class="rounded-lg border shadow-md w-[450px]">
+            <.command>
+              <.command_input placeholder="Type a command or search..." />
+              <.command_list>
+                <.command_empty />
+                <.command_group heading="Suggestions">
+                  <.command_item shortcut="⌘T">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Team
+                  </.command_item>
+                  <.command_item shortcut="⌘N">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    New Team
+                  </.command_item>
+                </.command_group>
+                <.command_separator />
+                <.command_group heading="Settings">
+                  <.command_item shortcut="⌘,">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    Settings
+                  </.command_item>
+                  <.command_item>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    Help
+                  </.command_item>
+                </.command_group>
+              </.command_list>
+            </.command>
+          </div>
+        </div>
+      </div>
+
+      <%!-- EMPTY STATE --%>
+      <div :if={@active_component == "empty"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Empty State</h1>
+          <p class="mt-2 text-muted-foreground">Display an empty state when there is no content to show.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.empty>
+            <:icon>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-10 w-10"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </:icon>
+            <:title>No documents found</:title>
+            <:description>You don't have any documents yet. Create one to get started.</:description>
+            <:action>
+              <.button>Create document</.button>
+            </:action>
+          </.empty>
+        </div>
+      </div>
+
+      <%!-- ITEM --%>
+      <div :if={@active_component == "item"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Item</h1>
+          <p class="mt-2 text-muted-foreground">A versatile component for displaying content with media and actions.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <.item>
+            <:media>
+              <.avatar fallback="JD" alt="Jane Doe" />
+            </:media>
+            <:content>
+              <p class="text-sm font-medium">Jane Doe</p>
+              <p class="text-xs text-muted-foreground">jane@example.com</p>
+            </:content>
+            <:action>
+              <.badge variant="secondary">Admin</.badge>
+            </:action>
+          </.item>
+          <.separator />
+          <.item>
+            <:media>
+              <.avatar fallback="JS" alt="John Smith" />
+            </:media>
+            <:content>
+              <p class="text-sm font-medium">John Smith</p>
+              <p class="text-xs text-muted-foreground">john@example.com</p>
+            </:content>
+            <:action>
+              <.badge>User</.badge>
+            </:action>
+          </.item>
+        </div>
+      </div>
+
+      <%!-- DIRECTION --%>
+      <div :if={@active_component == "direction"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Direction</h1>
+          <p class="mt-2 text-muted-foreground">Provider component that sets the text direction for child content.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8 space-y-4">
+          <.direction dir="ltr">
+            <p class="text-sm">Left-to-right: The quick brown fox jumps over the lazy dog.</p>
+          </.direction>
+          <.direction dir="rtl">
+            <p class="text-sm">Right-to-left: مرحبا بالعالم — Hello World in Arabic.</p>
+          </.direction>
+        </div>
+      </div>
+
+      <%!-- SCROLL AREA --%>
+      <div :if={@active_component == "scroll-area"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Scroll Area</h1>
+          <p class="mt-2 text-muted-foreground">Augments native scroll functionality for custom, cross-browser styling.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.scroll_area class="h-[200px] w-[350px] rounded-md border p-4">
+            <h4 class="mb-4 text-sm font-medium leading-none">Tags</h4>
+            <div :for={tag <- ["v1.2.0-beta.50", "v1.2.0-beta.49", "v1.2.0-beta.48", "v1.2.0-beta.47", "v1.2.0-beta.46", "v1.2.0-beta.45", "v1.2.0-beta.44", "v1.2.0-beta.43", "v1.2.0-beta.42", "v1.2.0-beta.41"]} class="text-sm">
+              {tag}
+              <.separator class="my-2" />
+            </div>
+          </.scroll_area>
+        </div>
+      </div>
+
+      <%!-- RESIZABLE --%>
+      <div :if={@active_component == "resizable"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Resizable</h1>
+          <p class="mt-2 text-muted-foreground">Accessible resizable panel groups and layouts with keyboard support.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <.resizable_panel_group id="demo-resizable" direction="horizontal" class="max-w-md rounded-lg border h-[200px]">
+            <.resizable_panel id="panel-1" default_size={50}>
+              <div class="flex h-full items-center justify-center p-6">
+                <span class="font-semibold text-sm">One</span>
+              </div>
+            </.resizable_panel>
+            <.resizable_handle />
+            <.resizable_panel id="panel-2" default_size={50}>
+              <div class="flex h-full items-center justify-center p-6">
+                <span class="font-semibold text-sm">Two</span>
+              </div>
+            </.resizable_panel>
+          </.resizable_panel_group>
+        </div>
+      </div>
+
+      <%!-- ASPECT RATIO --%>
+      <div :if={@active_component == "aspect-ratio"} class="space-y-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Aspect Ratio</h1>
+          <p class="mt-2 text-muted-foreground">Displays content within a desired ratio.</p>
+        </div>
+        <div class="rounded-lg border bg-card p-8">
+          <div class="w-[300px]">
+            <.aspect_ratio ratio={16/9}>
+              <div class="flex h-full w-full items-center justify-center rounded-md bg-muted text-sm text-muted-foreground">
+                16:9
+              </div>
+            </.aspect_ratio>
+          </div>
+        </div>
+      </div>
+
+      <%!-- Code snippet block — updates automatically when active_component changes --%>
+      <div class="rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-950">
+        <div class="flex items-center justify-between border-b border-zinc-800 px-4 py-2.5">
+          <span class="font-mono text-xs text-zinc-500">heex</span>
+          <button
+            id="copy-code-btn"
+            type="button"
+            phx-hook="CopyCode"
+            data-target="showcase-code"
+            class="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-600"
+          >
+            <%!-- Copy icon --%>
+            <svg data-copy-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-3.5 w-3.5">
+              <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+            </svg>
+            <%!-- Check icon (shown after copy) --%>
+            <svg data-check-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-3.5 w-3.5 hidden">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Copy
+          </button>
+        </div>
+        <pre id="showcase-code" class="overflow-x-auto p-5 text-sm leading-relaxed text-zinc-100"><code>{@code_snippet}</code></pre>
+      </div>
+
+    </div>
+  </main>
+</div>
