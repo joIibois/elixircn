@@ -130,12 +130,14 @@ defmodule ElixircnWeb.ShowcaseLive do
 
   def handle_event("show_toast", params, socket) do
     id = "toast-#{System.unique_integer([:positive])}"
+
     toast = %{
       id: id,
       title: Map.get(params, "title", "Notification"),
       description: Map.get(params, "description"),
       variant: Map.get(params, "variant")
     }
+
     Process.send_after(self(), {:dismiss_toast, id}, 4000)
     {:noreply, assign(socket, :toasts, [toast | socket.assigns.toasts])}
   end
@@ -172,5 +174,4 @@ defmodule ElixircnWeb.ShowcaseLive do
 
   defp next_month(year, 12), do: {year + 1, 1}
   defp next_month(year, month), do: {year, month + 1}
-
 end

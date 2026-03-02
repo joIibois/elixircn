@@ -1,40 +1,45 @@
 defmodule ElixircnWeb.Components.UI.NavigationMenu do
+  @moduledoc "Provides a navigation menu component with list items, triggers, content panels, and links."
   use Phoenix.Component
   import ElixircnWeb.Components.UI.Icon
+  import ElixircnWeb.Components.UI.Utils
   alias Phoenix.LiveView.JS
 
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  @doc "Renders the root navigation menu container as a nav element."
   def navigation_menu(assigns) do
     ~H"""
-    <nav class={["relative z-10 flex max-w-max flex-1 items-center justify-center", @class]} {@rest}>
+    <nav class={cn(["relative z-10 flex max-w-max flex-1 items-center justify-center", @class])} {@rest}>
       {render_slot(@inner_block)}
     </nav>
     """
   end
 
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  @doc "Renders an unordered list of navigation menu items."
   def navigation_menu_list(assigns) do
     ~H"""
-    <ul class={["group flex flex-1 list-none items-center justify-center space-x-1", @class]} {@rest}>
+    <ul class={cn(["group flex flex-1 list-none items-center justify-center space-x-1", @class])} {@rest}>
       {render_slot(@inner_block)}
     </ul>
     """
   end
 
   attr :id, :string, required: true
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  @doc "Renders a navigation menu list item with a backdrop for closing open content panels."
   def navigation_menu_item(assigns) do
     ~H"""
-    <li id={@id} class={["relative", @class]} {@rest}>
+    <li id={@id} class={cn(["relative", @class])} {@rest}>
       <div
         id={"#{@id}-backdrop"}
         class="hidden fixed inset-0 z-40"
@@ -50,25 +55,31 @@ defmodule ElixircnWeb.Components.UI.NavigationMenu do
   end
 
   attr :item_id, :string, required: true
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  @doc "Renders a trigger button that toggles the associated navigation menu content panel."
   def navigation_menu_trigger(assigns) do
     ~H"""
     <button
+      id={"#{@item_id}-trigger"}
       type="button"
+      aria-expanded="false"
       phx-click={
-        JS.toggle(to: "##{@item_id}-content",
+        JS.toggle(
+          to: "##{@item_id}-content",
           in: {"ease-out duration-150", "opacity-0 scale-95", "opacity-100 scale-100"},
           out: {"ease-in duration-100", "opacity-100 scale-100", "opacity-0 scale-95"},
-          time: 150)
+          time: 150
+        )
         |> JS.toggle(to: "##{@item_id}-backdrop")
+        |> JS.toggle_attribute({"aria-expanded", "true", "false"}, to: "##{@item_id}-trigger")
       }
-      class={[
+      class={cn([
         "group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
         @class
-      ]}
+      ])}
       {@rest}
     >
       {render_slot(@inner_block)}
@@ -78,15 +89,19 @@ defmodule ElixircnWeb.Components.UI.NavigationMenu do
   end
 
   attr :item_id, :string, required: true
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  @doc "Renders the dropdown content panel for a navigation menu item."
   def navigation_menu_content(assigns) do
     ~H"""
     <div
       id={"#{@item_id}-content"}
-      class={["hidden absolute left-0 top-full z-50 w-auto rounded-md border bg-popover text-popover-foreground shadow-lg p-2", @class]}
+      class={cn([
+        "hidden absolute left-0 top-full z-50 w-auto rounded-md border bg-popover text-popover-foreground shadow-lg p-2",
+        @class
+      ])}
       {@rest}
     >
       {render_slot(@inner_block)}
@@ -97,16 +112,20 @@ defmodule ElixircnWeb.Components.UI.NavigationMenu do
   attr :href, :string, default: nil
   attr :navigate, :string, default: nil
   attr :title, :string, required: true
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block
 
+  @doc "Renders a styled navigation link with a title and optional description content."
   def navigation_menu_link(assigns) do
     ~H"""
     <.link
       href={@href}
       navigate={@navigate}
-      class={["block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground", @class]}
+      class={cn([
+        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+        @class
+      ])}
       {@rest}
     >
       <div class="text-sm font-medium leading-none">{@title}</div>

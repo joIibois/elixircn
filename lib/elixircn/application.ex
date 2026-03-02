@@ -11,8 +11,7 @@ defmodule Elixircn.Application do
       ElixircnWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:elixircn, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Elixircn.PubSub},
-      # Start a worker by calling: Elixircn.Worker.start_link(arg)
-      # {Elixircn.Worker, arg},
+      {TwMerge.Cache, []},
       # Start to serve requests, typically the last entry
       ElixircnWeb.Endpoint
     ]

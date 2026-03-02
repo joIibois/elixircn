@@ -14,6 +14,7 @@ Components are distributed via a shadcn-compatible registry. You copy exactly wh
 
 - Phoenix LiveView app
 - [Tailwind v4](https://tailwindcss.com/blog/tailwindcss-v4) configured (CSS-first, no `tailwind.config.js`)
+- [`tw_merge`](https://github.com/bluzky/tw_merge) — Tailwind class conflict resolution (see below)
 - `shadcn` CLI: `npm install -g shadcn@latest` (or use `npx`)
 
 ### Add a component
@@ -40,6 +41,35 @@ end
 ```
 
 Now `<.button>` is available in all your templates and LiveViews without any per-file imports.
+
+---
+
+## Tailwind Merge
+
+Components use a `cn()` utility (the Elixir equivalent of shadcn/ui's `cn()`) to merge Tailwind classes with conflict resolution. This is powered by [`tw_merge`](https://github.com/bluzky/tw_merge).
+
+Add the dependency to your `mix.exs`:
+
+```elixir
+defp deps do
+  [
+    {:tw_merge, "~> 0.1"},
+    # ...
+  ]
+end
+```
+
+Then run `mix deps.get`.
+
+The `cn()` function is installed automatically as `utils.ex` when you add your first component via the registry. It handles class merging so that later classes override earlier ones when they target the same CSS property:
+
+```elixir
+cn(["px-4 py-2", "px-6"])
+#=> "py-2 px-6"
+
+cn(["bg-red-500", condition && "bg-blue-500", @class])
+#=> merges with conflict resolution, filters out falsy values
+```
 
 ---
 

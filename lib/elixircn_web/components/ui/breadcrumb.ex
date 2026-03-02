@@ -1,12 +1,21 @@
 defmodule ElixircnWeb.Components.UI.Breadcrumb do
+  @moduledoc """
+  Breadcrumb navigation components for showing the current page hierarchy.
+
+  Provides `breadcrumb/1`, `breadcrumb_item/1`, `breadcrumb_link/1`,
+  `breadcrumb_page/1`, `breadcrumb_separator/1`, `breadcrumb_ellipsis/1`,
+  and `breadcrumb_ellipsis_item/1`.
+  """
   use Phoenix.Component
   import ElixircnWeb.Components.UI.Icon
+  import ElixircnWeb.Components.UI.Utils
   alias Phoenix.LiveView.JS
 
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  @doc "Renders the breadcrumb `<nav>` wrapper with an ordered list inside."
   def breadcrumb(assigns) do
     ~H"""
     <nav aria-label="breadcrumb" class={@class} {@rest}>
@@ -17,13 +26,14 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
     """
   end
 
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  @doc "Renders a single `<li>` item within a breadcrumb list."
   def breadcrumb_item(assigns) do
     ~H"""
-    <li class={["inline-flex items-center gap-1.5", @class]} {@rest}>
+    <li class={cn(["inline-flex items-center gap-1.5", @class])} {@rest}>
       {render_slot(@inner_block)}
     </li>
     """
@@ -31,16 +41,17 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
 
   attr :href, :string, default: nil
   attr :navigate, :string, default: nil
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  @doc "Renders a breadcrumb link for non-current trail pages."
   def breadcrumb_link(assigns) do
     ~H"""
     <.link
       href={@href}
       navigate={@navigate}
-      class={["transition-colors hover:text-foreground", @class]}
+      class={cn(["transition-colors hover:text-foreground", @class])}
       {@rest}
     >
       {render_slot(@inner_block)}
@@ -48,17 +59,22 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
     """
   end
 
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  @doc """
+  Renders the current page breadcrumb item (non-interactive).
+
+  Uses `aria-current="page"` to identify the active page to assistive
+  technology. Does not use `role="link"` or `aria-disabled`, since this
+  element is intentionally non-interactive.
+  """
   def breadcrumb_page(assigns) do
     ~H"""
     <span
-      role="link"
-      aria-disabled="true"
       aria-current="page"
-      class={["font-normal text-foreground", @class]}
+      class={cn(["font-normal text-foreground", @class])}
       {@rest}
     >
       {render_slot(@inner_block)}
@@ -66,15 +82,16 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
     """
   end
 
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
 
+  @doc "Renders a decorative separator between breadcrumb items."
   def breadcrumb_separator(assigns) do
     ~H"""
     <li
       role="presentation"
       aria-hidden="true"
-      class={["[&>svg]:size-3.5", @class]}
+      class={cn(["[&>svg]:size-3.5", @class])}
       {@rest}
     >
       <.icon name="chevron-right" class="h-3.5 w-3.5" />
@@ -83,23 +100,32 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
   end
 
   attr :id, :string, default: nil
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block
 
+  @doc """
+  Renders a `…` ellipsis button that toggles a dropdown of hidden trail items.
+
+  Provide `id` and populate `:inner_block` with `breadcrumb_ellipsis_item/1`
+  components to enable the dropdown. Without an `id` the ellipsis is rendered
+  as a non-interactive presentation element.
+  """
   def breadcrumb_ellipsis(assigns) do
     ~H"""
-    <span class={["relative flex items-center", @class]} {@rest}>
+    <span class={cn(["relative flex items-center", @class])} {@rest}>
       <button
         :if={@inner_block != [] && @id}
         id={"#{@id}-trigger"}
         type="button"
         data-state="closed"
         phx-click={
-          JS.toggle(to: "##{@id}-dropdown",
+          JS.toggle(
+            to: "##{@id}-dropdown",
             in: {"ease-out duration-150", "opacity-0 scale-95", "opacity-100 scale-100"},
             out: {"ease-in duration-100", "opacity-100 scale-100", "opacity-0 scale-95"},
-            time: 150)
+            time: 150
+          )
           |> JS.toggle(to: "##{@id}-backdrop")
           |> JS.toggle_attribute({"data-state", "open", "closed"})
         }
@@ -142,16 +168,20 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
 
   attr :href, :string, default: "#"
   attr :navigate, :string, default: nil
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  @doc "Renders a link item inside a `breadcrumb_ellipsis/1` dropdown."
   def breadcrumb_ellipsis_item(assigns) do
     ~H"""
     <.link
       href={@href}
       navigate={@navigate}
-      class={["block rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground outline-none", @class]}
+      class={cn([
+        "block rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground outline-none",
+        @class
+      ])}
       {@rest}
     >
       {render_slot(@inner_block)}

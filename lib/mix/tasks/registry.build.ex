@@ -8,41 +8,44 @@ defmodule Mix.Tasks.Registry.Build do
   @output_dir "docs/r"
   @components_dir "lib/elixircn_web/components/ui"
 
-  # Components that depend on other registry items
+  # Components that depend on other registry items (only real code imports)
   @dependencies %{
-    "accordion"        => ["icon"],
-    "alert-dialog"     => ["button"],
-    "breadcrumb"       => ["icon"],
-    "button-group"     => ["button"],
-    "calendar"         => ["icon"],
-    "carousel"         => ["icon"],
-    "combobox"         => ["icon"],
-    "command"          => ["icon"],
-    "data-table"       => ["table", "button"],
-    "date-picker"      => ["calendar", "icon"],
-    "field"            => ["label", "input"],
-    "input-group"      => ["input"],
-    "navigation-menu"  => ["icon"],
-    "pagination"       => ["icon"],
-    "resizable"        => ["icon"],
-    "select"           => ["icon"],
-    "toast"            => ["icon"],
-    "toggle-group"     => ["toggle"]
+    "accordion" => ["icon"],
+    "alert-dialog" => ["button"],
+    "breadcrumb" => ["icon"],
+    "button-group" => ["button"],
+    "calendar" => ["icon"],
+    "carousel" => ["icon"],
+    "combobox" => ["icon"],
+    "command" => ["icon"],
+    "data-table" => ["table"],
+    "date-picker" => ["calendar", "icon"],
+    "input-group" => ["input"],
+    "navigation-menu" => ["icon"],
+    "pagination" => ["icon"],
+    "resizable" => ["icon"],
+    "select" => ["icon"],
+    "toast" => ["icon"],
+    "toggle-group" => ["toggle"]
   }
 
   # Components that require a JS hook in app.js
   @js_hooks %{
-    "carousel"     => "Carousel",
-    "combobox"     => "ComboboxFilter",
+    "avatar" => "AvatarFallback",
+    "carousel" => "Carousel",
+    "combobox" => "ComboboxFilter",
     "context-menu" => "ContextMenu",
-    "input-otp"    => "InputOtp",
-    "resizable"    => "Resizable"
+    "input-otp" => "InputOtp",
+    "resizable" => "Resizable",
+    "select" => "SelectLabel",
+    "tabs" => "Tabs",
+    "toast" => "Toast"
   }
 
   # Manual title overrides for acronyms and special casing
   @title_overrides %{
     "input-otp" => "Input OTP",
-    "kbd"       => "KBD"
+    "kbd" => "KBD"
   }
 
   @impl Mix.Task
@@ -73,9 +76,9 @@ defmodule Mix.Tasks.Registry.Build do
     # Write registry.json index (files without content — just path/type/target)
     registry = %{
       "$schema" => "https://ui.shadcn.com/schema/registry.json",
-      "name"     => @registry_name,
+      "name" => @registry_name,
       "homepage" => @homepage,
-      "items"    => Enum.map(items, &strip_content/1)
+      "items" => Enum.map(items, &strip_content/1)
     }
 
     registry_path = Path.join(@output_dir, "registry.json")
@@ -87,24 +90,36 @@ defmodule Mix.Tasks.Registry.Build do
   end
 
   defp build_item(filename) do
-    name    = filename_to_name(filename)
-    title   = Map.get(@title_overrides, name, default_title(name))
-    content = build_content(filename)
-    deps    = Map.get(@dependencies, name, [])
-    docs    = build_docs(name, title)
+    name = filename_to_name(filename)
+    title = Map.get(@title_overrides, name, default_title(name))
+    module = filename_to_module(filename)
+    raw_content = File.read!(Path.join(@components_dir, filename))
+    content = String.replace(raw_content, "ElixircnWeb", "MyAppWeb")
+
+    # Auto-detect utils dependency from source imports
+    deps = Map.get(@dependencies, name, [])
+
+    deps =
+      if name != "utils" && String.contains?(raw_content, "import ElixircnWeb.Components.UI.Utils") do
+        Enum.uniq(["utils" | deps])
+      else
+        deps
+      end
+
+    docs = build_docs(name, module)
 
     %{
-      "name"                   => name,
-      "type"                   => "registry:item",
-      "title"                  => title,
-      "description"            => "A Phoenix LiveView #{title} component.",
-      "docs"                   => docs,
-      "registryDependencies"   => deps,
-      "files"                  => [
+      "name" => name,
+      "type" => "registry:item",
+      "title" => title,
+      "description" => "A Phoenix LiveView #{title} component.",
+      "docs" => docs,
+      "registryDependencies" => deps,
+      "files" => [
         %{
-          "path"    => "registry/#{filename}",
-          "type"    => "registry:file",
-          "target"  => "lib/my_app_web/components/ui/#{filename}",
+          "path" => "registry/#{filename}",
+          "type" => "registry:file",
+          "target" => "lib/my_app_web/components/ui/#{filename}",
           "content" => content
         }
       ]
@@ -117,6 +132,12 @@ defmodule Mix.Tasks.Registry.Build do
     |> String.replace("_", "-")
   end
 
+  defp filename_to_module(filename) do
+    filename
+    |> String.replace_suffix(".ex", "")
+    |> Macro.camelize()
+  end
+
   defp default_title(name) do
     name
     |> String.split("-")
@@ -124,22 +145,26 @@ defmodule Mix.Tasks.Registry.Build do
     |> Enum.join(" ")
   end
 
-  defp build_content(filename) do
-    Path.join(@components_dir, filename)
-    |> File.read!()
-    |> String.replace("ElixircnWeb", "MyAppWeb")
-  end
+  defp build_docs(name, module) do
+    base =
+      if name == "utils" do
+        """
+        This is a shared utility module used by most components for Tailwind CSS class merging.
 
-  defp build_docs(name, title) do
-    module = String.replace(title, " ", "")
+        Add `{:tw_merge, "~> 0.1"}` to your `mix.exs` deps, then run `mix deps.get`.
 
-    base = """
-    Add to the `html_helpers` function in your `my_app_web.ex`:
+        Place this file at `lib/my_app_web/components/ui/utils.ex`.
+        Replace `MyAppWeb` with your application's module prefix.\
+        """
+      else
+        """
+        Add to the `html_helpers` function in your `my_app_web.ex`:
 
-        import MyAppWeb.Components.UI.#{module}
+            import MyAppWeb.Components.UI.#{module}
 
-    Replace `MyAppWeb` with your application's module prefix.\
-    """
+        Replace `MyAppWeb` with your application's module prefix.\
+        """
+      end
 
     case Map.get(@js_hooks, name) do
       nil ->

@@ -1,7 +1,9 @@
 defmodule ElixircnWeb.Components.UI.Empty do
+  @moduledoc "Provides an empty state component for displaying placeholder content when no data is present."
   use Phoenix.Component
+  import ElixircnWeb.Components.UI.Utils
 
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
 
   slot :icon
@@ -9,10 +11,11 @@ defmodule ElixircnWeb.Components.UI.Empty do
   slot :description
   slot :action
 
+  @doc "Renders a centered empty state with optional icon, title, description, and action slots."
   def empty(assigns) do
     ~H"""
     <div
-      class={["flex flex-col items-center justify-center py-12 text-center", @class]}
+      class={cn(["flex flex-col items-center justify-center py-12 text-center", @class])}
       {@rest}
     >
       <div :if={@icon != []} class="mb-4 text-muted-foreground">

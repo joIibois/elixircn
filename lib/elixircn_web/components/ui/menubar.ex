@@ -1,18 +1,25 @@
 defmodule ElixircnWeb.Components.UI.Menubar do
+  @moduledoc "Provides a horizontal menubar component with dropdown menus, items, separators, and labels."
   use Phoenix.Component
   alias Phoenix.LiveView.JS
+  import ElixircnWeb.Components.UI.Utils
 
   attr :id, :string, required: true
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  @doc "Renders a horizontal menubar container with keyboard navigation support."
   def menubar(assigns) do
     ~H"""
     <div
       id={@id}
-      class={["relative flex h-9 items-center space-x-1 rounded-md border bg-background p-1 shadow-sm", @class]}
+      class={cn([
+        "relative flex h-9 items-center space-x-1 rounded-md border bg-background p-1 shadow-sm",
+        @class
+      ])}
       role="menubar"
+      phx-hook="MenubarNav"
       {@rest}
     >
       <div
@@ -28,18 +35,19 @@ defmodule ElixircnWeb.Components.UI.Menubar do
 
   attr :menubar_id, :string, required: true
   attr :value, :string, required: true
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :trigger, required: true
   slot :inner_block, required: true
 
+  @doc "Renders a menubar menu entry with a trigger button and a dropdown content panel."
   def menubar_menu(assigns) do
     ~H"""
-    <div id={"#{@menubar_id}-menu-#{@value}"} class={["relative", @class]}>
+    <div id={"#{@menubar_id}-menu-#{@value}"} class={cn(["relative", @class])}>
       <button
         type="button"
         role="menuitem"
-        aria-haspopup="true"
+        aria-haspopup="menu"
         phx-click={
           JS.hide(to: "##{@menubar_id} [role=menu]")
           |> JS.show(
@@ -58,6 +66,7 @@ defmodule ElixircnWeb.Components.UI.Menubar do
         id={"#{@menubar_id}-menu-#{@value}-content"}
         class="hidden absolute left-0 top-full z-50 min-w-[12rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
         role="menu"
+        phx-hook="Menu"
       >
         {render_slot(@inner_block)}
       </div>
@@ -65,21 +74,24 @@ defmodule ElixircnWeb.Components.UI.Menubar do
     """
   end
 
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :disabled, :boolean, default: false
   attr :shortcut, :string, default: nil
-  attr :rest, :global, include: ~w(phx-click phx-target)
+  attr :rest, :global, include: ~w(form name value data-confirm)
   slot :inner_block, required: true
 
+  @doc "Renders an individual menubar item with optional disabled state and keyboard shortcut display."
   def menubar_item(assigns) do
     ~H"""
     <div
       role="menuitem"
-      class={[
+      tabindex="-1"
+      aria-disabled={to_string(@disabled)}
+      class={cn([
         "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
         @disabled && "pointer-events-none opacity-50",
         @class
-      ]}
+      ])}
       {@rest}
     >
       {render_slot(@inner_block)}
@@ -90,22 +102,24 @@ defmodule ElixircnWeb.Components.UI.Menubar do
     """
   end
 
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
 
+  @doc "Renders a horizontal separator line within a menubar dropdown."
   def menubar_separator(assigns) do
     ~H"""
-    <div class={["-mx-1 my-1 h-px bg-muted", @class]} {@rest} />
+    <div class={cn(["-mx-1 my-1 h-px bg-muted", @class])} {@rest} />
     """
   end
 
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
+  @doc "Renders a label heading within a menubar dropdown section."
   def menubar_label(assigns) do
     ~H"""
-    <div class={["px-2 py-1.5 text-sm font-semibold", @class]} {@rest}>
+    <div class={cn(["px-2 py-1.5 text-sm font-semibold", @class])} {@rest}>
       {render_slot(@inner_block)}
     </div>
     """

@@ -13,7 +13,7 @@
     <%!-- Dark mode toggle --%>
     <button
       type="button"
-      phx-click={JS.toggle_attribute({"data-theme", "dark", "light"}, to: "html")}
+      onclick="(() => { const t = document.documentElement.getAttribute('data-theme'); const next = t === 'dark' ? 'light' : 'dark'; localStorage.setItem('phx:theme', next); document.documentElement.setAttribute('data-theme', next); })()"
       class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background text-sm hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
       title="Toggle dark mode"
     >
@@ -97,6 +97,7 @@
             <ul class="text-sm text-muted-foreground space-y-2 ml-4 list-disc">
               <li>Phoenix LiveView app</li>
               <li>Tailwind v4 configured (CSS-first, no <.inline_code>tailwind.config.js</.inline_code>)</li>
+              <li><a href="https://github.com/bluzky/tw_merge" target="_blank" class="font-medium underline underline-offset-4"><.inline_code>tw_merge</.inline_code></a> — Tailwind class conflict resolution (see below)</li>
               <li><.inline_code>shadcn</.inline_code> CLI: <.inline_code>npm install -g shadcn@latest</.inline_code> (or use <.inline_code>npx</.inline_code>)</li>
             </ul>
           </div>
@@ -121,6 +122,41 @@
 end</pre>
             </div>
             <p class="text-sm text-muted-foreground">Now <.inline_code>&lt;.button&gt;</.inline_code> is available in all your templates and LiveViews without any per-file imports.</p>
+          </div>
+        </div>
+
+        <.separator />
+
+        <div class="space-y-8">
+          <div>
+            <h2 class="text-xl font-semibold tracking-tight">Tailwind Merge</h2>
+            <p class="mt-2 text-sm text-muted-foreground">Components use a <.inline_code>cn()</.inline_code> utility (the Elixir equivalent of shadcn/ui's <.inline_code>cn()</.inline_code>) to merge Tailwind classes with conflict resolution. This is powered by <a href="https://github.com/bluzky/tw_merge" target="_blank" class="font-medium underline underline-offset-4">tw_merge</a>.</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-base font-medium">Add the dependency</h3>
+            <p class="text-sm text-muted-foreground">Add <.inline_code>tw_merge</.inline_code> to your <.inline_code>mix.exs</.inline_code>:</p>
+            <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
+              <pre>defp deps do
+  [
+    &#123;:tw_merge, "~> 0.1"&#125;,
+    # ...
+  ]
+end</pre>
+            </div>
+            <p class="text-sm text-muted-foreground">Then run <.inline_code>mix deps.get</.inline_code>.</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-base font-medium">How it works</h3>
+            <p class="text-sm text-muted-foreground">The <.inline_code>cn()</.inline_code> function is installed automatically as <.inline_code>utils.ex</.inline_code> when you add your first component via the registry. It handles class merging so that later classes override earlier ones when they target the same CSS property:</p>
+            <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
+              <pre>cn(["px-4 py-2", "px-6"])
+#=> "py-2 px-6"
+
+cn(["bg-red-500", condition && "bg-blue-500", @class])
+#=> merges with conflict resolution, filters out falsy values</pre>
+            </div>
           </div>
         </div>
 
@@ -307,9 +343,9 @@ end</pre>
           <div>
             <p class="text-xs text-muted-foreground mb-3">Image</p>
             <div class="flex items-end gap-4">
-              <.avatar src="https://github.com/shadcn.png" alt="shadcn" size="sm" />
-              <.avatar src="https://github.com/shadcn.png" alt="shadcn" />
-              <.avatar src="https://github.com/shadcn.png" alt="shadcn" size="lg" />
+              <.avatar src="/images/avatar.jpg" alt="avatar" size="sm" />
+              <.avatar src="/images/avatar.jpg" alt="avatar" />
+              <.avatar src="/images/avatar.jpg" alt="avatar" size="lg" />
             </div>
           </div>
           <div>
@@ -561,10 +597,10 @@ end</pre>
         </div>
         <div class="rounded-lg border bg-card p-8 space-y-4">
           <div class="flex gap-3">
-            <.toggle pressed>
+            <.toggle id="demo-toggle" pressed>
               Toggle
             </.toggle>
-            <.toggle variant="outline" disabled>Disabled</.toggle>
+            <.toggle id="demo-toggle-disabled" variant="outline" disabled>Disabled</.toggle>
           </div>
         </div>
       </div>
@@ -577,9 +613,9 @@ end</pre>
         </div>
         <div class="rounded-lg border bg-card p-8">
           <.toggle_group>
-            <.toggle>B</.toggle>
-            <.toggle pressed>I</.toggle>
-            <.toggle>U</.toggle>
+            <.toggle id="demo-toggle-bold">B</.toggle>
+            <.toggle id="demo-toggle-italic" pressed>I</.toggle>
+            <.toggle id="demo-toggle-underline">U</.toggle>
           </.toggle_group>
         </div>
       </div>
@@ -653,6 +689,7 @@ end</pre>
           <.combobox
             id="framework-combobox"
             value={@combobox_value}
+            on_select="combobox_select"
             placeholder="Select framework..."
             search_placeholder="Search framework..."
             options={[
@@ -679,6 +716,9 @@ end</pre>
             selected={@calendar_selected}
             month={@calendar_month}
             year={@calendar_year}
+            on_select="date_picker_select"
+            on_prev="date_picker_prev"
+            on_next="date_picker_next"
           />
         </div>
       </div>
@@ -766,6 +806,9 @@ end</pre>
               year={@calendar_year}
               selected={@calendar_selected}
               today={Date.utc_today()}
+              on_prev="calendar_prev"
+              on_next="calendar_next"
+              on_select="calendar_select"
             />
           </div>
         </div>
@@ -1319,7 +1362,7 @@ end</pre>
           <.collapsible id="demo-collapsible" open={@collapsible_open}>
             <div class="flex items-center justify-between space-x-4 px-4">
               <h4 class="text-sm font-semibold">@peduarte starred 3 repositories</h4>
-              <.collapsible_trigger collapsible_id="demo-collapsible" open={@collapsible_open}>
+              <.collapsible_trigger collapsible_id="demo-collapsible">
                 <.button phx-click="toggle_collapsible" size="icon" variant="ghost">
                   <.icon :if={!@collapsible_open} name="chevrons-up-down" class="h-4 w-4" />
                   <.icon :if={@collapsible_open} name="chevrons-down-up" class="h-4 w-4" />
@@ -1559,7 +1602,7 @@ end</pre>
             Copy
           </button>
         </div>
-        <pre id="showcase-code" class="overflow-x-auto p-5 text-sm leading-relaxed text-zinc-100"><code>{@code_snippet}</code></pre>
+        <pre id="showcase-code" phx-hook="HighlightCode" class="overflow-x-auto p-5 text-sm leading-relaxed"><code class="language-elixir !bg-transparent">{@code_snippet}</code></pre>
       </div>
 
     </div>
