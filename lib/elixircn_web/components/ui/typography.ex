@@ -19,7 +19,10 @@ defmodule ElixircnWeb.Components.UI.Typography do
 
   def h2(assigns) do
     ~H"""
-    <h2 class={["scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0", @class]} {@rest}>
+    <h2
+      class={["scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0", @class]}
+      {@rest}
+    >
       {render_slot(@inner_block)}
     </h2>
     """
@@ -79,7 +82,15 @@ defmodule ElixircnWeb.Components.UI.Typography do
 
   def inline_code(assigns) do
     ~H"""
-    <code class={["relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold", @class]} {@rest}>{render_slot(@inner_block)}</code>
+    <code
+      class={[
+        "relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold",
+        @class
+      ]}
+      {@rest}
+    >
+      {render_slot(@inner_block)}
+    </code>
     """
   end
 

@@ -185,6 +185,12 @@ end</pre>
 &lt;/button&gt;</pre>
           </div>
         </div>
+
+        <.separator />
+
+        <p class="text-sm text-muted-foreground">
+          Built by <a href="https://x.com/jacobjolibois" target="_blank" class="font-medium underline underline-offset-4 hover:text-foreground">Jacob Jolibois</a> at <a href="https://www.ingredient-ai.com/" target="_blank" class="font-medium underline underline-offset-4 hover:text-foreground">IngredientAI</a>. The source code is available on <a href="https://github.com/joIibois/elixircn" target="_blank" class="font-medium underline underline-offset-4 hover:text-foreground">GitHub</a>.
+        </p>
       </div>
 
       <%!-- BADGE --%>
@@ -200,12 +206,6 @@ end</pre>
             <.badge variant="destructive">Destructive</.badge>
             <.badge variant="outline">Outline</.badge>
           </div>
-        </div>
-        <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
-          <pre>&lt;.badge&gt;Default&lt;/.badge&gt;
-&lt;.badge variant="secondary"&gt;Secondary&lt;/.badge&gt;
-&lt;.badge variant="destructive"&gt;Destructive&lt;/.badge&gt;
-&lt;.badge variant="outline"&gt;Outline&lt;/.badge&gt;</pre>
         </div>
       </div>
 
@@ -561,12 +561,8 @@ end</pre>
         </div>
         <div class="rounded-lg border bg-card p-8 space-y-4">
           <div class="flex gap-3">
-            <.toggle>
-              <.icon name="file-text" class="h-4 w-4" />
-            </.toggle>
             <.toggle pressed>
-              <.icon name="file-edit" class="h-4 w-4 mr-1" />
-              Bold
+              Toggle
             </.toggle>
             <.toggle variant="outline" disabled>Disabled</.toggle>
           </div>
