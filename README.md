@@ -108,3 +108,7 @@ mix phx.server   # start at http://localhost:4000
 
 mix registry.build   # rebuild docs/r/ registry JSON
 ```
+
+---
+
+Built by [Jacob Jolibois](https://x.com/jacobjolibois) at [IngredientAI](https://www.ingredient-ai.com/).
