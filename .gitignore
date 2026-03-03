@@ -35,3 +35,5 @@ elixircn-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# macOS metadata files
+.DS_Store
