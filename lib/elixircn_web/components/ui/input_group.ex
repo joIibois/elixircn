@@ -14,7 +14,7 @@ defmodule ElixircnWeb.Components.UI.InputGroup do
   def input_group(assigns) do
     ~H"""
     <div
-      class={cn(["flex items-stretch overflow-hidden rounded-md shadow-sm [&_input]:shadow-none", @class])}
+      class={cn(["flex items-stretch overflow-hidden rounded-md shadow-sm focus-within:ring-1 focus-within:ring-ring [&_input]:shadow-none [&_input]:focus-visible:ring-0", @class])}
       {@rest}
     >
       <span

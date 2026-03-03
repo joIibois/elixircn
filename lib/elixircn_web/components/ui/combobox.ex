@@ -18,16 +18,18 @@ defmodule ElixircnWeb.Components.UI.Combobox do
 
   @doc "Renders a combobox with a searchable dropdown list and currently selected value display."
   def combobox(assigns) do
-    selected = Enum.find(assigns.options, &(&1[:value] == assigns.value))
+    current = to_string(assigns.value || "")
+    selected = Enum.find(assigns.options, &(to_string(&1[:value]) == current))
     assigns = assign(assigns, :selected_label, selected && selected[:label])
 
     ~H"""
-    <div id={@id} class={cn(["relative w-full", @class])} {@rest}>
+    <div id={@id} class={cn(["relative w-full", @class])} phx-hook="ComboboxNav" {@rest}>
       <input :if={@name} type="hidden" name={@name} value={@value} />
       <div
         id={"#{@id}-backdrop"}
-        class="hidden fixed inset-0 z-40"
-        phx-click={JS.hide(to: "##{@id}-backdrop") |> JS.hide(to: "##{@id}-dropdown")}
+        class="hidden fixed inset-0 pointer-events-none"
+        phx-click={JS.hide(to: "##{@id}-backdrop") |> JS.hide(to: "##{@id}-dropdown") |> JS.set_attribute({"aria-expanded", "false"}, to: "##{@id}-trigger")}
+        data-combobox-backdrop
         data-escape-close
       />
       <button
@@ -35,6 +37,7 @@ defmodule ElixircnWeb.Components.UI.Combobox do
         type="button"
         role="combobox"
         aria-expanded="false"
+        data-combobox-trigger
         phx-click={
           JS.toggle(
             to: "##{@id}-dropdown",
@@ -67,6 +70,7 @@ defmodule ElixircnWeb.Components.UI.Combobox do
             placeholder={@search_placeholder}
             phx-hook="ComboboxFilter"
             id={"#{@id}-search"}
+            data-combobox-search
             class="flex h-9 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground"
           />
         </div>
@@ -74,6 +78,7 @@ defmodule ElixircnWeb.Components.UI.Combobox do
           <div
             :for={opt <- @options}
             role="option"
+            tabindex="-1"
             phx-click={
               JS.push(@on_select, value: %{value: opt[:value]})
               |> JS.hide(to: "##{@id}-dropdown")
@@ -81,12 +86,12 @@ defmodule ElixircnWeb.Components.UI.Combobox do
               |> JS.set_attribute({"aria-expanded", "false"}, to: "##{@id}-trigger")
             }
             class={cn([
-              "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground",
-              @value == opt[:value] && "bg-accent"
+              "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+              to_string(opt[:value]) == current && "bg-accent"
             ])}
           >
-            <.icon :if={@value == opt[:value]} name="check" class="mr-2 h-4 w-4" />
-            <span :if={@value != opt[:value]} class="mr-6" />
+            <.icon :if={to_string(opt[:value]) == current} name="check" class="mr-2 h-4 w-4" />
+            <span :if={to_string(opt[:value]) != current} class="mr-6" />
             {opt[:label]}
           </div>
         </div>

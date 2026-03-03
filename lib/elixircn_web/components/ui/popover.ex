@@ -37,11 +37,11 @@ defmodule ElixircnWeb.Components.UI.Popover do
   @doc "Renders a popover container with a trigger slot and a positioned content panel."
   def popover(assigns) do
     ~H"""
-    <div id={@id} class={cn(["relative inline-block", @class])} {@rest}>
+    <div id={@id} class={cn(["relative inline-block", @class])} data-popover-root {@rest}>
       <div
         id={"#{@id}-backdrop"}
-        class="hidden fixed inset-0 z-40"
-        phx-click={hide_popover(@id)}
+        class="hidden fixed inset-0 pointer-events-none"
+        phx-click={hide_popover(@id) |> JS.set_attribute({"aria-expanded", "false"}, to: "##{@id}-trigger")}
         data-escape-close
       />
       <div

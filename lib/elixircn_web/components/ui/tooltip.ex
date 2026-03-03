@@ -11,10 +11,16 @@ defmodule ElixircnWeb.Components.UI.Tooltip do
 
   @doc "Renders a tooltip wrapper that shows a content label positioned relative to the trigger element."
   def tooltip(assigns) do
+    assigns =
+      assign_new(assigns, :id, fn -> "tooltip-#{System.unique_integer([:positive])}" end)
+
     ~H"""
-    <div id={@id} class="group relative inline-flex">
-      {render_slot(@inner_block)}
+    <div class="group relative inline-flex">
+      <div aria-describedby={"#{@id}-content"}>
+        {render_slot(@inner_block)}
+      </div>
       <div
+        id={"#{@id}-content"}
         role="tooltip"
         class={cn([
           "pointer-events-none absolute z-50 max-w-xs rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground whitespace-nowrap opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-150",

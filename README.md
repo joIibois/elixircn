@@ -42,6 +42,16 @@ end
 
 Now `<.button>` is available in all your templates and LiveViews without any per-file imports.
 
+### Configure Tailwind to scan your components
+
+Components use Tailwind classes, so Tailwind must scan your web module directory. In `assets/css/app.css`, add a `@source` line pointing to your app's web module folder:
+
+```css
+@source "../../lib/my_app_web";
+```
+
+Replace `my_app_web` with your actual web module directory name (e.g. `my_app_web`, `my_company_web`, etc.). Without this, Tailwind won't see the classes used in component files and they will be stripped from the build.
+
 ---
 
 ## Tailwind Merge

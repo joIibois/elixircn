@@ -35,11 +35,11 @@ defmodule ElixircnWeb.Components.UI.DropdownMenu do
   @doc "Renders the dropdown menu container with a trigger slot and a toggleable content panel."
   def dropdown_menu(assigns) do
     ~H"""
-    <div id={@id} class={cn(["relative inline-block", @class])} {@rest}>
+    <div id={@id} class={cn(["relative inline-block", @class])} data-dropdown-root {@rest}>
       <div
         id={"#{@id}-backdrop"}
-        class="hidden fixed inset-0 z-40"
-        phx-click={hide_dropdown(@id)}
+        class="hidden fixed inset-0 pointer-events-none"
+        phx-click={hide_dropdown(@id) |> JS.set_attribute({"aria-expanded", "false"}, to: "##{@id}-trigger")}
         data-escape-close
       />
       <div

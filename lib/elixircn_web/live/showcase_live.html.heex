@@ -55,11 +55,11 @@
       <%!-- Components section --%>
       <div>
         <p class="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Components</p>
-        <ul class="mt-1 space-y-0.5">
+        <ul class="mt-1">
           <li :for={comp <- @components}>
-            <.link patch={"/#{comp.id}"} class="group block">
+            <.link patch={"/#{comp.id}"} class="group block py-0.5">
               <div class={[
-                "inline-block rounded-md px-2 py-1 text-[13px] transition-colors group-hover:bg-accent group-hover:text-accent-foreground",
+                "inline-block rounded-md px-2 py-1 text-[13px] group-hover:bg-accent group-hover:text-accent-foreground",
                 @active_component == comp.id && "bg-accent text-accent-foreground font-medium"
               ]}>
                 {comp.label}
@@ -122,6 +122,15 @@
 end</pre>
             </div>
             <p class="text-sm text-muted-foreground">Now <.inline_code>&lt;.button&gt;</.inline_code> is available in all your templates and LiveViews without any per-file imports.</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-base font-medium">Configure Tailwind to scan your components</h3>
+            <p class="text-sm text-muted-foreground">Components use Tailwind classes, so Tailwind must scan your web module directory. In <.inline_code>assets/css/app.css</.inline_code>, add a <.inline_code>@source</.inline_code> line pointing to your app's web folder:</p>
+            <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
+              <pre>@source "../../lib/my_app_web";</pre>
+            </div>
+            <p class="text-sm text-muted-foreground">Replace <.inline_code>my_app_web</.inline_code> with your actual web module directory name. Without this, Tailwind won't see the classes used in component files and they will be stripped from the build.</p>
           </div>
         </div>
 
@@ -425,26 +434,26 @@ cn(["bg-red-500", condition && "bg-blue-500", @class])
           <h1 class="text-3xl font-bold tracking-tight">Button</h1>
           <p class="mt-2 text-muted-foreground">Displays a button or a component that looks like a button.</p>
         </div>
-        <div class="rounded-lg border bg-card p-8 space-y-4">
-          <div class="flex flex-wrap gap-3">
-            <.button>Default</.button>
-            <.button variant="secondary">Secondary</.button>
-            <.button variant="destructive">Destructive</.button>
-            <.button variant="outline">Outline</.button>
-            <.button variant="ghost">Ghost</.button>
-            <.button variant="link">Link</.button>
+        <div class="rounded-lg border bg-card p-8 space-y-6">
+          <div class="space-y-2">
+            <p class="text-sm font-medium text-muted-foreground">Styles</p>
+            <div class="flex flex-wrap gap-3">
+              <.button>Default</.button>
+              <.button variant="secondary">Secondary</.button>
+              <.button variant="outline">Outline</.button>
+              <.button variant="ghost">Ghost</.button>
+              <.link_button href="#">Link</.link_button>
+              <.button variant="destructive">Destructive</.button>
+              <.button disabled>Disabled</.button>
+            </div>
           </div>
-          <div class="flex flex-wrap gap-3">
-            <.button size="sm">Small</.button>
-            <.button>Default</.button>
-            <.button size="lg">Large</.button>
-          </div>
-          <div class="flex flex-wrap gap-3">
-            <.button disabled>Disabled</.button>
-            <.button variant="outline">
-              <.icon name="download" class="h-4 w-4" />
-              Download
-            </.button>
+          <div class="space-y-2">
+            <p class="text-sm font-medium text-muted-foreground">Sizes</p>
+            <div class="flex flex-wrap gap-3">
+              <.button size="sm">Small</.button>
+              <.button>Default</.button>
+              <.button size="lg">Large</.button>
+            </div>
           </div>
         </div>
       </div>
@@ -963,19 +972,47 @@ cn(["bg-red-500", condition && "bg-blue-500", @class])
           <.menubar id="demo-menubar">
             <.menubar_menu menubar_id="demo-menubar" value="file">
               <:trigger>File</:trigger>
-              <.menubar_item>New Tab</.menubar_item>
-              <.menubar_item>New Window</.menubar_item>
+              <.menubar_item shortcut="⌘T">New Tab</.menubar_item>
+              <.menubar_item shortcut="⌘N">New Window</.menubar_item>
+              <.menubar_item disabled>New Incognito Window</.menubar_item>
               <.menubar_separator />
-              <.menubar_item>Print</.menubar_item>
+              <.menubar_item shortcut="⌘S">Share</.menubar_item>
+              <.menubar_separator />
+              <.menubar_item shortcut="⌘P">Print</.menubar_item>
             </.menubar_menu>
             <.menubar_menu menubar_id="demo-menubar" value="edit">
               <:trigger>Edit</:trigger>
-              <.menubar_item>Undo</.menubar_item>
-              <.menubar_item>Redo</.menubar_item>
+              <.menubar_item shortcut="⌘Z">Undo</.menubar_item>
+              <.menubar_item shortcut="⇧⌘Z">Redo</.menubar_item>
               <.menubar_separator />
-              <.menubar_item>Cut</.menubar_item>
-              <.menubar_item>Copy</.menubar_item>
-              <.menubar_item>Paste</.menubar_item>
+              <.menubar_item shortcut="⌘X">Cut</.menubar_item>
+              <.menubar_item shortcut="⌘C">Copy</.menubar_item>
+              <.menubar_item shortcut="⌘V">Paste</.menubar_item>
+              <.menubar_separator />
+              <.menubar_item shortcut="⌘F">Find</.menubar_item>
+              <.menubar_item shortcut="⌥⌘F">Replace</.menubar_item>
+            </.menubar_menu>
+            <.menubar_menu menubar_id="demo-menubar" value="view">
+              <:trigger>View</:trigger>
+              <.menubar_item>Always Show Bookmarks Bar</.menubar_item>
+              <.menubar_item>Always Show Full URLs</.menubar_item>
+              <.menubar_separator />
+              <.menubar_item shortcut="⌘R">Reload</.menubar_item>
+              <.menubar_item disabled shortcut="⇧⌘R">Force Reload</.menubar_item>
+              <.menubar_separator />
+              <.menubar_item>Toggle Fullscreen</.menubar_item>
+              <.menubar_separator />
+              <.menubar_item>Hide Sidebar</.menubar_item>
+            </.menubar_menu>
+            <.menubar_menu menubar_id="demo-menubar" value="profiles">
+              <:trigger>Profiles</:trigger>
+              <.menubar_item>Andy</.menubar_item>
+              <.menubar_item>Benoit</.menubar_item>
+              <.menubar_item>Luis</.menubar_item>
+              <.menubar_separator />
+              <.menubar_item>Edit…</.menubar_item>
+              <.menubar_separator />
+              <.menubar_item>Add Profile…</.menubar_item>
             </.menubar_menu>
           </.menubar>
         </div>
@@ -1139,7 +1176,7 @@ cn(["bg-red-500", condition && "bg-blue-500", @class])
           <p class="mt-2 text-muted-foreground">A drawer component for React.</p>
         </div>
         <div class="rounded-lg border bg-card p-8">
-          <.button variant="outline" phx-click={ElixircnWeb.Components.UI.Drawer.show_drawer("demo-drawer")}>
+          <.button variant="outline" phx-click={ElixircnWeb.Components.UI.Drawer.show_drawer(%JS{}, "demo-drawer")}>
             Open Drawer
           </.button>
           <.drawer id="demo-drawer">
@@ -1152,8 +1189,8 @@ cn(["bg-red-500", condition && "bg-blue-500", @class])
               <p class="text-center text-sm text-muted-foreground">65 / 100 steps</p>
             </div>
             <.drawer_footer>
-              <.button phx-click={ElixircnWeb.Components.UI.Drawer.hide_drawer("demo-drawer")}>Submit</.button>
-              <.button variant="outline" phx-click={ElixircnWeb.Components.UI.Drawer.hide_drawer("demo-drawer")}>Cancel</.button>
+              <.button phx-click={ElixircnWeb.Components.UI.Drawer.hide_drawer(%JS{}, "demo-drawer")}>Submit</.button>
+              <.button variant="outline" phx-click={ElixircnWeb.Components.UI.Drawer.hide_drawer(%JS{}, "demo-drawer")}>Cancel</.button>
             </.drawer_footer>
           </.drawer>
         </div>
@@ -1307,15 +1344,6 @@ cn(["bg-red-500", condition && "bg-blue-500", @class])
             >
               Show Toast
             </.button>
-            <.button
-              variant="outline"
-              phx-click="show_toast"
-              phx-value-title="Uh oh! Something went wrong."
-              phx-value-description="There was a problem with your request."
-              phx-value-variant="destructive"
-            >
-              Destructive
-            </.button>
           </div>
         </div>
       </div>
@@ -1329,7 +1357,7 @@ cn(["bg-red-500", condition && "bg-blue-500", @class])
           <p class="mt-2 text-muted-foreground">A vertically stacked set of interactive headings that each reveal a section of content.</p>
         </div>
         <div class="rounded-lg border bg-card p-8">
-          <.accordion id="demo-accordion">
+          <.accordion id="demo-accordion" type="single">
             <.accordion_item value="item-1" accordion_id="demo-accordion">
               <.accordion_trigger value="item-1" accordion_id="demo-accordion" open>Is it accessible?</.accordion_trigger>
               <.accordion_content value="item-1" accordion_id="demo-accordion" open>

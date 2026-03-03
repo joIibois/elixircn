@@ -10,7 +10,7 @@ defmodule Elixircn.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      compilers: [:phoenix_live_view] ++ Mix.compilers(),
+      compilers: Mix.compilers(),
       listeners: [Phoenix.CodeReloader]
     ]
   end

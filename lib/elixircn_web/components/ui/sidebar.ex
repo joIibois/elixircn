@@ -5,8 +5,6 @@ defmodule ElixircnWeb.Components.UI.Sidebar do
   alias Phoenix.LiveView.JS
 
   attr :id, :string, required: true
-  attr :side, :string, default: "left", values: ~w(left right)
-  attr :collapsible, :string, default: "offcanvas", values: ~w(offcanvas icon none)
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true

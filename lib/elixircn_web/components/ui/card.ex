@@ -51,7 +51,7 @@ defmodule ElixircnWeb.Components.UI.Card do
   def card_title(assigns) do
     ~H"""
     <.dynamic_tag
-      name={@as}
+      tag_name={@as}
       class={cn(["font-semibold leading-none tracking-tight", @class])}
       {@rest}
     >

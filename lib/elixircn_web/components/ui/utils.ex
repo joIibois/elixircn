@@ -16,11 +16,14 @@ defmodule ElixircnWeb.Components.UI.Utils do
     |> TwMerge.merge()
   end
 
-  @doc "Passes a binary class string through unchanged."
-  def cn(class) when is_binary(class), do: class
+  @doc "Merges a single binary class string through TwMerge for conflict resolution."
+  def cn(class) when is_binary(class), do: TwMerge.merge(class)
 
   @doc "Returns nil when given nil."
   def cn(nil), do: nil
+
+  @doc "Ignores unexpected types (atoms, integers, etc.) by returning nil."
+  def cn(_), do: nil
 
   @doc "Translates a form error tuple into a human-readable string by interpolating option values."
   def translate_error({msg, opts}) do

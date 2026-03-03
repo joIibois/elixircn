@@ -97,9 +97,7 @@ defmodule ElixircnWeb.Components.UI.Typography do
         @class
       ])}
       {@rest}
-    >
-      {render_slot(@inner_block)}
-    </code>
+    >{render_slot(@inner_block)}</code>
     """
   end
 

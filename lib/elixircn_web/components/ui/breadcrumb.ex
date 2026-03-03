@@ -157,6 +157,8 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
         />
         <div
           id={"#{@id}-dropdown"}
+          role="menu"
+          phx-hook="Menu"
           class="hidden absolute left-1/2 -translate-x-1/2 top-full z-50 mt-1 min-w-[10rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
         >
           {render_slot(@inner_block)}
@@ -178,8 +180,10 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
     <.link
       href={@href}
       navigate={@navigate}
+      role="menuitem"
+      tabindex="-1"
       class={cn([
-        "block rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground outline-none",
+        "block rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
         @class
       ])}
       {@rest}

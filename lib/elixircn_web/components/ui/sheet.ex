@@ -9,7 +9,11 @@ defmodule ElixircnWeb.Components.UI.Sheet do
     {from_class, to_class} = slide_classes(side)
 
     %JS{}
-    |> JS.show(to: "##{id}-backdrop")
+    |> JS.show(
+      to: "##{id}-backdrop",
+      transition: {"ease-out duration-300", "opacity-0", "opacity-100"},
+      time: 300
+    )
     |> JS.show(
       to: "##{id}-content",
       transition: {"ease-out duration-300", from_class, to_class},
@@ -29,7 +33,11 @@ defmodule ElixircnWeb.Components.UI.Sheet do
       transition: {"ease-in duration-200", to_class, from_class},
       time: 200
     )
-    |> JS.hide(to: "##{id}-backdrop")
+    |> JS.hide(
+      to: "##{id}-backdrop",
+      transition: {"ease-in duration-200", "opacity-100", "opacity-0"},
+      time: 200
+    )
     |> JS.remove_class("overflow-hidden", to: "body")
     |> JS.pop_focus()
   end

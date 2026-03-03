@@ -5,7 +5,7 @@
 @import "../node_modules/highlight.js/styles/github-dark.css";
 @source "../css";
 @source "../js";
-@source "../../lib/elixircn_web";
+@source "../../lib/elixircn_web"; /* Replace elixircn_web with your app's web module directory (e.g. my_app_web) */
 
 
 /* Add variants based on LiveView classes */

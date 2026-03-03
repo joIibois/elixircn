@@ -19,14 +19,14 @@ defmodule ElixircnWeb.Components.UI.Toast do
     <div
       class={cn([
         toast_position(@position),
-        "fixed z-[100] flex max-h-screen w-full flex-col-reverse gap-2 p-4 sm:flex-col sm:max-w-[420px] pointer-events-none",
+        "fixed z-[100] flex flex-col gap-2 w-full sm:max-w-[420px] pointer-events-none p-4",
         @class
       ])}
       aria-live="polite"
       role="region"
       aria-label="Notifications"
     >
-      <.toast_item :for={toast <- @toasts} toast={toast} />
+      <.toast_item :for={toast <- Enum.reverse(@toasts)} toast={toast} />
     </div>
     """
   end
@@ -40,26 +40,21 @@ defmodule ElixircnWeb.Components.UI.Toast do
 
   attr :toast, :map, required: true
   attr :auto_dismiss, :integer, default: 5000, doc: "milliseconds before the toast auto-dismisses; set to 0 to disable"
+  attr :on_dismiss, :string, default: "dismiss_toast", doc: "server event name to push when a toast is dismissed"
 
   @doc "Renders an individual toast notification item with optional title, description, and dismiss button."
   def toast_item(assigns) do
     ~H"""
     <div
       id={@toast.id}
-      phx-hook="Toast"
+      phx-hook="ToastAutoDismiss"
       data-auto-dismiss={@auto_dismiss}
-      phx-mounted={
-        JS.show(
-          transition:
-            {"ease-out duration-300", "opacity-0 translate-y-2", "opacity-100 translate-y-0"},
-          time: 300
-        )
-      }
+      data-on-dismiss={@on_dismiss}
+      data-toast-id={@toast.id}
       class={cn([
-        "pointer-events-auto group relative flex w-full items-center justify-between space-x-2 overflow-hidden rounded-md border p-4 pr-6 shadow-lg transition-all",
+        "pointer-events-auto group relative flex w-full items-center justify-between space-x-2 overflow-hidden rounded-md border p-4 pr-8 shadow-lg",
         "bg-background text-foreground",
-        @toast[:variant] == "destructive" &&
-          "border-destructive bg-destructive text-destructive-foreground"
+        @toast[:class]
       ])}
     >
       <div class="flex flex-col gap-1">
@@ -71,15 +66,8 @@ defmodule ElixircnWeb.Components.UI.Toast do
         </p>
       </div>
       <button
-        phx-click={
-          JS.hide(
-            to: "##{@toast.id}",
-            transition:
-              {"ease-in duration-150", "opacity-100 translate-y-0", "opacity-0 translate-y-2"},
-            time: 150
-          )
-        }
-        class="absolute right-1 top-1 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none group-hover:opacity-100"
+        phx-click={JS.push(@on_dismiss, value: %{id: @toast.id})}
+        class="absolute right-1 top-1 rounded-md p-1 text-current opacity-0 transition-opacity hover:opacity-100 focus:opacity-100 focus:outline-none group-hover:opacity-100"
         aria-label="Dismiss"
       >
         <.icon name="x" class="h-4 w-4" />

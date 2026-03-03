@@ -85,7 +85,7 @@ defmodule ElixircnWeb.Components.UI.Collapsible do
     ~H"""
     <div
       id={"#{@collapsible_id}-content"}
-      phx-update="ignore"
+      phx-hook="CollapsibleContent"
       class={cn([!@open && "hidden", @class])}
       {@rest}
     >

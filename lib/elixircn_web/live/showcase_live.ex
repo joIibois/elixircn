@@ -128,18 +128,22 @@ defmodule ElixircnWeb.ShowcaseLive do
     {:noreply, assign(socket, :calendar_selected, date)}
   end
 
+  @max_toasts 5
+
   def handle_event("show_toast", params, socket) do
     id = "toast-#{System.unique_integer([:positive])}"
 
     toast = %{
       id: id,
       title: Map.get(params, "title", "Notification"),
-      description: Map.get(params, "description"),
-      variant: Map.get(params, "variant")
+      description: Map.get(params, "description")
     }
 
-    Process.send_after(self(), {:dismiss_toast, id}, 4000)
-    {:noreply, assign(socket, :toasts, [toast | socket.assigns.toasts])}
+    toasts =
+      [toast | socket.assigns.toasts]
+      |> Enum.take(@max_toasts)
+
+    {:noreply, assign(socket, :toasts, toasts)}
   end
 
   def handle_event("toggle_switch", _params, socket) do
@@ -164,7 +168,7 @@ defmodule ElixircnWeb.ShowcaseLive do
     {:noreply, assign(socket, :slider_value, String.to_integer(value))}
   end
 
-  def handle_info({:dismiss_toast, id}, socket) do
+  def handle_event("dismiss_toast", %{"id" => id}, socket) do
     toasts = Enum.reject(socket.assigns.toasts, &(&1.id == id))
     {:noreply, assign(socket, :toasts, toasts)}
   end

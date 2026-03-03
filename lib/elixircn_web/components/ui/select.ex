@@ -37,21 +37,24 @@ defmodule ElixircnWeb.Components.UI.Select do
       if assigns.id,
         do: assigns,
         else: assign(assigns, :id, "select-#{System.unique_integer([:positive])}")
-    selected = Enum.find(assigns.select_item, &(&1.value == assigns.value))
+    current = to_string(assigns.value || "")
+    selected = Enum.find(assigns.select_item, &(to_string(&1.value) == current))
     assigns = assign(assigns, :selected_label, selected && selected.label)
 
     ~H"""
-    <div id={@id} class={cn(["relative", @class])} {@rest}>
+    <div id={@id} class={cn(["relative", @class])} phx-hook="SelectNav" data-select-root {@rest}>
       <input type="hidden" name={@name} value={@value} />
       <div
         id={"#{@id}-backdrop"}
-        class="hidden fixed inset-0 z-40"
+        class="hidden fixed inset-0 pointer-events-none"
         phx-click={JS.hide(to: "##{@id}-backdrop") |> JS.hide(to: "##{@id}-options")}
+        data-select-backdrop
         data-escape-close
       />
       <button
         type="button"
         disabled={@disabled}
+        data-select-trigger
         phx-click={
           JS.toggle(
             to: "##{@id}-options",
@@ -74,21 +77,23 @@ defmodule ElixircnWeb.Components.UI.Select do
       </button>
       <div
         id={"#{@id}-options"}
+        data-select-options
         class="hidden absolute z-50 left-0 top-full mt-1 min-w-[8rem] w-full overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md"
       >
         <div class="p-1" role="listbox">
           <div
             :for={item <- @select_item}
             role="option"
-            aria-selected={to_string(item.value == @value)}
+            tabindex="-1"
+            aria-selected={to_string(to_string(item.value) == current)}
             phx-click={item_click(@id, @on_change, item.value, item.label)}
             class={cn([
-              "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground",
-              item.value == @value && "bg-accent"
+              "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+              to_string(item.value) == current && "bg-accent"
             ])}
           >
             <span
-              :if={item.value == @value}
+              :if={to_string(item.value) == current}
               class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center"
             >
               <.icon name="check" class="h-4 w-4" />

@@ -15,7 +15,7 @@ defmodule ElixircnWeb.Components.UI.Menubar do
     <div
       id={@id}
       class={cn([
-        "relative flex h-9 items-center space-x-1 rounded-md border bg-background p-1 shadow-sm",
+        "relative inline-flex h-9 items-center space-x-1 rounded-md border bg-background p-1 shadow-sm",
         @class
       ])}
       role="menubar"
@@ -24,8 +24,7 @@ defmodule ElixircnWeb.Components.UI.Menubar do
     >
       <div
         id={"#{@id}-backdrop"}
-        class="hidden fixed inset-0 z-40"
-        phx-click={JS.hide(to: "##{@id} [role=menu]") |> JS.hide(to: "##{@id}-backdrop")}
+        class="hidden"
         data-escape-close
       />
       {render_slot(@inner_block)}
@@ -55,7 +54,6 @@ defmodule ElixircnWeb.Components.UI.Menubar do
             transition: {"ease-out duration-100", "opacity-0 scale-95", "opacity-100 scale-100"},
             time: 100
           )
-          |> JS.show(to: "##{@menubar_id}-backdrop")
         }
         class="flex cursor-default select-none items-center rounded-sm px-3 py-1 text-sm font-medium outline-none focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
         {@rest}

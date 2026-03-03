@@ -7,7 +7,11 @@ defmodule ElixircnWeb.Components.UI.AlertDialog do
   @doc "Returns a JS command that shows the alert dialog with the given id."
   def show_alert_dialog(js \\ %JS{}, id) do
     js
-    |> JS.show(to: "##{id}-backdrop")
+    |> JS.show(
+      to: "##{id}-backdrop",
+      transition: {"ease-out duration-200", "opacity-0", "opacity-100"},
+      time: 200
+    )
     |> JS.show(
       to: "##{id}-content",
       transition: {"ease-out duration-200", "opacity-0 scale-95", "opacity-100 scale-100"},
@@ -25,7 +29,11 @@ defmodule ElixircnWeb.Components.UI.AlertDialog do
       transition: {"ease-in duration-150", "opacity-100 scale-100", "opacity-0 scale-95"},
       time: 150
     )
-    |> JS.hide(to: "##{id}-backdrop")
+    |> JS.hide(
+      to: "##{id}-backdrop",
+      transition: {"ease-in duration-150", "opacity-100", "opacity-0"},
+      time: 150
+    )
     |> JS.remove_class("overflow-hidden", to: "body")
     |> JS.pop_focus()
   end

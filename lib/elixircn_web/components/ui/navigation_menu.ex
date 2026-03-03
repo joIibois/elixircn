@@ -5,14 +5,25 @@ defmodule ElixircnWeb.Components.UI.NavigationMenu do
   import ElixircnWeb.Components.UI.Utils
   alias Phoenix.LiveView.JS
 
+  attr :id, :string, default: nil
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
   @doc "Renders the root navigation menu container as a nav element."
   def navigation_menu(assigns) do
+    assigns =
+      if assigns.id,
+        do: assigns,
+        else: assign(assigns, :id, "nav-menu-#{System.unique_integer([:positive])}")
+
     ~H"""
-    <nav class={cn(["relative z-10 flex max-w-max flex-1 items-center justify-center", @class])} {@rest}>
+    <nav
+      id={@id}
+      class={cn(["relative z-10 flex max-w-max flex-1 items-center justify-center", @class])}
+      phx-hook="NavigationMenuNav"
+      {@rest}
+    >
       {render_slot(@inner_block)}
     </nav>
     """
@@ -39,13 +50,14 @@ defmodule ElixircnWeb.Components.UI.NavigationMenu do
   @doc "Renders a navigation menu list item with a backdrop for closing open content panels."
   def navigation_menu_item(assigns) do
     ~H"""
-    <li id={@id} class={cn(["relative", @class])} {@rest}>
+    <li id={@id} class={cn(["relative", @class])} data-nav-item {@rest}>
       <div
         id={"#{@id}-backdrop"}
         class="hidden fixed inset-0 z-40"
         phx-click={
           JS.hide(to: "##{@id}-content")
           |> JS.hide(to: "##{@id}-backdrop")
+          |> JS.set_attribute({"aria-expanded", "false"}, to: "##{@id}-trigger")
         }
         data-escape-close
       />
@@ -66,6 +78,7 @@ defmodule ElixircnWeb.Components.UI.NavigationMenu do
       id={"#{@item_id}-trigger"}
       type="button"
       aria-expanded="false"
+      data-nav-trigger
       phx-click={
         JS.toggle(
           to: "##{@item_id}-content",
@@ -98,6 +111,7 @@ defmodule ElixircnWeb.Components.UI.NavigationMenu do
     ~H"""
     <div
       id={"#{@item_id}-content"}
+      data-nav-content
       class={cn([
         "hidden absolute left-0 top-full z-50 w-auto rounded-md border bg-popover text-popover-foreground shadow-lg p-2",
         @class

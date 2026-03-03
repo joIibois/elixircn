@@ -15,7 +15,11 @@ defmodule ElixircnWeb.Components.UI.Drawer do
     {enter_from, enter_to} = slide_transition(side)
 
     js
-    |> JS.show(to: "##{id}-backdrop")
+    |> JS.show(
+      to: "##{id}-backdrop",
+      transition: {"ease-out duration-300", "opacity-0", "opacity-100"},
+      time: 300
+    )
     |> JS.show(
       to: "##{id}-content",
       transition: {"ease-out duration-300", enter_from, enter_to},
@@ -35,7 +39,11 @@ defmodule ElixircnWeb.Components.UI.Drawer do
       transition: {"ease-in duration-200", enter_to, enter_from},
       time: 200
     )
-    |> JS.hide(to: "##{id}-backdrop")
+    |> JS.hide(
+      to: "##{id}-backdrop",
+      transition: {"ease-in duration-200", "opacity-100", "opacity-0"},
+      time: 200
+    )
     |> JS.remove_class("overflow-hidden", to: "body")
     |> JS.pop_focus()
   end
@@ -76,13 +84,14 @@ defmodule ElixircnWeb.Components.UI.Drawer do
   def drawer(assigns) do
     ~H"""
     <div id={@id} class={@class} {@rest}>
-      <div :if={@trigger != []} phx-click={show_drawer(@id, @side)}>
+      <div :if={@trigger != []} phx-click={show_drawer(%JS{}, @id, @side)}>
         {render_slot(@trigger)}
       </div>
       <div
         id={"#{@id}-backdrop"}
         class="hidden fixed inset-0 z-40 bg-black/80"
-        phx-click={hide_drawer(@id, @side)}
+        phx-click={hide_drawer(%JS{}, @id, @side)}
+        phx-mounted={JS.hide()}
         data-escape-close
       />
       <div
@@ -91,6 +100,7 @@ defmodule ElixircnWeb.Components.UI.Drawer do
         role="dialog"
         aria-modal="true"
         phx-hook="FocusTrap"
+        phx-mounted={JS.hide()}
       >
         <div :if={@side == "bottom" || @side == "top"} class="mx-auto w-full max-w-sm">
           <div

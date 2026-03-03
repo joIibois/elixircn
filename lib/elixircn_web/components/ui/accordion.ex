@@ -3,7 +3,6 @@ defmodule ElixircnWeb.Components.UI.Accordion do
   use Phoenix.Component
   import ElixircnWeb.Components.UI.Icon
   import ElixircnWeb.Components.UI.Utils
-  alias Phoenix.LiveView.JS
 
   attr :id, :string, required: true
   attr :type, :string,
@@ -44,7 +43,6 @@ defmodule ElixircnWeb.Components.UI.Accordion do
 
   attr :value, :string, required: true
   attr :accordion_id, :string, required: true
-  attr :accordion_type, :string, default: "multiple", values: ~w(single multiple)
   attr :open, :boolean, default: false
   attr :class, :any, default: nil
   attr :rest, :global
@@ -59,12 +57,9 @@ defmodule ElixircnWeb.Components.UI.Accordion do
       aria-expanded={to_string(@open)}
       aria-controls={"#{@accordion_id}-content-#{@value}"}
       data-state={if @open, do: "open", else: "closed"}
-      phx-update="ignore"
-      phx-click={
-        accordion_toggle_js(@accordion_id, @value, @accordion_type)
-      }
+      phx-hook="AccordionTrigger"
       class={cn([
-        "flex flex-1 w-full items-center justify-between py-4 text-sm font-medium transition-all text-left",
+        "flex flex-1 w-full items-center justify-between py-4 text-sm font-medium transition-all text-left cursor-pointer",
         @class
       ])}
       {@rest}
@@ -97,7 +92,7 @@ defmodule ElixircnWeb.Components.UI.Accordion do
       role="region"
       aria-labelledby={"#{@accordion_id}-trigger-#{@value}"}
       data-state={if @open, do: "open", else: "closed"}
-      phx-update="ignore"
+      phx-hook="AccordionContent"
       class={cn([
         "grid grid-rows-[0fr] data-[state=open]:grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-in-out text-sm",
         @class
@@ -113,44 +108,4 @@ defmodule ElixircnWeb.Components.UI.Accordion do
     """
   end
 
-  defp accordion_toggle_js(accordion_id, value, "single") do
-    # Close all other items first, then toggle the current one
-    %JS{}
-    |> JS.set_attribute({"data-state", "closed"},
-      to: "##{accordion_id} button[data-state=open]:not(##{accordion_id}-trigger-#{value})"
-    )
-    |> JS.set_attribute({"aria-expanded", "false"},
-      to: "##{accordion_id} button[aria-expanded=true]:not(##{accordion_id}-trigger-#{value})"
-    )
-    |> JS.set_attribute({"data-state", "closed"},
-      to: "##{accordion_id} [role=region][data-state=open]:not(##{accordion_id}-content-#{value})"
-    )
-    |> JS.remove_class("rotate-180",
-      to: "##{accordion_id} .rotate-180:not(##{accordion_id}-icon-#{value})"
-    )
-    |> JS.toggle_attribute({"data-state", "open", "closed"},
-      to: "##{accordion_id}-trigger-#{value}"
-    )
-    |> JS.toggle_attribute({"aria-expanded", "true", "false"},
-      to: "##{accordion_id}-trigger-#{value}"
-    )
-    |> JS.toggle_attribute({"data-state", "open", "closed"},
-      to: "##{accordion_id}-content-#{value}"
-    )
-    |> JS.toggle_class("rotate-180", to: "##{accordion_id}-icon-#{value}")
-  end
-
-  defp accordion_toggle_js(accordion_id, value, _multiple) do
-    %JS{}
-    |> JS.toggle_attribute({"data-state", "open", "closed"},
-      to: "##{accordion_id}-trigger-#{value}"
-    )
-    |> JS.toggle_attribute({"aria-expanded", "true", "false"},
-      to: "##{accordion_id}-trigger-#{value}"
-    )
-    |> JS.toggle_attribute({"data-state", "open", "closed"},
-      to: "##{accordion_id}-content-#{value}"
-    )
-    |> JS.toggle_class("rotate-180", to: "##{accordion_id}-icon-#{value}")
-  end
 end

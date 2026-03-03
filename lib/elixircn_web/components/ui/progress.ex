@@ -5,7 +5,7 @@ defmodule ElixircnWeb.Components.UI.Progress do
   use Phoenix.Component
   import ElixircnWeb.Components.UI.Utils
 
-  attr :value, :integer, default: 0
+  attr :value, :any, default: 0
   attr :max, :integer, default: 100
   attr :aria_label, :string, default: nil, doc: "describes what is progressing, e.g. \"Uploading file\""
   attr :class, :any, default: nil
@@ -19,7 +19,12 @@ defmodule ElixircnWeb.Components.UI.Progress do
       <.progress value={@upload_pct} aria_label="Uploading profile photo" />
   """
   def progress(assigns) do
-    pct = if assigns.max > 0, do: min(100, max(0, round(assigns.value / assigns.max * 100))), else: 0
+    pct =
+      cond do
+        assigns.max <= 0 -> 0
+        not is_number(assigns.value) -> 0
+        true -> min(100, max(0, round(assigns.value / assigns.max * 100)))
+      end
     assigns = assign(assigns, :pct, pct)
 
     ~H"""

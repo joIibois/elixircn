@@ -5,7 +5,7 @@ defmodule ElixircnWeb.Components.UI.Button do
 
   attr :variant, :string,
     default: "default",
-    values: ~w(default destructive outline secondary ghost link)
+    values: ~w(default destructive outline secondary ghost)
 
   attr :size, :string,
     default: "default",
@@ -26,7 +26,7 @@ defmodule ElixircnWeb.Components.UI.Button do
       type={@type}
       disabled={@disabled}
       class={cn([
-        "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+        "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
         button_variant(@variant),
         button_size(@size),
         @class
@@ -35,6 +35,35 @@ defmodule ElixircnWeb.Components.UI.Button do
     >
       {render_slot(@inner_block)}
     </button>
+    """
+  end
+
+  attr :href, :string, required: true
+  attr :navigate, :string, default: nil
+  attr :patch, :string, default: nil
+  attr :size, :string, default: "default", values: ~w(default sm lg icon)
+  attr :class, :any, default: nil
+  attr :rest, :global, include: ~w(target rel download)
+
+  slot :inner_block, required: true
+
+  @doc "Renders a link styled with button-link appearance using a semantic <a> tag."
+  def link_button(assigns) do
+    ~H"""
+    <.link
+      href={@href}
+      navigate={@navigate}
+      patch={@patch}
+      class={cn([
+        "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+        "text-primary underline-offset-4 hover:underline",
+        button_size(@size),
+        @class
+      ])}
+      {@rest}
+    >
+      {render_slot(@inner_block)}
+    </.link>
     """
   end
 
@@ -52,9 +81,6 @@ defmodule ElixircnWeb.Components.UI.Button do
 
   defp button_variant("ghost"),
     do: "hover:bg-accent hover:text-accent-foreground"
-
-  defp button_variant("link"),
-    do: "text-primary underline-offset-4 hover:underline"
 
   defp button_size("default"), do: "h-9 px-4 py-2"
   defp button_size("sm"), do: "h-8 rounded-md px-3 text-xs"

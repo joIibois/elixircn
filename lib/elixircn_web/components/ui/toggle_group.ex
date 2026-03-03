@@ -15,6 +15,8 @@ defmodule ElixircnWeb.Components.UI.ToggleGroup do
     <div
       class={cn(["flex items-center justify-center gap-1", @class])}
       role={if @type == "single", do: "radiogroup", else: "group"}
+      phx-hook={if @type == "single", do: "ToggleGroupSingle"}
+      id={if @type == "single", do: "toggle-group-#{System.unique_integer([:positive])}"}
       {@rest}
     >
       {render_slot(@inner_block)}
