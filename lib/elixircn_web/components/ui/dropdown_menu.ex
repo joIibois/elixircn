@@ -124,7 +124,7 @@ defmodule ElixircnWeb.Components.UI.DropdownMenu do
   @doc "Renders a logical grouping container for related dropdown menu items."
   def dropdown_menu_group(assigns) do
     ~H"""
-    <div class={@class} role="group" {@rest}>
+    <div class={cn(@class)} role="group" {@rest}>
       {render_slot(@inner_block)}
     </div>
     """

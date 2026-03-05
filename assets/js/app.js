@@ -5,9 +5,18 @@ import topbar from "../vendor/topbar"
 import hljs from "highlight.js/lib/core"
 import elixir from "highlight.js/lib/languages/elixir"
 import xml from "highlight.js/lib/languages/xml"
+import bash from "highlight.js/lib/languages/bash"
+import javascript from "highlight.js/lib/languages/javascript"
+import css from "highlight.js/lib/languages/css"
 
 hljs.registerLanguage("elixir", elixir)
 hljs.registerLanguage("xml", xml)
+hljs.registerLanguage("bash", bash)
+hljs.registerLanguage("shell", bash)
+hljs.registerLanguage("javascript", javascript)
+hljs.registerLanguage("js", javascript)
+hljs.registerLanguage("css", css)
+hljs.registerLanguage("heex", xml)
 
 let Hooks = {}
 
@@ -366,6 +375,44 @@ Hooks.HighlightCode = {
   }
 }
 
+// HighlightAllCode: wrap each <pre> in the same code block chrome used by the component showcase
+Hooks.HighlightAllCode = {
+  mounted()  { this.highlight() },
+  updated()  { this.highlight() },
+  highlight() {
+    this.el.querySelectorAll("pre:not([data-hljs-wrapped])").forEach(pre => {
+      const code = pre.querySelector("code")
+      if (!code) return
+
+      // Determine language label from earmark's class="language-X"
+      const langClass = [...code.classList].find(c => c.startsWith("language-"))
+      const lang = langClass ? langClass.replace("language-", "") : "code"
+
+      // Run hljs
+      delete code.dataset.highlighted
+      hljs.highlightElement(code)
+      code.classList.add("!bg-transparent")
+
+      // Style the <pre> to match the component showcase code block
+      pre.removeAttribute("class")
+      pre.classList.add("overflow-x-auto", "p-5", "text-sm", "leading-relaxed")
+      pre.dataset.hljsWrapped = "true"
+
+      // Build wrapper identical to the component showcase code block
+      const wrapper = document.createElement("div")
+      wrapper.className = "rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-950 not-prose my-6"
+
+      const header = document.createElement("div")
+      header.className = "flex items-center border-b border-zinc-800 px-4 py-2.5"
+      header.innerHTML = `<span class="font-mono text-xs text-zinc-500">${lang}</span>`
+
+      pre.parentNode.insertBefore(wrapper, pre)
+      wrapper.appendChild(header)
+      wrapper.appendChild(pre)
+    })
+  }
+}
+
 // CopyCode: copy <pre> text to clipboard, show checkmark feedback
 Hooks.CopyCode = {
   mounted() {
@@ -555,6 +602,20 @@ Hooks.MenubarNav = {
 // is purely client-side via JS commands) survives server patches.
 Hooks.Tabs = {
   mounted() {
+    // Initialize: if no tab is already active (server rendered with active=true),
+    // activate the default tab (from data-default-tab) or fall back to the first tab.
+    const tabsRoot = this.el.closest("[data-tabs]")
+    if (tabsRoot) {
+      const hasActive = tabsRoot.querySelector('[role=tab][data-state=active]')
+      if (!hasActive) {
+        const defaultValue = tabsRoot.dataset.defaultTab
+        const target = defaultValue
+          ? document.getElementById(`${tabsRoot.id}-tab-${defaultValue}`)
+          : this.el.querySelector('[role=tab]:not([disabled])')
+        if (target) target.click()
+      }
+    }
+
     this.el.addEventListener("keydown", (e) => {
       const tabs = Array.from(this.el.querySelectorAll("[role=tab]:not([disabled])"))
       if (!tabs.length) return
@@ -789,13 +850,24 @@ Hooks.AvatarFallback = {
   }
 }
 
-// SelectLabel: update label text on custom set-label event
+// SelectLabel: update label text on custom set-label event.
+// beforeUpdate/updated preserve client-set text across LiveView patches —
+// without these, morphdom would restore @selected_label from the last server render.
 Hooks.SelectLabel = {
   mounted() {
     this._handler = (e) => {
-      if (e.detail && e.detail.label) this.el.textContent = e.detail.label
+      if (e.detail && e.detail.label) {
+        this._label = e.detail.label
+        this.el.textContent = e.detail.label
+      }
     }
     this.el.addEventListener("set-label", this._handler)
+  },
+  beforeUpdate() {
+    this._label = this._label || null
+  },
+  updated() {
+    if (this._label) this.el.textContent = this._label
   },
   destroyed() {
     if (this._handler) this.el.removeEventListener("set-label", this._handler)
@@ -1017,7 +1089,27 @@ function clearScrollLock() {
 window.addEventListener("phx:navigate", clearScrollLock)
 window.addEventListener("phx:page-loading-start", clearScrollLock)
 
-liveSocket.connect()
+// On static hosting (GitHub Pages) there is no WebSocket server.
+// Detect the x-static meta tag injected by mix docs.build and mount
+// self-contained hooks directly instead of waiting for LiveSocket.
+if (document.querySelector('meta[name="x-static"]')) {
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("[phx-hook][id]").forEach(el => {
+      const hookName = el.getAttribute("phx-hook")
+      const hook = Hooks[hookName]
+      if (!hook) return
+      const inst = Object.assign(Object.create(hook), {
+        el,
+        pushEvent: () => {},
+        pushEventTo: () => {},
+        handleEvent: () => {},
+      })
+      try { inst.mounted?.() } catch (e) { /* hook may need LiveSocket, skip */ }
+    })
+  })
+} else {
+  liveSocket.connect()
+}
 window.liveSocket = liveSocket
 
 if (process.env.NODE_ENV === "development") {

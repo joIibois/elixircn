@@ -5,6 +5,7 @@ defmodule ElixircnWeb.Components.UI.DataTable do
   """
   use Phoenix.Component
   import ElixircnWeb.Components.UI.Table
+  import ElixircnWeb.Components.UI.Utils
 
   attr :id, :string, default: nil
   attr :rows, :list, required: true
@@ -39,7 +40,7 @@ defmodule ElixircnWeb.Components.UI.DataTable do
   """
   def data_table(assigns) do
     ~H"""
-    <div id={@id} class={@class} {@rest}>
+    <div id={@id} class={cn(@class)} {@rest}>
       <.table>
         <.table_header>
           <.table_row>

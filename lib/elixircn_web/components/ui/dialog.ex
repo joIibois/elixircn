@@ -47,7 +47,7 @@ defmodule ElixircnWeb.Components.UI.Dialog do
   @doc "Renders the dialog root with an optional trigger slot and dismissible modal backdrop."
   def dialog(assigns) do
     ~H"""
-    <div id={@id} class={@class} {@rest}>
+    <div id={@id} class={cn(@class)} {@rest}>
       <div :if={@trigger != []} phx-click={show_dialog(@id)}>
         {render_slot(@trigger)}
       </div>

@@ -18,7 +18,7 @@ defmodule ElixircnWeb.Components.UI.Breadcrumb do
   @doc "Renders the breadcrumb `<nav>` wrapper with an ordered list inside."
   def breadcrumb(assigns) do
     ~H"""
-    <nav aria-label="breadcrumb" class={@class} {@rest}>
+    <nav aria-label="breadcrumb" class={cn(@class)} {@rest}>
       <ol class="flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5">
         {render_slot(@inner_block)}
       </ol>

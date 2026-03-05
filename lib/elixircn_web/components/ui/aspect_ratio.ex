@@ -1,6 +1,7 @@
 defmodule ElixircnWeb.Components.UI.AspectRatio do
   @moduledoc "Provides an aspect ratio component for maintaining consistent width-to-height proportions."
   use Phoenix.Component
+  import ElixircnWeb.Components.UI.Utils
 
   attr :ratio, :float, default: 1.0
   attr :class, :any, default: nil
@@ -17,7 +18,7 @@ defmodule ElixircnWeb.Components.UI.AspectRatio do
     ~H"""
     <div
       style={"padding-bottom: #{Float.round(100.0 / @ratio, 4)}%; position: relative;"}
-      class={@class}
+      class={cn(@class)}
       {@rest}
     >
       <div class="absolute inset-0">

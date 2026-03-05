@@ -57,7 +57,7 @@ defmodule ElixircnWeb.Components.UI.Sheet do
   @doc "Renders the sheet root with an optional trigger, backdrop, and sliding content panel."
   def sheet(assigns) do
     ~H"""
-    <div id={@id} class={@class} {@rest}>
+    <div id={@id} class={cn(@class)} {@rest}>
       <div :if={@trigger != []} phx-click={show_sheet(@id, @side)}>
         {render_slot(@trigger)}
       </div>

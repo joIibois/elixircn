@@ -1,6 +1,10 @@
 defmodule ElixircnWeb.ShowcaseLive do
   use ElixircnWeb, :live_view
 
+  @readme_path Path.join([__DIR__, "../../../README.md"])
+  @external_resource @readme_path
+  @readme_html Earmark.as_html!(File.read!(@readme_path), smartypants: false)
+
   @components [
     %{id: "accordion", label: "Accordion"},
     %{id: "alert", label: "Alert"},
@@ -69,6 +73,7 @@ defmodule ElixircnWeb.ShowcaseLive do
     {:ok,
      socket
      |> assign(:page_title, "Elixircn — Phoenix shadcn/ui")
+     |> assign(:readme_html, @readme_html)
      |> assign(:active_component, active)
      |> assign(:code_snippet, ShowcaseCode.snippet(active))
      |> assign(:components, @components)

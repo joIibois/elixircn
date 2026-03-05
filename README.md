@@ -17,6 +17,45 @@ Components are distributed via a shadcn-compatible registry. You copy exactly wh
 - [`tw_merge`](https://github.com/bluzky/tw_merge) — Tailwind class conflict resolution (see below)
 - `shadcn` CLI: `npm install -g shadcn@latest` (or use `npx`)
 
+### Resolve CoreComponents conflicts
+
+> **Do this first.** Phoenix 1.8 generates `button/1`, `input/1`, `icon/1`, and `table/1` in `CoreComponents`. Elixircn exports the same names. Without this step you'll get cryptic "ambiguous function call" compilation errors.
+
+**Option A — run the installer (recommended):**
+
+```bash
+mix elixircn.install
+```
+
+This auto-detects your `*_web.ex` file and adds the `except` clause for you.
+
+**Option B — patch manually:**
+
+In your `my_app_web.ex`, find the `import YourAppWeb.CoreComponents` line inside `html_helpers/0` and add the `except` list:
+
+```elixir
+import MyAppWeb.CoreComponents, except: [input: 1, icon: 1, button: 1, table: 1]
+```
+
+#### What to exclude — and what to keep
+
+Only exclude the four names that conflict. Do **not** remove the entire `CoreComponents` import or exclude everything — several functions there have no elixircn replacement:
+
+| Function | Action | Reason |
+|---|---|---|
+| `button/1` | **exclude** | replaced by elixircn `button` |
+| `input/1` | **exclude** | replaced by elixircn `input` |
+| `icon/1` | **exclude** | replaced by elixircn `icon` |
+| `table/1` | **exclude** | replaced by elixircn `table` |
+| `flash/1` | **keep** | renders `put_flash/2` notices — no elixircn replacement |
+| `show/2` | **keep** | JS helper used by `flash/1` and your own templates |
+| `hide/2` | **keep** | JS helper used by `flash/1` and your own templates |
+| `translate_error/1` | **keep** | required for form error translation |
+| `translate_errors/2` | **keep** | required for form error translation |
+| `header/1`, `list/1` | **keep** | page-layout helpers with no elixircn equivalent |
+
+If you exclude `flash/1`, `show/2`, or `hide/2`, flash messages will silently stop working — they won't raise a compile error because `Phoenix.Component` provides its own `show`/`hide` JS wrappers, but the animated transitions and flash dismissal will break.
+
 ### Add a component
 
 ```bash

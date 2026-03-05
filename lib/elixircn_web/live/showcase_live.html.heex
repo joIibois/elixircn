@@ -40,10 +40,10 @@
         <p class="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Getting Started</p>
         <ul class="space-y-0.5">
           <li>
-            <.link patch="/" class="group block">
+            <.link patch={~p"/"} class="group block">
               <div class={[
                 "inline-block rounded-md px-2 py-1 text-[13px] transition-colors group-hover:bg-accent group-hover:text-accent-foreground",
-                @active_component == "introduction" && "bg-accent text-accent-foreground font-medium"
+                @active_component == "introduction" && "bg-accent text-accent-foreground"
               ]}>
                 Introduction
               </div>
@@ -57,10 +57,10 @@
         <p class="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Components</p>
         <ul class="mt-1">
           <li :for={comp <- @components}>
-            <.link patch={"/#{comp.id}"} class="group block py-0.5">
+            <.link patch={~p"/#{comp.id}"} class="group block py-0.5">
               <div class={[
                 "inline-block rounded-md px-2 py-1 text-[13px] group-hover:bg-accent group-hover:text-accent-foreground",
-                @active_component == comp.id && "bg-accent text-accent-foreground font-medium"
+                @active_component == comp.id && "bg-accent text-accent-foreground"
               ]}>
                 {comp.label}
               </div>
@@ -76,166 +76,11 @@
     <div class="mx-auto max-w-4xl px-8 py-10 space-y-10">
 
       <%!-- INTRODUCTION --%>
-      <div :if={@active_component == "introduction"} class="space-y-10">
-        <div>
-          <h1 class="text-3xl font-bold tracking-tight">Introduction</h1>
-          <p class="mt-3 text-muted-foreground leading-relaxed">
-            A port of <a href="https://ui.shadcn.com" target="_blank" class="font-medium underline underline-offset-4">shadcn/ui</a> to <a href="https://github.com/phoenixframework/phoenix_live_view" target="_blank" class="font-medium underline underline-offset-4">Phoenix LiveView</a>. 59 components built as Phoenix function components, styled with Tailwind v4.
-          </p>
-        </div>
-
-        <.separator />
-
-        <div class="space-y-8">
-          <div>
-            <h2 class="text-xl font-semibold tracking-tight">Using the registry</h2>
-            <p class="mt-2 text-sm text-muted-foreground">Components are distributed via a shadcn-compatible registry. You copy exactly what you need into your project — no package to install.</p>
-          </div>
-
-          <div class="space-y-3">
-            <h3 class="text-base font-medium">Prerequisites</h3>
-            <ul class="text-sm text-muted-foreground space-y-2 ml-4 list-disc">
-              <li>Phoenix LiveView app</li>
-              <li>Tailwind v4 configured (CSS-first, no <.inline_code>tailwind.config.js</.inline_code>)</li>
-              <li><a href="https://github.com/bluzky/tw_merge" target="_blank" class="font-medium underline underline-offset-4"><.inline_code>tw_merge</.inline_code></a> — Tailwind class conflict resolution (see below)</li>
-              <li><.inline_code>shadcn</.inline_code> CLI: <.inline_code>npm install -g shadcn@latest</.inline_code> (or use <.inline_code>npx</.inline_code>)</li>
-            </ul>
-          </div>
-
-          <div class="space-y-3">
-            <h3 class="text-base font-medium">Add a component</h3>
-            <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
-              <pre>npx shadcn@latest add https://joIibois.github.io/elixircn/r/button.json</pre>
-            </div>
-            <p class="text-sm text-muted-foreground">This copies the component file to <.inline_code>lib/my_app_web/components/ui/button.ex</.inline_code>, with your app's module namespace already substituted. Components with dependencies will automatically install them too.</p>
-          </div>
-
-          <div class="space-y-3">
-            <h3 class="text-base font-medium">Register it globally</h3>
-            <p class="text-sm text-muted-foreground">After installing, import the component in the <.inline_code>html_helpers</.inline_code> function in your <.inline_code>my_app_web.ex</.inline_code>:</p>
-            <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
-              <pre>defp html_helpers do
-  quote do
-    # ... existing imports ...
-    import MyAppWeb.Components.UI.Button
-  end
-end</pre>
-            </div>
-            <p class="text-sm text-muted-foreground">Now <.inline_code>&lt;.button&gt;</.inline_code> is available in all your templates and LiveViews without any per-file imports.</p>
-          </div>
-
-          <div class="space-y-3">
-            <h3 class="text-base font-medium">Configure Tailwind to scan your components</h3>
-            <p class="text-sm text-muted-foreground">Components use Tailwind classes, so Tailwind must scan your web module directory. In <.inline_code>assets/css/app.css</.inline_code>, add a <.inline_code>@source</.inline_code> line pointing to your app's web folder:</p>
-            <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
-              <pre>@source "../../lib/my_app_web";</pre>
-            </div>
-            <p class="text-sm text-muted-foreground">Replace <.inline_code>my_app_web</.inline_code> with your actual web module directory name. Without this, Tailwind won't see the classes used in component files and they will be stripped from the build.</p>
-          </div>
-        </div>
-
-        <.separator />
-
-        <div class="space-y-8">
-          <div>
-            <h2 class="text-xl font-semibold tracking-tight">Tailwind Merge</h2>
-            <p class="mt-2 text-sm text-muted-foreground">Components use a <.inline_code>cn()</.inline_code> utility (the Elixir equivalent of shadcn/ui's <.inline_code>cn()</.inline_code>) to merge Tailwind classes with conflict resolution. This is powered by <a href="https://github.com/bluzky/tw_merge" target="_blank" class="font-medium underline underline-offset-4">tw_merge</a>.</p>
-          </div>
-
-          <div class="space-y-3">
-            <h3 class="text-base font-medium">Add the dependency</h3>
-            <p class="text-sm text-muted-foreground">Add <.inline_code>tw_merge</.inline_code> to your <.inline_code>mix.exs</.inline_code>:</p>
-            <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
-              <pre>defp deps do
-  [
-    &#123;:tw_merge, "~> 0.1"&#125;,
-    # ...
-  ]
-end</pre>
-            </div>
-            <p class="text-sm text-muted-foreground">Then run <.inline_code>mix deps.get</.inline_code>.</p>
-          </div>
-
-          <div class="space-y-3">
-            <h3 class="text-base font-medium">How it works</h3>
-            <p class="text-sm text-muted-foreground">The <.inline_code>cn()</.inline_code> function is installed automatically as <.inline_code>utils.ex</.inline_code> when you add your first component via the registry. It handles class merging so that later classes override earlier ones when they target the same CSS property:</p>
-            <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
-              <pre>cn(["px-4 py-2", "px-6"])
-#=> "py-2 px-6"
-
-cn(["bg-red-500", condition && "bg-blue-500", @class])
-#=> merges with conflict resolution, filters out falsy values</pre>
-            </div>
-          </div>
-        </div>
-
-        <.separator />
-
-        <div class="space-y-6">
-          <div>
-            <h2 class="text-xl font-semibold tracking-tight">JS Hooks</h2>
-            <p class="mt-2 text-sm text-muted-foreground">Some components require a LiveView JavaScript hook. After installing one of these, copy the corresponding hook from <.inline_code>assets/js/app.js</.inline_code> into your own <.inline_code>app.js</.inline_code>:</p>
-          </div>
-
-          <.table>
-            <.table_header>
-              <.table_row>
-                <.table_head>Component</.table_head>
-                <.table_head>Hook</.table_head>
-              </.table_row>
-            </.table_header>
-            <.table_body>
-              <.table_row>
-                <.table_cell><.inline_code>carousel</.inline_code></.table_cell>
-                <.table_cell><.inline_code>Carousel</.inline_code></.table_cell>
-              </.table_row>
-              <.table_row>
-                <.table_cell><.inline_code>combobox</.inline_code></.table_cell>
-                <.table_cell><.inline_code>ComboboxFilter</.inline_code></.table_cell>
-              </.table_row>
-              <.table_row>
-                <.table_cell><.inline_code>context-menu</.inline_code></.table_cell>
-                <.table_cell><.inline_code>ContextMenu</.inline_code></.table_cell>
-              </.table_row>
-              <.table_row>
-                <.table_cell><.inline_code>input-otp</.inline_code></.table_cell>
-                <.table_cell><.inline_code>InputOtp</.inline_code></.table_cell>
-              </.table_row>
-              <.table_row>
-                <.table_cell><.inline_code>resizable</.inline_code></.table_cell>
-                <.table_cell><.inline_code>Resizable</.inline_code></.table_cell>
-              </.table_row>
-            </.table_body>
-          </.table>
-
-          <div class="space-y-3">
-            <p class="text-sm text-muted-foreground">Register the hooks in your <.inline_code>liveSocket</.inline_code> setup:</p>
-            <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
-              <pre>let liveSocket = new LiveSocket("/live", Socket, &#123;
-  hooks: &#123; Carousel, ComboboxFilter, ContextMenu, InputOtp, Resizable &#125;,
-  // ...
-&#125;)</pre>
-            </div>
-          </div>
-        </div>
-
-        <.separator />
-
-        <div class="space-y-4">
-          <h2 class="text-xl font-semibold tracking-tight">Dark mode</h2>
-          <p class="text-sm text-muted-foreground">Components support dark mode via a <.inline_code>data-theme="dark"</.inline_code> attribute on the <.inline_code>&lt;html&gt;</.inline_code> element. Toggle it with:</p>
-          <div class="rounded-md bg-muted p-4 font-mono text-sm overflow-x-auto">
-            <pre>&lt;button phx-click={JS.toggle_attribute({"data-theme", "dark"}, to: "html")}&gt;
-  Toggle dark mode
-&lt;/button&gt;</pre>
-          </div>
-        </div>
-
-        <.separator />
-
-        <p class="text-sm text-muted-foreground">
-          Built by <a href="https://x.com/jacobjolibois" target="_blank" class="font-medium underline underline-offset-4 hover:text-foreground">Jacob Jolibois</a> at <a href="https://www.ingredient-ai.com/" target="_blank" class="font-medium underline underline-offset-4 hover:text-foreground">IngredientAI</a>. The source code is available on <a href="https://github.com/joIibois/elixircn" target="_blank" class="font-medium underline underline-offset-4 hover:text-foreground">GitHub</a>.
-        </p>
+      <div :if={@active_component == "introduction"}
+           id="readme-prose"
+           phx-hook="HighlightAllCode"
+           class="prose prose-sm dark:prose-invert max-w-none">
+        {Phoenix.HTML.raw(@readme_html)}
       </div>
 
       <%!-- BADGE --%>
@@ -895,11 +740,7 @@ cn(["bg-red-500", condition && "bg-blue-500", @class])
         </div>
         <div class="rounded-lg border bg-card p-8">
           <.tabs id="demo-tabs" default_value="account">
-            <.tabs_list tabs_id="demo-tabs">
-              <.tabs_trigger tabs_id="demo-tabs" value="account" active>Account</.tabs_trigger>
-              <.tabs_trigger tabs_id="demo-tabs" value="password">Password</.tabs_trigger>
-            </.tabs_list>
-            <.tabs_content tabs_id="demo-tabs" value="account" active>
+            <:tab value="account" label="Account" active>
               <.card>
                 <.card_header>
                   <.card_title>Account</.card_title>
@@ -914,8 +755,8 @@ cn(["bg-red-500", condition && "bg-blue-500", @class])
                   <.button>Save changes</.button>
                 </.card_footer>
               </.card>
-            </.tabs_content>
-            <.tabs_content tabs_id="demo-tabs" value="password">
+            </:tab>
+            <:tab value="password" label="Password">
               <.card>
                 <.card_header>
                   <.card_title>Password</.card_title>
@@ -933,7 +774,7 @@ cn(["bg-red-500", condition && "bg-blue-500", @class])
                   <.button>Save password</.button>
                 </.card_footer>
               </.card>
-            </.tabs_content>
+            </:tab>
           </.tabs>
         </div>
       </div>
@@ -1358,23 +1199,17 @@ cn(["bg-red-500", condition && "bg-blue-500", @class])
         </div>
         <div class="rounded-lg border bg-card p-8">
           <.accordion id="demo-accordion" type="single">
-            <.accordion_item value="item-1" accordion_id="demo-accordion">
-              <.accordion_trigger value="item-1" accordion_id="demo-accordion" open>Is it accessible?</.accordion_trigger>
-              <.accordion_content value="item-1" accordion_id="demo-accordion" open>
-                Yes. It adheres to the WAI-ARIA design pattern.
-              </.accordion_content>
+            <.accordion_item value="item-1" accordion_id="demo-accordion" open>
+              <:trigger>Is it accessible?</:trigger>
+              <:content>Yes. It adheres to the WAI-ARIA design pattern.</:content>
             </.accordion_item>
             <.accordion_item value="item-2" accordion_id="demo-accordion">
-              <.accordion_trigger value="item-2" accordion_id="demo-accordion">Is it styled?</.accordion_trigger>
-              <.accordion_content value="item-2" accordion_id="demo-accordion">
-                Yes. It comes with default styles that match the other components' aesthetic.
-              </.accordion_content>
+              <:trigger>Is it styled?</:trigger>
+              <:content>Yes. It comes with default styles that match the other components' aesthetic.</:content>
             </.accordion_item>
             <.accordion_item value="item-3" accordion_id="demo-accordion">
-              <.accordion_trigger value="item-3" accordion_id="demo-accordion">Is it animated?</.accordion_trigger>
-              <.accordion_content value="item-3" accordion_id="demo-accordion">
-                Yes. It uses Phoenix LiveView.JS for smooth open/close transitions.
-              </.accordion_content>
+              <:trigger>Is it animated?</:trigger>
+              <:content>Yes. It uses Phoenix LiveView.JS for smooth open/close transitions.</:content>
             </.accordion_item>
           </.accordion>
         </div>

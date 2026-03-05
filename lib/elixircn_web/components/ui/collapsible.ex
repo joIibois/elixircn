@@ -40,7 +40,7 @@ defmodule ElixircnWeb.Components.UI.Collapsible do
     <div
       id={@id}
       data-state={if @open, do: "open", else: "closed"}
-      class={@class}
+      class={cn(@class)}
       {@rest}
     >
       {render_slot(@inner_block)}

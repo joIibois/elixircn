@@ -83,7 +83,7 @@ defmodule ElixircnWeb.Components.UI.Drawer do
   """
   def drawer(assigns) do
     ~H"""
-    <div id={@id} class={@class} {@rest}>
+    <div id={@id} class={cn(@class)} {@rest}>
       <div :if={@trigger != []} phx-click={show_drawer(%JS{}, @id, @side)}>
         {render_slot(@trigger)}
       </div>

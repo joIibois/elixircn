@@ -115,9 +115,12 @@ defmodule ElixircnWeb.Components.UI.Select do
       |> JS.hide(to: "##{id}-options")
       |> JS.hide(to: "##{id}-backdrop")
 
-  defp item_click(id, on_change, value, _label),
+  defp item_click(id, on_change, value, label),
     do:
       JS.push(on_change, value: %{value: value})
+      |> JS.set_attribute({"value", to_string(value)}, to: "##{id} input[type=hidden]")
+      |> JS.dispatch("set-label", to: "##{id}-label", detail: %{label: label})
+      |> JS.remove_class("text-muted-foreground", to: "##{id} button")
       |> JS.hide(to: "##{id}-options")
       |> JS.hide(to: "##{id}-backdrop")
 end

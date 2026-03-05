@@ -53,7 +53,8 @@ defmodule Elixircn.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
-      {:tw_merge, "~> 0.1"}
+      {:tw_merge, "~> 0.1"},
+      {:earmark, "~> 1.4"}
     ]
   end
 

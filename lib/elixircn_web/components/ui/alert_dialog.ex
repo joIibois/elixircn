@@ -47,7 +47,7 @@ defmodule ElixircnWeb.Components.UI.AlertDialog do
   @doc "Renders the alert dialog wrapper with an optional trigger slot and modal overlay."
   def alert_dialog(assigns) do
     ~H"""
-    <div id={@id} class={@class} {@rest}>
+    <div id={@id} class={cn(@class)} {@rest}>
       <div :if={@trigger != []} phx-click={show_alert_dialog(@id)}>
         {render_slot(@trigger)}
       </div>

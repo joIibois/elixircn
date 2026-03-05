@@ -36,7 +36,7 @@ defmodule ElixircnWeb.Components.UI.Pagination do
   @doc "Wraps a pagination item in a `<li>` element."
   def pagination_content(assigns) do
     ~H"""
-    <li class={@class} {@rest}>
+    <li class={cn(@class)} {@rest}>
       {render_slot(@inner_block)}
     </li>
     """
