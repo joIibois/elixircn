@@ -227,3 +227,52 @@
   content: none;
 }
 
+/* ============================================================
+   Switch thumb — fluid hover/press/slide interactions
+   Track inner area: 32×16px (36px border-box minus 2px border each side)
+   Thumb base: 16×16px. Hover: 20×16. Active: 22×12 (centered via top:2px).
+   Checked translate accounts for thumb width to keep right edge flush.
+   ============================================================ */
+.switch-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background-color: var(--background);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+  transition:
+    top 120ms ease-in-out,
+    width 120ms ease-in-out,
+    height 120ms ease-in-out,
+    transform 220ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+/* Hover: expand width into a pill */
+label:hover:has(input:not(:disabled)) .switch-thumb {
+  width: 20px;
+}
+
+/* Active: squish — shorter, wider, centered vertically */
+label:active:has(input:not(:disabled)) .switch-thumb {
+  top: 2px;
+  width: 22px;
+  height: 12px;
+}
+
+/* Checked: slide thumb to right (translate = 32px inner - 16px thumb = 16px) */
+label:has(input:checked) .switch-thumb {
+  transform: translateX(16px);
+}
+
+/* Checked + hover: adjust translate for 20px wide thumb (32 - 20 = 12px) */
+label:hover:has(input:checked):has(input:not(:disabled)) .switch-thumb {
+  transform: translateX(12px);
+}
+
+/* Checked + active: adjust translate for 22px wide thumb (32 - 22 = 10px) */
+label:active:has(input:checked):has(input:not(:disabled)) .switch-thumb {
+  transform: translateX(10px);
+}
+
