@@ -982,6 +982,314 @@ Hooks.NavigationMenuNav = {
   }
 }
 
+// Slider: custom slider with tooltip, progress fill, hover preview, animated thumb
+Hooks.Slider = {
+  mounted() {
+    this.track = this.el.querySelector("[data-slider-track]")
+    this.thumb = this.el.querySelector("[data-slider-thumb]")
+    this.fill = this.el.querySelector("[data-slider-fill]")
+    this.hoverFill = this.el.querySelector("[data-slider-hover-fill]")
+    this.tooltip = this.el.querySelector("[data-slider-tooltip]")
+    this.tooltipValue = this.el.querySelector("[data-slider-tooltip-value]")
+    this.input = this.el.querySelector("[data-slider-input]")
+
+    this.min = parseFloat(this.el.dataset.min)
+    this.max = parseFloat(this.el.dataset.max)
+    this.step = parseFloat(this.el.dataset.step)
+    this.value = parseFloat(this.el.dataset.value)
+    this.dragging = false
+    this.animating = false
+    this.hovering = false
+
+    // Enable transitions on thumb and fill for click-to-jump animation
+    this._enableTransition = () => {
+      this.thumb.style.transition = "left 0.35s cubic-bezier(0.25, 1, 0.5, 1)"
+      this.fill.style.transition = "width 0.35s cubic-bezier(0.25, 1, 0.5, 1)"
+      this.tooltip.style.transition = "left 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.15s"
+    }
+    this._disableTransition = () => {
+      this.thumb.style.transition = "none"
+      this.fill.style.transition = "none"
+      this.tooltip.style.transition = "opacity 0.15s"
+    }
+
+    // Mouse events on track for click-to-jump
+    this.track.addEventListener("mousedown", (e) => {
+      if (this._isDisabled()) return
+      e.preventDefault()
+      const val = this._valueFromEvent(e)
+      this._enableTransition()
+      this._setValue(val, true)
+      // After animation, start drag mode so user can continue dragging
+      this.animating = true
+      this._animTimer = setTimeout(() => {
+        this._animTimer = null
+        this.animating = false
+        this._disableTransition()
+        this.dragging = true
+      }, 350)
+      this._addDragListeners()
+    })
+
+    // Mouse events on thumb for direct dragging
+    this.thumb.addEventListener("mousedown", (e) => {
+      if (this._isDisabled()) return
+      e.preventDefault()
+      e.stopPropagation()
+      this.dragging = true
+      this._disableTransition()
+      this.thumb.style.cursor = "grabbing"
+      this._showTooltip()
+      this._addDragListeners()
+    })
+
+    // Touch events on track
+    this.track.addEventListener("touchstart", (e) => {
+      if (this._isDisabled()) return
+      const touch = e.touches[0]
+      const val = this._valueFromTouch(touch)
+      this._enableTransition()
+      this._setValue(val, true)
+      this.animating = true
+      this._animTimer = setTimeout(() => {
+        this._animTimer = null
+        this.animating = false
+        this._disableTransition()
+        this.dragging = true
+      }, 350)
+      this._addTouchListeners()
+    }, { passive: true })
+
+    // Touch events on thumb
+    this.thumb.addEventListener("touchstart", (e) => {
+      if (this._isDisabled()) return
+      e.stopPropagation()
+      this.dragging = true
+      this._disableTransition()
+      this._showTooltip()
+      this._addTouchListeners()
+    }, { passive: true })
+
+    // Hover preview + tooltip
+    this.track.addEventListener("mousemove", (e) => {
+      if (this._isDisabled() || this.dragging) return
+      this._updateHoverPreview(e)
+      this._showTooltip()
+    })
+    this.track.addEventListener("mouseleave", () => {
+      if (!this.dragging) {
+        this._hideHoverPreview()
+        this._hideTooltip()
+      }
+    })
+    // Also show/hide tooltip when entering/leaving the thumb itself
+    this.thumb.addEventListener("mouseenter", () => {
+      if (!this._isDisabled() && !this.dragging) {
+        this._hideHoverPreview()
+        this._render()
+        this._showTooltip()
+      }
+    })
+    this.thumb.addEventListener("mouseleave", () => {
+      if (!this.dragging && document.activeElement !== this.thumb) this._hideTooltip()
+    })
+
+    // Keyboard support on thumb
+    this.thumb.addEventListener("keydown", (e) => {
+      if (this._isDisabled()) return
+      let newVal = this.value
+      switch (e.key) {
+        case "ArrowRight":
+        case "ArrowUp":
+          e.preventDefault()
+          newVal = Math.min(this.max, this.value + this.step)
+          break
+        case "ArrowLeft":
+        case "ArrowDown":
+          e.preventDefault()
+          newVal = Math.max(this.min, this.value - this.step)
+          break
+        case "Home":
+          e.preventDefault()
+          newVal = this.min
+          break
+        case "End":
+          e.preventDefault()
+          newVal = this.max
+          break
+        default:
+          return
+      }
+      this._disableTransition()
+      this._setValue(newVal, true)
+    })
+
+    // Show/hide tooltip on thumb focus
+    this.thumb.addEventListener("focus", () => this._showTooltip())
+    this.thumb.addEventListener("blur", () => {
+      if (!this.dragging) this._hideTooltip()
+    })
+  },
+
+  updated() {
+    // Sync with server-pushed value changes
+    const newVal = parseFloat(this.el.dataset.value)
+    if (!this.dragging && newVal !== this.value) {
+      this.value = newVal
+      this._render()
+    }
+  },
+
+  destroyed() {
+    this._removeDragListeners()
+    this._removeTouchListeners()
+  },
+
+  _isDisabled() {
+    return this.el.dataset.disabled === "true"
+  },
+
+  _valueFromEvent(e) {
+    const rect = this.track.getBoundingClientRect()
+    const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+    return this._snap(this.min + pct * (this.max - this.min))
+  },
+
+  _valueFromTouch(touch) {
+    const rect = this.track.getBoundingClientRect()
+    const pct = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width))
+    return this._snap(this.min + pct * (this.max - this.min))
+  },
+
+  _snap(val) {
+    const stepped = Math.round((val - this.min) / this.step) * this.step + this.min
+    return Math.max(this.min, Math.min(this.max, parseFloat(stepped.toFixed(10))))
+  },
+
+  _pct(val) {
+    return ((val - this.min) / (this.max - this.min)) * 100
+  },
+
+  _setValue(val, pushEvent) {
+    this.value = val
+    this._render()
+    this.input.value = this._formatValue(val)
+    if (pushEvent) {
+      // Dispatch input event for phx-change forms
+      this.input.dispatchEvent(new Event("input", { bubbles: true }))
+    }
+  },
+
+  _formatValue(val) {
+    return (this.step >= 1 && this.step === Math.trunc(this.step)) ? Math.trunc(val) : parseFloat(val.toFixed(2))
+  },
+
+  _render() {
+    const pct = this._pct(this.value)
+    this.thumb.style.left = pct + "%"
+    this.fill.style.width = pct + "%"
+    // Only update tooltip position/value if not showing a hover preview
+    if (!this.hovering) {
+      this.tooltip.style.left = pct + "%"
+      if (this.tooltipValue) this.tooltipValue.textContent = this._formatValue(this.value)
+    }
+    this.thumb.setAttribute("aria-valuenow", this.value)
+  },
+
+  _showTooltip() {
+    this.tooltip.style.opacity = "1"
+  },
+
+  _hideTooltip() {
+    this.tooltip.style.opacity = ""
+  },
+
+  _updateHoverPreview(e) {
+    this.hovering = true
+    const rect = this.track.getBoundingClientRect()
+    const rawPct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+    const hoverPct = rawPct * 100
+    const currentPct = this._pct(this.value)
+    const hoverVal = this._snap(this.min + rawPct * (this.max - this.min))
+
+    if (hoverPct > currentPct) {
+      this.hoverFill.style.left = currentPct + "%"
+      this.hoverFill.style.width = (hoverPct - currentPct) + "%"
+    } else {
+      this.hoverFill.style.left = hoverPct + "%"
+      this.hoverFill.style.width = (currentPct - hoverPct) + "%"
+    }
+    this.hoverFill.style.opacity = "1"
+
+    // Move tooltip to hover position and show hovered value
+    this.tooltip.style.left = hoverPct + "%"
+    if (this.tooltipValue) this.tooltipValue.textContent = this._formatValue(hoverVal)
+  },
+
+  _hideHoverPreview() {
+    this.hovering = false
+    this.hoverFill.style.opacity = "0"
+    this.hoverFill.style.width = "0%"
+    // Restore tooltip to current thumb value
+    const pct = this._pct(this.value)
+    this.tooltip.style.left = pct + "%"
+    if (this.tooltipValue) this.tooltipValue.textContent = this._formatValue(this.value)
+  },
+
+  _addDragListeners() {
+    this._onMouseMove = (e) => {
+      if (!this.dragging && !this.animating) return
+      if (this.animating) return
+      const val = this._valueFromEvent(e)
+      this._setValue(val, true)
+      this._showTooltip()
+      this._hideHoverPreview()
+    }
+    this._onMouseUp = () => {
+      if (this._animTimer) { clearTimeout(this._animTimer); this._animTimer = null }
+      this.dragging = false
+      this.animating = false
+      this._disableTransition()
+      this.thumb.style.cursor = ""
+      if (document.activeElement !== this.thumb) this._hideTooltip()
+      this._hideHoverPreview()
+      this._removeDragListeners()
+    }
+    document.addEventListener("mousemove", this._onMouseMove)
+    document.addEventListener("mouseup", this._onMouseUp)
+  },
+
+  _removeDragListeners() {
+    if (this._onMouseMove) document.removeEventListener("mousemove", this._onMouseMove)
+    if (this._onMouseUp) document.removeEventListener("mouseup", this._onMouseUp)
+  },
+
+  _addTouchListeners() {
+    this._onTouchMove = (e) => {
+      if (!this.dragging && !this.animating) return
+      if (this.animating) return
+      const val = this._valueFromTouch(e.touches[0])
+      this._setValue(val, true)
+      this._showTooltip()
+    }
+    this._onTouchEnd = () => {
+      if (this._animTimer) { clearTimeout(this._animTimer); this._animTimer = null }
+      this.dragging = false
+      this.animating = false
+      this._disableTransition()
+      this._hideTooltip()
+      this._removeTouchListeners()
+    }
+    document.addEventListener("touchmove", this._onTouchMove, { passive: true })
+    document.addEventListener("touchend", this._onTouchEnd)
+  },
+
+  _removeTouchListeners() {
+    if (this._onTouchMove) document.removeEventListener("touchmove", this._onTouchMove)
+    if (this._onTouchEnd) document.removeEventListener("touchend", this._onTouchEnd)
+  }
+}
+
 // Global outside-click handler — closes non-modal overlays (popover, dropdown,
 // combobox) when the user clicks outside the overlay root element.
 // The backdrop is pointer-events-none so this is the sole click-outside path.
