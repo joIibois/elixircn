@@ -66,6 +66,7 @@ defmodule ElixircnWeb.ShowcaseLive do
   ]
 
   alias ElixircnWeb.ShowcaseCode
+  alias ElixircnWeb.ShowcaseApiDocs
 
   def mount(params, _session, socket) do
     active = Map.get(params, "component", "introduction")
@@ -77,6 +78,7 @@ defmodule ElixircnWeb.ShowcaseLive do
      |> assign(:active_component, active)
      |> assign(:code_snippet, ShowcaseCode.snippet(active))
      |> assign(:components, @components)
+     |> assign(:api_docs, ShowcaseApiDocs.docs())
      |> assign(:toasts, [])
      |> assign(:calendar_month, Date.utc_today().month)
      |> assign(:calendar_year, Date.utc_today().year)
