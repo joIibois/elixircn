@@ -3,7 +3,20 @@ defmodule ElixircnWeb.Components.UI.Checkbox do
   use Phoenix.Component
   import ElixircnWeb.Components.UI.Utils
 
-  attr :field, Phoenix.HTML.FormField, default: nil, doc: "a form field struct; auto-extracts id, name, and checked state"
+  attr :class, :any, default: nil
+  attr :rest, :global
+  slot :inner_block, required: true
+
+  @doc "Wraps checkboxes in a column layout that merges consecutive selected items visually."
+  def checkbox_group(assigns) do
+    ~H"""
+    <div class={cn(["checkbox-group flex flex-col", @class])} {@rest}>
+      {render_slot(@inner_block)}
+    </div>
+    """
+  end
+
+  attr :field, Phoenix.HTML.FormField, default: nil
   attr :id, :string, default: nil
   attr :name, :string, default: nil
   attr :checked, :boolean, default: false
@@ -13,7 +26,7 @@ defmodule ElixircnWeb.Components.UI.Checkbox do
   attr :rest, :global
   slot :inner_block
 
-  @doc "Renders a checkbox with form field bindings when a FormField struct is provided."
+  @doc "Renders a styled checkbox. Wrap the label text in the inner block for the full row tap-target style."
   def checkbox(%{field: %Phoenix.HTML.FormField{} = f} = assigns) do
     assigns
     |> assign(field: nil)
@@ -23,10 +36,14 @@ defmodule ElixircnWeb.Components.UI.Checkbox do
     |> checkbox()
   end
 
-  @doc "Renders a styled checkbox input with an optional inline label."
   def checkbox(assigns) do
     ~H"""
-    <div class="flex items-center gap-2">
+    <label class={cn([
+      "checkbox-item flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer select-none",
+      "hover:bg-accent has-[input:checked]:bg-accent",
+      "has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50",
+      @class
+    ])}>
       <input :if={@name} type="hidden" name={@name} value="false" />
       <input
         id={@id}
@@ -36,20 +53,16 @@ defmodule ElixircnWeb.Components.UI.Checkbox do
         checked={@checked}
         disabled={@disabled}
         required={@required}
-        class={cn([
-          "peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 checked:bg-primary checked:text-primary-foreground",
-          @class
-        ])}
+        class="checkbox-input peer h-4 w-4 shrink-0 rounded-sm border border-primary appearance-none cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed"
         {@rest}
       />
-      <label
+      <span
         :if={@inner_block != []}
-        for={@id}
         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
         {render_slot(@inner_block)}
-      </label>
-    </div>
+      </span>
+    </label>
     """
   end
 

@@ -351,15 +351,22 @@
           <h1 class="text-3xl font-bold tracking-tight">Checkbox</h1>
           <p class="mt-2 text-muted-foreground">A control that allows the user to toggle between checked and not checked.</p>
         </div>
-        <div class="rounded-lg border bg-card p-8 space-y-4">
-          <div class="flex items-center space-x-2">
-            <.checkbox id="terms" />
-            <.label for="terms">Accept terms and conditions</.label>
-          </div>
-          <div class="flex items-center space-x-2">
-            <.checkbox id="disabled-check" checked disabled />
-            <.label for="disabled-check" class="opacity-50">Checked & Disabled</.label>
-          </div>
+        <%!-- Inline label style (standalone) --%>
+        <div class="rounded-lg border bg-card p-8 space-y-1">
+          <.checkbox id="terms">Accept terms and conditions</.checkbox>
+          <.checkbox id="newsletter">Subscribe to newsletter</.checkbox>
+          <.checkbox id="disabled-check" checked disabled>Checked & Disabled</.checkbox>
+        </div>
+        <%!-- Grouped selection --%>
+        <div class="rounded-lg border bg-card p-8">
+          <p class="text-sm text-muted-foreground mb-4">Consecutive selected items merge into a group.</p>
+          <.checkbox_group class="w-64">
+            <.checkbox id="fruit-apples" checked>Apples</.checkbox>
+            <.checkbox id="fruit-bananas">Bananas</.checkbox>
+            <.checkbox id="fruit-cherries" checked>Cherries</.checkbox>
+            <.checkbox id="fruit-dates" checked>Dates</.checkbox>
+            <.checkbox id="fruit-elderberry">Elderberry</.checkbox>
+          </.checkbox_group>
         </div>
       </div>
 
